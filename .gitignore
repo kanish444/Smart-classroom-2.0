@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Local Configuration
+.env
+.env.local
+
+# Database
+*.sqlite
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Models
+*.pt
+*.pth
+*.onnx
+models/weights/*.onnx
+models/weights/*.pt
+models/weights/*.pth
+
+# Project Data (Do not commit real student data!)
+sample_data/students/*/*.jpg
+sample_data/students/*/*.png
+data/embeddings/
+data/enrollment/
+*.bin
+*.bin.meta.json
+models/embeddings/
+data/*.json
+
+# Test Artifacts & Tooling
+.pytest_cache/
+.playwright-mcp/
+phase7_debug_hud.jpg
+stress_test_result.jpg
+
+# IDE
+.vscode/
+.idea/

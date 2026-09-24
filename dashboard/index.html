@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartClass Vision AI - Smart Board Classroom Monitor</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+
+  <!-- ===================================================================== -->
+  <!-- Top Navigation Bar & Classroom Health Status                          -->
+  <!-- ===================================================================== -->
+  <header class="top-bar">
+    <div class="brand-group">
+      <div class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">SmartClass Vision AI</h1>
+        <div class="brand-subtitle">Smart Board Multi-Student Face Identification & Attendance</div>
+      </div>
+    </div>
+
+    <!-- Live Classroom Clock -->
+    <div class="clock-display" id="classroom-clock">
+      <span class="clock-time" id="clock-time">--:--:--</span>
+      <span class="clock-date" id="clock-date">Loading date...</span>
+    </div>
+
+    <!-- System Health Pills -->
+    <div class="health-cluster">
+      <div class="health-pill" id="health-camera" title="Camera Subsystem">
+        <span class="health-dot online"></span> Camera
+      </div>
+      <div class="health-pill" id="health-recognition" title="ArcFace / FAISS Engine">
+        <span class="health-dot online"></span> Recognition
+      </div>
+      <div class="health-pill" id="health-tracking" title="ByteTrack Stabilization">
+        <span class="health-dot online"></span> Tracking
+      </div>
+      <div class="health-pill" id="health-db" title="SQLite Database">
+        <span class="health-dot online"></span> Database
+      </div>
+    </div>
+
+    <!-- Controls Cluster -->
+    <div class="header-actions">
+      <!-- Mode Toggle Switch -->
+      <div class="view-toggle" title="Switch between Normal View, Debug View, and Raw Detector">
+        <button type="button" class="toggle-btn active" id="btn-mode-normal">Normal View</button>
+        <button type="button" class="toggle-btn" id="btn-mode-debug">Debug View</button>
+        <button type="button" class="toggle-btn" id="btn-mode-raw">Raw Detector</button>
+      </div>
+
+
+      <!-- Operator Status -->
+      <button type="button" class="btn-operator" id="btn-operator-toggle" title="Operator Authentication Settings">
+        <span class="icon-lock">🔒</span> <span id="operator-label">Viewer</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- Active Session Hero Banner & Control Panel                            -->
+  <!-- ===================================================================== -->
+  <section class="session-banner" id="session-banner">
+    <div class="session-info-grid">
+      <div class="session-item">
+        <span class="session-label">CLASS / SECTION</span>
+        <span class="session-value" id="sess-class">--</span>
+      </div>
+      <div class="session-item">
+        <span class="session-label">COURSE / SUBJECT</span>
+        <span class="session-value" id="sess-subject">--</span>
+      </div>
+      <div class="session-item">
+        <span class="session-label">SESSION STATUS</span>
+        <span class="status-badge badge-neutral" id="sess-status">CHECKING...</span>
+      </div>
+      <div class="session-item">
+        <span class="session-label">START TIME</span>
+        <span class="session-value font-mono" id="sess-start">--:--</span>
+      </div>
+      <div class="session-item">
+        <span class="session-label">CURRENT</span>
+        <span class="session-value font-mono" id="sess-current">--:--</span>
+      </div>
+      <div class="session-item">
+        <span class="session-label">SCHEDULED END</span>
+        <span class="session-value font-mono" id="sess-end">--:--</span>
+      </div>
+    </div>
+
+    <!-- Session Action Buttons (Operator protected) -->
+    <div class="session-actions" id="session-controls">
+      <button type="button" class="btn-action btn-start" id="btn-start-session">▶ Start Session</button>
+      <button type="button" class="btn-action btn-pause" id="btn-pause-session" style="display:none;">⏸ Pause</button>
+      <button type="button" class="btn-action btn-resume" id="btn-resume-session" style="display:none;">▶ Resume</button>
+      <button type="button" class="btn-action btn-end" id="btn-end-session" style="display:none;">⏹ End Session</button>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- KPI Metric Overview Cards (Smart Board High Readability)              -->
+  <!-- ===================================================================== -->
+  <section class="kpi-grid">
+    <div class="kpi-card card-total">
+      <div class="kpi-label">TOTAL ENROLLED</div>
+      <div class="kpi-number" id="kpi-total">0</div>
+      <div class="kpi-subtext">Classroom Roster</div>
+    </div>
+
+    <div class="kpi-card card-present">
+      <div class="kpi-label">PRESENT</div>
+      <div class="kpi-number" id="kpi-present">0</div>
+      <div class="kpi-subtext">Verified on time</div>
+    </div>
+
+    <div class="kpi-card card-late">
+      <div class="kpi-label">LATE ARRIVAL</div>
+      <div class="kpi-number" id="kpi-late">0</div>
+      <div class="kpi-subtext">> 10 min window</div>
+    </div>
+
+    <div class="kpi-card card-notseen">
+      <div class="kpi-label">NOT YET SEEN</div>
+      <div class="kpi-number" id="kpi-notseen">0</div>
+      <div class="kpi-subtext">Pending arrival</div>
+    </div>
+
+    <div class="kpi-card card-unknown">
+      <div class="kpi-label">UNKNOWN FACES</div>
+      <div class="kpi-number" id="kpi-unknown">0</div>
+      <div class="kpi-subtext">Unregistered / Visitors</div>
+    </div>
+
+    <div class="kpi-card card-tracks">
+      <div class="kpi-label">ACTIVE TRACKS</div>
+      <div class="kpi-number" id="kpi-tracks">0</div>
+      <div class="kpi-subtext" id="kpi-fps-text">Camera: 30.0 FPS</div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- Main Grid: Live Video Monitor + Student Attendance Roster            -->
+  <!-- ===================================================================== -->
+  <main class="main-content-grid">
+
+    <!-- Left: Live Camera View Container -->
+    <div class="panel camera-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <h2 class="panel-title">Smart Board Live Camera Feed</h2>
+          <span class="live-tag" id="live-indicator">● LIVE MONITOR</span>
+        </div>
+        <div class="panel-tools">
+          <span class="mode-pill" id="view-mode-indicator">NORMAL VIEW</span>
+          <button type="button" class="btn-icon" id="btn-fullscreen" title="Toggle Fullscreen for Smart Board">⛶ Fullscreen</button>
+        </div>
+      </div>
+
+      <!-- Camera Source Selection & DroidCam Control Toolbar -->
+      <div class="camera-source-toolbar">
+        <div class="source-select-group">
+          <label for="camera-source-select" class="source-label">CAMERA SOURCE:</label>
+          <select id="camera-source-select" class="source-dropdown">
+            <option value="droidcam">DroidCam Wi-Fi</option>
+            <option value="laptop">Laptop Camera</option>
+            <option value="smart_board">Smart Board Camera</option>
+            <option value="external">External Camera</option>
+          </select>
+        </div>
+
+        <div class="droidcam-ip-group" id="droidcam-ip-group">
+          <label for="input-droidcam-host" class="ip-label">PHONE IP:</label>
+          <input type="text" id="input-droidcam-host" class="input-ip" value="10.140.159.218" placeholder="10.140.159.218">
+          <span class="ip-port">:4747</span>
+          <button type="button" class="btn-cam-action" id="btn-test-camera" title="Probe DroidCam connection">Test Camera</button>
+          <button type="button" class="btn-cam-action btn-apply" id="btn-apply-camera" title="Connect to camera">Connect</button>
+          <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action btn-remote" title="Open DroidCam Remote Web Controller in a new tab" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+        </div>
+
+
+        <div class="camera-status-strip" id="camera-status-strip">
+          <span class="cam-badge" id="cam-active-badge">Camera: DroidCam Wi-Fi</span>
+          <span class="cam-badge" id="cam-res-badge">Res: --</span>
+          <span class="cam-badge" id="cam-fps-badge">FPS: --</span>
+          <span class="cam-status-pill status-disconnected" id="cam-status-pill">CHECKING...</span>
+        </div>
+      </div>
+
+      <div class="video-container" id="video-wrapper">
+        <img id="camera-stream" src="/api/video/feed?view_mode=normal" alt="Smart Board Live Camera Feed" class="video-stream">
+        <div class="video-offline-overlay" id="video-offline-overlay" style="display:none;">
+          <div class="offline-box">
+            <span class="offline-icon">⚠️</span>
+            <h3>CAMERA OFFLINE</h3>
+            <p>Smart Board camera stream currently disconnected or unavailable.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unknown Face Alert Strip -->
+      <div class="unknown-alert-strip" id="unknown-alert" style="display:none;">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-content">
+          <strong>UNKNOWN FACE DETECTED:</strong> One or more detected faces do not match any enrolled student in the database. No identity guessed.
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Student Attendance Roster & Search -->
+    <div class="panel roster-panel">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <h2 class="panel-title">Session Attendance Roster</h2>
+          <span class="count-badge" id="roster-count-badge">0 Students</span>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="export-actions">
+          <button type="button" class="btn-export" id="btn-export-csv" title="Export session attendance as CSV">
+            📄 CSV Export
+          </button>
+          <button type="button" class="btn-export" id="btn-export-json" title="Export session attendance as JSON">
+            📋 JSON Export
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter & Search Toolbar -->
+      <div class="roster-toolbar">
+        <div class="search-box">
+          <input type="text" id="student-search-input" placeholder="Search by student name or register number..." autocomplete="off">
+        </div>
+        <div class="filter-pills">
+          <button type="button" class="filter-btn active" data-filter="ALL">All (<span id="count-all">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="PRESENT">Present (<span id="count-present">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="LATE">Late (<span id="count-late">0</span>)</button>
+          <button type="button" class="filter-btn" data-filter="NOT_SEEN">Not Seen (<span id="count-notseen">0</span>)</button>
+        </div>
+      </div>
+
+      <!-- Roster Table Container -->
+      <div class="table-container">
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th style="width: 140px;">Register No</th>
+              <th>Student Name</th>
+              <th style="width: 130px;">Status</th>
+              <th style="width: 110px;">First Seen</th>
+              <th style="width: 110px;">Last Seen</th>
+            </tr>
+          </thead>
+          <tbody id="roster-tbody">
+            <tr>
+              <td colspan="5" class="empty-state">Loading attendance roster...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- End Session Confirmation Modal                                        -->
+  <!-- ===================================================================== -->
+  <div class="modal-backdrop" id="end-session-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>End Active Session?</h3>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to end the current instructional session?</p>
+        <p class="modal-sub">Final attendance will be locked and archived into the SQLite database. This terminal operation cannot be undone.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-cancel" id="btn-modal-cancel">Cancel</button>
+        <button type="button" class="btn-modal btn-confirm-danger" id="btn-modal-confirm-end">Yes, End Session</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operator Auth Modal -->
+  <div class="modal-backdrop" id="operator-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Operator Authorization</h3>
+      </div>
+      <div class="modal-body">
+        <p>Enter the Operator Token to unlock session management and administrative actions:</p>
+        <input type="password" id="input-operator-token" class="modal-input" placeholder="Operator Token...">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-cancel" id="btn-operator-cancel">Cancel</button>
+        <button type="button" class="btn-modal btn-confirm-primary" id="btn-operator-save">Save Token</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

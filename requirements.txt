@@ -1,0 +1,23 @@
+# Phase 2 Foundation Dependencies
+opencv-python
+numpy
+loguru
+pydantic
+python-dotenv
+pytest
+
+# Phase 4 Detection Dependencies
+ultralytics
+onnxruntime
+
+# Phase 6 Recognition & Vector Search Dependencies
+faiss-cpu
+psutil
+
+# Phase 7 Tracking Dependencies
+lap
+
+# Phase 9 Dashboard & API Dependencies
+fastapi
+uvicorn
+httpx
