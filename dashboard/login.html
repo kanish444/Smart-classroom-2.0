@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartClass Vision AI - Secure Institutional Portal</title>
+  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="/static/css/role_dashboard.css">
   <style>
     :root {
-      --primary: #0F172A;
-      --secondary: #2563EB;
-      --secondary-hover: #1D4ED8;
-      --secondary-subtle: #EFF6FF;
-      --bg-app: #F8FAFC;
-      --border-color: #E2E8F0;
-      --font-heading: 'Plus Jakarta Sans', var(--font-body);
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --primary: #1D4ED8;
+      --primary-hover: #2563EB;
+      --bg-midnight: #0B1220;
+      --bg-midnight-surface: #111C2E;
+      --border-midnight: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
     }
 
     * {
@@ -29,130 +29,216 @@
 
     body {
       font-family: var(--font-body);
-      background-color: var(--bg-app);
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.05) 0%, transparent 45%),
-        linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
-      color: #0F172A;
+      background-color: #070D19;
+      color: #0B1220;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       padding: 1.5rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      position: relative;
     }
 
-    .login-container {
+    .login-wrapper {
       width: 100%;
-      max-width: 440px;
+      max-width: 1080px;
+      min-height: 640px;
       background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      box-shadow: 
-        0 1px 3px rgba(15, 23, 42, 0.05),
-        0 20px 40px -12px rgba(15, 23, 42, 0.10);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
       overflow: hidden;
+    }
+
+    /* Left Dark Midnight AI Hero Panel */
+    .login-hero {
+      background: linear-gradient(145deg, #0B1220 0%, #111C2E 60%, #0F172A 100%);
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       position: relative;
-      z-index: 1;
+      border-right: 1px solid var(--border-midnight);
+      overflow: hidden;
     }
 
-    .login-header {
-      padding: 2.25rem 2rem 1.5rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color);
-      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
+    .login-hero::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      left: -120px;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    .logo-container {
-      display: inline-flex;
+    .login-hero::after {
+      content: "";
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .brand-mark-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-logo-box {
+      width: 52px;
+      height: 52px;
+      background: #0B1220;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      border-radius: 12px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 68px;
-      height: 68px;
-      border-radius: 16px;
-      background: #FFFFFF;
       padding: 6px;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
     }
 
-    .institutional-logo-img {
+    .hero-logo-box img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
 
-    .login-header h1 {
-      font-family: var(--font-heading);
-      font-size: 1.38rem;
+    .hero-brand-name h2 {
+      font-size: 1.25rem;
       font-weight: 800;
-      color: #0F172A;
-      letter-spacing: -0.025em;
-      line-height: 1.25;
+      letter-spacing: 0.04em;
+      color: #F8FAFC;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .hero-brand-name span {
+      font-size: 0.70rem;
+      color: #38BDF8;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-message {
+      margin: 2.5rem 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-message h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-message h1 span {
+      background: linear-gradient(135deg, #38BDF8 0%, #818CF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-message p {
+      font-size: 0.90rem;
+      color: #94A3B8;
+      line-height: 1.6;
+    }
+
+    .hero-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .badge-vision {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 2px 7px;
-      border-radius: 5px;
-      background: var(--secondary);
-      color: #FFFFFF;
-    }
-
-    .login-header p {
+      gap: 0.75rem;
       font-size: 0.82rem;
-      color: #64748B;
-      margin-top: 0.4rem;
+      color: #CBD5E1;
       font-weight: 500;
     }
 
-    .login-body {
-      padding: 2rem;
-    }
-
-    .alert-box {
-      padding: 0.75rem 1rem;
+    .feature-icon-circle {
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
-      font-size: 0.84rem;
-      font-weight: 600;
-      margin-bottom: 1.25rem;
-      display: none;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38BDF8;
+      font-size: 0.95rem;
+      flex-shrink: 0;
     }
 
-    .alert-error {
-      background: #FEF2F2;
-      color: #B91C1C;
-      border: 1px solid #FECACA;
+    .hero-footer {
+      position: relative;
+      z-index: 2;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(30, 41, 59, 0.8);
+      font-size: 0.74rem;
+      color: #64748B;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .alert-success {
-      background: #ECFDF5;
-      color: #047857;
-      border: 1px solid #A7F3D0;
+    /* Right Form Panel */
+    .login-form-panel {
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #FFFFFF;
+    }
+
+    .form-header {
+      margin-bottom: 2rem;
+    }
+
+    .form-header h3 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0B1220;
+      letter-spacing: -0.02em;
+    }
+
+    .form-header p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
     .form-group {
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
     }
 
     .form-group label {
-      display: block;
-      font-size: 0.80rem;
+      font-size: 0.78rem;
       font-weight: 600;
       color: #334155;
-      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .input-wrapper {
@@ -163,161 +249,234 @@
 
     .input-icon {
       position: absolute;
-      left: 12px;
+      left: 14px;
       color: #94A3B8;
-      pointer-events: none;
-      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
+      font-size: 1.1rem;
     }
 
-    .form-control {
+    .input-wrapper input {
       width: 100%;
-      padding: 0.70rem 0.85rem 0.70rem 2.4rem;
+      height: 46px;
+      padding: 0 1rem 0 2.75rem;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
       font-size: 0.90rem;
-      color: #0F172A;
-      background-color: #FFFFFF;
-      border: 1.5px solid var(--border-color);
-      border-radius: 8px;
-      transition: all 0.18s ease;
+      color: #0B1220;
+      background: #F8FAFC;
+      transition: all 0.2s ease;
       outline: none;
     }
 
-    .form-control:focus {
-      border-color: var(--secondary);
+    .input-wrapper input:focus {
+      background: #FFFFFF;
+      border-color: #2563EB;
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    .preset-selector-label {
+    /* Role Quick Preset Selector */
+    .preset-section {
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    .preset-label {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: #64748B;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .preset-btn-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 1.35rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     .preset-role-btn {
-      flex: 1;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 0.55rem 0.75rem;
+      gap: 8px;
+      padding: 0.60rem 0.85rem;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 8px;
       font-size: 0.80rem;
       font-weight: 600;
-      color: #475569;
-      background: #F8FAFC;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      color: #334155;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.18s ease;
+    }
+
+    .preset-role-btn i {
+      color: #2563EB;
+      font-size: 1rem;
     }
 
     .preset-role-btn:hover {
-      background: #FFFFFF;
-      color: var(--secondary);
-      border-color: #CBD5E1;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      background: #EFF6FF;
+      border-color: #BFDBFE;
+      color: #1D4ED8;
     }
 
     .login-btn {
       width: 100%;
-      padding: 0.75rem 1.25rem;
+      height: 48px;
+      background: #2563EB;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 10px;
       font-size: 0.92rem;
       font-weight: 700;
-      letter-spacing: 0.01em;
-      color: #FFFFFF;
-      background: var(--secondary);
-      border: none;
-      border-radius: 8px;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-      transition: all 0.18s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .login-btn:hover {
-      background: var(--secondary-hover);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      background: #1D4ED8;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.40);
       transform: translateY(-1px);
     }
 
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
     .login-btn:disabled {
-      opacity: 0.75;
+      background: #94A3B8;
       cursor: not-allowed;
+      box-shadow: none;
       transform: none;
     }
 
-    .login-footer-info {
-      margin-top: 1.5rem;
-      padding-top: 1.15rem;
-      border-top: 1px solid var(--border-color);
-      text-align: center;
-    }
-
-    .security-notice {
-      display: inline-flex;
+    .security-badge {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 8px;
       font-size: 0.74rem;
-      font-weight: 600;
-      color: #059669;
-      margin-bottom: 0.3rem;
-    }
-
-    .role-policy-text {
-      font-size: 0.72rem;
       color: #64748B;
-      line-height: 1.4;
+      font-weight: 500;
     }
 
-    .role-policy-text strong {
-      color: #334155;
+    .security-badge i {
+      color: #10B981;
+      font-size: 1rem;
+    }
+
+    /* Alert Box */
+    .alert-box {
+      display: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .alert-error {
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+    }
+
+    .alert-success {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    @media (max-width: 900px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+      .login-hero {
+        display: none;
+      }
+      .login-form-panel {
+        padding: 2.5rem 2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <div class="login-header">
-      <div class="logo-container">
-        <img src="/static/img/smartclass_logo.png" alt="SmartClass Vision AI Crest" class="institutional-logo-img">
+  <div class="login-wrapper">
+    
+    <!-- Left Dark Midnight AI Hero Panel -->
+    <div class="login-hero">
+      <div class="brand-mark-group">
+        <div class="hero-logo-box">
+          <img src="/static/img/smartclass_logo.svg" alt="SmartClass Vision AI Mark">
+        </div>
+        <div class="hero-brand-name">
+          <h2>SmartClass</h2>
+          <span>Vision AI Control</span>
+        </div>
       </div>
-      <h1>
-        SmartClass
-        <span class="badge-vision">Vision AI</span>
-      </h1>
-      <p>Institutional Face Recognition & Smart Attendance Portal</p>
+
+      <div class="hero-message">
+        <h1>Institutional Intelligence <span>Powered by Computer Vision</span></h1>
+        <p>Real-time automated classroom attendance, spatial tracking, and multi-student identification built for next-generation higher education infrastructure.</p>
+      </div>
+
+      <div class="hero-features">
+        <div class="feature-item">
+          <div class="feature-icon-circle"><i class="ti ti-scan"></i></div>
+          <span>SCRFD-10G-KPS Multi-Face Detection with Landmark Pose Gating</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-circle"><i class="ti ti-binary-tree"></i></div>
+          <span>ArcFace 512D Embeddings & FAISS Vector Search (< 1ms)</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-circle"><i class="ti ti-shield-check"></i></div>
+          <span>Role-Based Access Control for HODs and Class Advisors</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-circle"><i class="ti ti-cpu"></i></div>
+          <span>Local On-Premises Processing Ensuring Student Data Privacy</span>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <span>SmartClass Vision AI v2.0</span>
+        <span>Secure Institutional Node</span>
+      </div>
     </div>
 
-    <div class="login-body">
+    <!-- Right Login Card Panel -->
+    <div class="login-form-panel">
+      <div class="form-header">
+        <h3>Portal Authentication</h3>
+        <p>Sign in with your authorized institutional credentials</p>
+      </div>
+
       <div id="alertBox" class="alert-box alert-error"></div>
 
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label for="userId">User ID / Email</label>
+          <label for="userId">User ID / Institutional Email</label>
           <div class="input-wrapper">
-            <span class="input-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </span>
+            <span class="input-icon"><i class="ti ti-user"></i></span>
             <input 
               type="text" 
               id="userId" 
-              class="form-control" 
               placeholder="e.g. HOD001, ADV001" 
               required 
               autocomplete="username"
@@ -329,16 +488,10 @@
         <div class="form-group">
           <label for="password">Password</label>
           <div class="input-wrapper">
-            <span class="input-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-            </span>
+            <span class="input-icon"><i class="ti ti-lock"></i></span>
             <input 
               type="password" 
               id="password" 
-              class="form-control" 
               placeholder="••••••••" 
               required 
               autocomplete="current-password"
@@ -346,47 +499,45 @@
           </div>
         </div>
 
-        <div>
-          <div class="preset-selector-label">Quick Role Credentials</div>
+        <div class="preset-section">
+          <div class="preset-label">Quick Role Credentials</div>
           <div class="preset-btn-row">
             <button type="button" class="preset-role-btn" onclick="selectRolePreset('HOD001')">
-              🏛️ <span>HOD (HOD001)</span>
+              <i class="ti ti-building-bank"></i>
+              <span>HOD (HOD001)</span>
             </button>
             <button type="button" class="preset-role-btn" onclick="selectRolePreset('ADV001')">
-              👥 <span>Advisor (ADV001)</span>
+              <i class="ti ti-users"></i>
+              <span>Advisor (ADV001)</span>
             </button>
           </div>
         </div>
 
         <button type="submit" id="submitBtn" class="login-btn">
-          <span>Sign In to Portal</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
+          <span>Sign In to Command Center</span>
+          <i class="ti ti-arrow-right"></i>
         </button>
       </form>
 
-      <div class="login-footer-info">
-        <div class="security-notice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          </svg>
-          Enterprise Role-Based Access Control
-        </div>
-        <div class="role-policy-text">
-          <strong>HOD:</strong> Full System Administration & Monitoring<br>
-          <strong>Class Advisor:</strong> Assigned Classroom & Student Verification
-        </div>
+      <div class="security-badge">
+        <i class="ti ti-shield-check"></i>
+        <span>Encrypted JWT Authentication & Local Audit Verification</span>
       </div>
     </div>
+
   </div>
 
   <script>
     function selectRolePreset(userId) {
       const input = document.getElementById("userId");
+      const pass = document.getElementById("password");
       input.value = userId;
-      document.getElementById("password").focus();
+      if (userId === "HOD001") {
+        pass.value = "admin123";
+      } else if (userId === "ADV001") {
+        pass.value = "advisor123";
+      }
+      pass.focus();
     }
 
     async function handleLogin(e) {
@@ -423,7 +574,7 @@
           localStorage.setItem("smartclass_user", JSON.stringify(authData.user));
 
           alertBox.className = "alert-box alert-success";
-          alertBox.innerText = `Welcome, ${authData.user.name}! Redirecting...`;
+          alertBox.innerText = `Welcome, ${authData.user.name}! Redirecting to control center...`;
           alertBox.style.display = "block";
 
           setTimeout(() => {
@@ -433,14 +584,14 @@
           alertBox.innerText = data.error?.message || data.detail || "Authentication failed. Please check your credentials.";
           alertBox.style.display = "block";
           submitBtn.disabled = false;
-          submitBtn.innerHTML = `<span>Sign In to Portal</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
+          submitBtn.innerHTML = `<span>Sign In to Command Center</span> <i class="ti ti-arrow-right"></i>`;
         }
       } catch (err) {
         console.error("Login request error:", err);
         alertBox.innerText = "Unable to connect to server. Please ensure backend is running.";
         alertBox.style.display = "block";
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span>Sign In to Portal</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
+        submitBtn.innerHTML = `<span>Sign In to Command Center</span> <i class="ti ti-arrow-right"></i>`;
       }
     }
   </script>

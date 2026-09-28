@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartClass Vision AI - HOD Administration Portal</title>
+  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="/static/css/role_dashboard.css">
 </head>
 <body>
 
   <!-- ===================================================================== -->
-  <!-- FIXED SIDEBAR                                                         -->
+  <!-- FIXED MIDNIGHT SIDEBAR                                                -->
   <!-- ===================================================================== -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="logo-badge" title="SmartClass Institutional AI">
-        <img src="/static/img/smartclass_logo.png" alt="SmartClass Logo" class="sidebar-crest-logo">
+        <img src="/static/img/smartclass_logo.svg" alt="SmartClass Logo" class="sidebar-crest-logo">
       </div>
       <div class="brand-text">
         <h2>SmartClass</h2>
@@ -25,137 +27,65 @@
       </div>
     </div>
 
-    <!-- Navigation with Modern Line Icons -->
+    <!-- Navigation with Unified Tabler Outline Icons -->
     <nav class="sidebar-nav">
       <a class="nav-link active" onclick="switchTab('dashboard')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-layout-dashboard"></i></span>
         <span>Dashboard</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('classrooms')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18"></path>
-            <path d="M5 21V7l7-4 7 4v14"></path>
-            <path d="M9 10h1"></path>
-            <path d="M9 14h1"></path>
-            <path d="M14 10h1"></path>
-            <path d="M14 14h1"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-building"></i></span>
         <span>Classrooms</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('monitoring')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 7l-7 5 7 5V7z"></path>
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-video"></i></span>
         <span>Live Monitoring</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('attendance')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-clipboard-check"></i></span>
         <span>Attendance</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('students')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-users"></i></span>
         <span>Students</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('advisors')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-users-group"></i></span>
         <span>Advisors</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('sensors')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-activity"></i></span>
         <span>Sensors</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('alerts')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-bell"></i></span>
         <span>Alerts</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('reports')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-file-analytics"></i></span>
         <span>Reports</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('system')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-server-cog"></i></span>
         <span>System Status</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('settings')">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="21" x2="4" y2="14"></line>
-            <line x1="4" y1="10" x2="4" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12" y2="3"></line>
-            <line x1="20" y1="21" x2="20" y2="16"></line>
-            <line x1="20" y1="12" x2="20" y2="3"></line>
-            <line x1="1" y1="14" x2="7" y2="14"></line>
-            <line x1="9" y1="8" x2="15" y2="8"></line>
-            <line x1="17" y1="16" x2="23" y2="16"></line>
-          </svg>
-        </span>
+        <span class="nav-icon"><i class="ti ti-settings"></i></span>
         <span>Settings</span>
       </a>
     </nav>
 
-    <!-- Sidebar Bottom User Card -->
+    <!-- Sidebar Bottom Institutional User Card -->
     <div class="sidebar-footer">
       <div class="user-snippet">
         <div class="user-avatar" id="userInitial">H</div>
@@ -165,12 +95,8 @@
         </div>
       </div>
       <button class="btn-logout" onclick="handleLogout()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-          <polyline points="16 17 21 12 16 7"></polyline>
-          <line x1="21" y1="12" x2="9" y2="12"></line>
-        </svg>
-        Logout
+        <i class="ti ti-logout"></i>
+        <span>Logout</span>
       </button>
     </div>
   </aside>
@@ -186,7 +112,8 @@
       </div>
       <div class="top-actions">
         <button type="button" class="btn btn-primary" onclick="openEnrollmentModal()">
-          <span>+ ADD NEW DATA</span>
+          <i class="ti ti-plus"></i>
+          <span>ADD NEW DATA</span>
         </button>
         <span class="status-chip chip-online">
           <span class="pulse-dot"></span>
@@ -204,7 +131,7 @@
         <!-- 8 Metric Cards Grid -->
         <div class="cards-grid">
           <div class="metric-card">
-            <div class="card-icon-box icon-blue">👥</div>
+            <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
             <div class="card-info">
               <span class="card-label">Total Students</span>
               <span class="card-value" id="cardTotalStudents">--</span>
@@ -213,7 +140,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-green">✅</div>
+            <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
             <div class="card-info">
               <span class="card-label">Present</span>
               <span class="card-value" id="cardStudentsPresent">--</span>
@@ -222,7 +149,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-red">❌</div>
+            <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
             <div class="card-info">
               <span class="card-label">Absent</span>
               <span class="card-value" id="cardStudentsAbsent">--</span>
@@ -231,7 +158,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-purple">📈</div>
+            <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
             <div class="card-info">
               <span class="card-label">Attendance %</span>
               <span class="card-value" id="cardActiveAdvisors">--%</span>
@@ -240,7 +167,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-amber">📹</div>
+            <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
             <div class="card-info">
               <span class="card-label">Active Cameras</span>
               <span class="card-value" id="cardActiveCameras">1</span>
@@ -249,7 +176,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-blue">📡</div>
+            <div class="card-icon-box icon-teal"><i class="ti ti-antenna"></i></div>
             <div class="card-info">
               <span class="card-label">Active ESP32</span>
               <span class="card-value" id="cardActiveEsp32">0</span>
@@ -258,7 +185,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-slate">❓</div>
+            <div class="card-icon-box icon-amber"><i class="ti ti-user-question"></i></div>
             <div class="card-info">
               <span class="card-label">Unknown Faces</span>
               <span class="card-value" id="cardActiveClassrooms">0</span>
@@ -267,7 +194,7 @@
           </div>
 
           <div class="metric-card">
-            <div class="card-icon-box icon-red">🔔</div>
+            <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
             <div class="card-info">
               <span class="card-label">Active Alerts</span>
               <span class="card-value" id="cardActiveAlerts">0</span>
@@ -280,7 +207,7 @@
         <div class="panel">
           <div class="panel-header">
             <h2>Class Advisors Overview</h2>
-            <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()">+ ADD NEW ADVISOR</button>
+            <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()"><i class="ti ti-user-plus"></i> ADD NEW ADVISOR</button>
           </div>
           <div class="table-responsive">
             <table class="data-table">
@@ -359,10 +286,10 @@
             <span class="camera-section-title">CAMERA SOURCE SELECTION</span>
             <div class="camera-ctrl-actions">
               <button type="button" class="btn-camera-ctrl btn-stop-cam" id="btn-stop-camera" title="Stop camera stream">
-                <span class="ctrl-icon">⏹</span> STOP CAMERA
+                <i class="ti ti-player-stop"></i> STOP CAMERA
               </button>
               <button type="button" class="btn-camera-ctrl btn-start-cam" id="btn-start-camera" title="Start camera stream" style="display: none;">
-                <span class="ctrl-icon">▶</span> START CAMERA
+                <i class="ti ti-player-play"></i> START CAMERA
               </button>
             </div>
           </div>
@@ -370,25 +297,25 @@
           <!-- 4 Camera Selectable Cards -->
           <div class="camera-cards-grid">
             <div class="cam-card active" data-source="pc" id="card-cam-pc">
-              <div class="cam-card-icon">📷</div>
+              <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
               <div class="cam-card-title">PC CAMERA</div>
               <div class="cam-card-sub">Integrated Webcam (Device 0)</div>
             </div>
 
             <div class="cam-card" data-source="droidcam" id="card-cam-droidcam">
-              <div class="cam-card-icon">📱</div>
+              <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
               <div class="cam-card-title">DROIDCAM</div>
               <div class="cam-card-sub">Phone Camera via Wi-Fi</div>
             </div>
 
             <div class="cam-card" data-source="extension" id="card-cam-extension">
-              <div class="cam-card-icon">🎥</div>
+              <div class="cam-card-icon"><i class="ti ti-video"></i></div>
               <div class="cam-card-title">EXTENSION CAMERA</div>
               <div class="cam-card-sub">External USB Camera</div>
             </div>
 
             <div class="cam-card" data-source="esp32" id="card-cam-esp32">
-              <div class="cam-card-icon">📡</div>
+              <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
               <div class="cam-card-title">ESP32 WI-FI CAMERA</div>
               <div class="cam-card-sub">ESP32 Stream</div>
             </div>
@@ -479,7 +406,7 @@
           <!-- Troubleshooting Notice Strip -->
           <div class="camera-troubleshoot-box" id="cam-troubleshoot-box" style="display: none;">
             <div class="troubleshoot-header">
-              <span class="troubleshoot-icon">⚠️</span>
+              <span class="troubleshoot-icon"><i class="ti ti-alert-triangle"></i></span>
               <strong id="troubleshoot-title">Camera Connection Advisory</strong>
             </div>
             <ul class="troubleshoot-list" id="troubleshoot-list">
@@ -512,14 +439,14 @@
             <div style="padding: 1rem 1.25rem; display: flex; gap: 8px; justify-content: space-between; align-items: center; background: #FFFFFF;">
               <div style="display: flex; gap: 8px;">
                 <button type="button" class="btn btn-primary btn-sm" onclick="switchCamera('pc', {index: 0}, this)">
-                  ▶ Start Session
+                  <i class="ti ti-player-play"></i> Start Session
                 </button>
                 <button type="button" class="btn btn-outline btn-sm" onclick="stopCamera()">
-                  ⏹ Stop Session
+                  <i class="ti ti-player-stop"></i> Stop Session
                 </button>
               </div>
               <button type="button" class="btn btn-secondary btn-sm" onclick="switchTab('settings')">
-                ⚙️ Camera Settings
+                <i class="ti ti-settings"></i> Camera Settings
               </button>
             </div>
           </div>
@@ -688,28 +615,28 @@
           <!-- 4 Summary Cards -->
           <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue">🏛️</div>
+              <div class="card-icon-box icon-blue"><i class="ti ti-building-community"></i></div>
               <div class="card-info">
                 <span class="card-label">Total Classrooms</span>
                 <span class="card-value" id="clsTotalCount">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-green">📹</div>
+              <div class="card-icon-box icon-green"><i class="ti ti-camera"></i></div>
               <div class="card-info">
                 <span class="card-label">Cameras Mapped</span>
                 <span class="card-value" id="clsCamerasMapped">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-purple">👥</div>
+              <div class="card-icon-box icon-purple"><i class="ti ti-users-group"></i></div>
               <div class="card-info">
                 <span class="card-label">Advisors Assigned</span>
                 <span class="card-value" id="clsAdvisorsAssigned">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-amber">📡</div>
+              <div class="card-icon-box icon-amber"><i class="ti ti-antenna"></i></div>
               <div class="card-info">
                 <span class="card-label">ESP32 Devices</span>
                 <span class="card-value" id="clsEsp32Count">1</span>
@@ -751,43 +678,43 @@
               <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time classroom session attendance verification</span>
             </div>
             <div style="display:flex; gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">📥 Export CSV</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('json')">📥 Export JSON</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('json')"><i class="ti ti-code"></i> Export JSON</button>
             </div>
           </div>
 
           <!-- Top 5 Attendance Metric Cards -->
           <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue">👥</div>
+              <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
               <div class="card-info">
                 <span class="card-label">Total Students</span>
                 <span class="card-value">15</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-green">✅</div>
+              <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
               <div class="card-info">
                 <span class="card-label">Present</span>
                 <span class="card-value">0</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-red">❌</div>
+              <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
               <div class="card-info">
                 <span class="card-label">Absent</span>
                 <span class="card-value">15</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-amber">⏰</div>
+              <div class="card-icon-box icon-amber"><i class="ti ti-clock"></i></div>
               <div class="card-info">
                 <span class="card-label">Late</span>
                 <span class="card-value">0</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-purple">📈</div>
+              <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
               <div class="card-info">
                 <span class="card-label">Attendance %</span>
                 <span class="card-value">0%</span>
@@ -830,7 +757,7 @@
           <!-- 7 Modern IoT Cards -->
           <div class="cards-grid" style="padding: 1.4rem;">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue">🌡️</div>
+              <div class="card-icon-box icon-blue"><i class="ti ti-temperature"></i></div>
               <div class="card-info">
                 <span class="card-label">Temperature</span>
                 <span class="card-value" id="sensorTemp">27.4 °C</span>
@@ -839,7 +766,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-teal">💧</div>
+              <div class="card-icon-box icon-teal"><i class="ti ti-droplet"></i></div>
               <div class="card-info">
                 <span class="card-label">Humidity</span>
                 <span class="card-value" id="sensorHum">55 %</span>
@@ -848,7 +775,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-green">🍃</div>
+              <div class="card-icon-box icon-green"><i class="ti ti-wind"></i></div>
               <div class="card-info">
                 <span class="card-label">Air Quality</span>
                 <span class="card-value" id="sensorAqi">42 AQI</span>
@@ -857,7 +784,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-purple">👥</div>
+              <div class="card-icon-box icon-purple"><i class="ti ti-users"></i></div>
               <div class="card-info">
                 <span class="card-label">Occupancy</span>
                 <span class="card-value" id="sensorOcc">-- / 60</span>
@@ -866,7 +793,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-amber">💡</div>
+              <div class="card-icon-box icon-amber"><i class="ti ti-bulb"></i></div>
               <div class="card-info">
                 <span class="card-label">Light Level</span>
                 <span class="card-value" id="sensorLight">320 Lux</span>
@@ -875,7 +802,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-indigo">🌀</div>
+              <div class="card-icon-box icon-indigo"><i class="ti ti-propeller"></i></div>
               <div class="card-info">
                 <span class="card-label">Fan / Ventilation</span>
                 <span class="card-value" style="font-size: 1.25rem;">Active</span>
@@ -884,7 +811,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-slate">📡</div>
+              <div class="card-icon-box icon-slate"><i class="ti ti-antenna"></i></div>
               <div class="card-info">
                 <span class="card-label">Device Status</span>
                 <span class="card-value" style="font-size: 1.15rem;">ESP32-AIDS-B</span>
@@ -944,9 +871,9 @@
           <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
             <h2>Institutional Reports & Analytics</h2>
             <div style="display: flex; gap: 8px;">
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('pdf')">Export PDF</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('xlsx')">Export Excel</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">Download CSV</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('pdf')"><i class="ti ti-file-text"></i> Export PDF</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('xlsx')"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')"><i class="ti ti-download"></i> Download CSV</button>
             </div>
           </div>
           <div style="padding: 1.4rem;">
@@ -958,7 +885,7 @@
                   <option value="3rd Year AI&DS - B" selected>3rd Year AI&DS - B</option>
                 </select>
               </div>
-              <button class="btn btn-primary" onclick="generateReport()">Generate Summary Report</button>
+              <button class="btn btn-primary" onclick="generateReport()"><i class="ti ti-chart-bar"></i> Generate Summary Report</button>
             </div>
 
             <div id="reportResultContainer">
@@ -989,6 +916,7 @@
           <div style="padding: 1.4rem;">
             <div class="cards-grid" id="systemHealthCards">
               <div class="metric-card">
+                <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
                 <div class="card-info">
                   <span class="card-label">Camera</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
@@ -997,6 +925,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-blue"><i class="ti ti-scan"></i></div>
                 <div class="card-info">
                   <span class="card-label">SCRFD</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
@@ -1005,6 +934,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-purple"><i class="ti ti-brain"></i></div>
                 <div class="card-info">
                   <span class="card-label">ArcFace</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
@@ -1013,6 +943,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-indigo"><i class="ti ti-binary-tree"></i></div>
                 <div class="card-info">
                   <span class="card-label">FAISS</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
@@ -1021,6 +952,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-teal"><i class="ti ti-activity"></i></div>
                 <div class="card-info">
                   <span class="card-label">ByteTrack</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
@@ -1029,6 +961,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-green"><i class="ti ti-database"></i></div>
                 <div class="card-info">
                   <span class="card-label">MongoDB</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
@@ -1037,6 +970,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-blue"><i class="ti ti-server"></i></div>
                 <div class="card-info">
                   <span class="card-label">FastAPI</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
@@ -1045,6 +979,7 @@
               </div>
 
               <div class="metric-card">
+                <div class="card-icon-box icon-slate"><i class="ti ti-microchip"></i></div>
                 <div class="card-info">
                   <span class="card-label">ESP32</span>
                   <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
@@ -1383,22 +1318,22 @@
           <div class="enroll-section-title">Select Enrollment Camera Source</div>
           <div class="enroll-source-grid">
             <div class="enroll-source-card active" id="enroll-src-pc" onclick="selectEnrollSource('pc')">
-              <div class="enroll-source-icon">📷</div>
+              <div class="enroll-source-icon"><i class="ti ti-device-desktop"></i></div>
               <div class="enroll-source-name">PC CAMERA</div>
               <div class="enroll-source-desc">Integrated Webcam (Device 0)</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-droidcam" onclick="selectEnrollSource('droidcam')">
-              <div class="enroll-source-icon">📱</div>
+              <div class="enroll-source-icon"><i class="ti ti-device-mobile"></i></div>
               <div class="enroll-source-name">DROIDCAM</div>
               <div class="enroll-source-desc">Mobile Phone over Wi-Fi</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-extension" onclick="selectEnrollSource('extension')">
-              <div class="enroll-source-icon">🎥</div>
+              <div class="enroll-source-icon"><i class="ti ti-video"></i></div>
               <div class="enroll-source-name">EXTENSION CAMERA</div>
               <div class="enroll-source-desc">External USB Camera</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-esp32" onclick="selectEnrollSource('esp32')">
-              <div class="enroll-source-icon">📡</div>
+              <div class="enroll-source-icon"><i class="ti ti-antenna"></i></div>
               <div class="enroll-source-name">ESP32 CAMERA</div>
               <div class="enroll-source-desc">ESP32 Wi-Fi Stream</div>
             </div>
@@ -1494,10 +1429,10 @@
               <div class="samples-grid-10" id="enrollThumbsGrid"></div>
               <div style="display: flex; gap: 8px;">
                 <button type="button" class="btn btn-primary" id="btnEnrollCapture" onclick="captureEnrollSample()" style="flex: 1;">
-                  📸 CAPTURE SAMPLE
+                  <i class="ti ti-camera"></i> CAPTURE SAMPLE
                 </button>
                 <button type="button" class="btn btn-outline" id="btnEnrollRetake" onclick="retakeEnrollSample()" disabled>
-                  ↺ RETAKE
+                  <i class="ti ti-rotate-clockwise"></i> RETAKE
                 </button>
               </div>
             </div>
@@ -1525,7 +1460,7 @@
         <div class="enroll-footer-actions">
           <button type="button" class="btn btn-outline" onclick="setEnrollStep(3)">← Back to Connection</button>
           <button type="button" class="btn btn-primary" id="btnSaveEnrollment" onclick="saveEnrollment()" disabled style="font-weight: 700; background: var(--success); border-color: var(--success);">
-            💾 SAVE ENROLLMENT
+            <i class="ti ti-device-floppy"></i> SAVE ENROLLMENT
           </button>
         </div>
       </div>
@@ -1608,15 +1543,15 @@
         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
         let events = [
-          { icon: '🏛️', title: 'Classroom Setup Synchronized', desc: 'Classroom AIDS-B mapped with PC Camera & ESP32-AIDS-B', time: timeStr, badge: 'System', color: '#2563EB' },
-          { icon: '👥', title: 'Advisor Authentication Active', desc: 'Prof. Ramesh Kumar (ADV001) assigned to 3rd Year AI&DS - B', time: timeStr, badge: 'RBAC', color: '#10B981' },
-          { icon: '🧠', title: 'Vision AI Pipeline Ready', desc: 'SCRFD & ArcFace/MobileFaceNet loaded with FAISS vector store', time: timeStr, badge: 'AI Core', color: '#6366F1' }
+          { icon: '<i class="ti ti-building" style="color:#2563EB;"></i>', title: 'Classroom Setup Synchronized', desc: 'Classroom AIDS-B mapped with PC Camera & ESP32-AIDS-B', time: timeStr, badge: 'System', color: '#2563EB' },
+          { icon: '<i class="ti ti-users" style="color:#10B981;"></i>', title: 'Advisor Authentication Active', desc: 'Prof. Ramesh Kumar (ADV001) assigned to 3rd Year AI&DS - B', time: timeStr, badge: 'RBAC', color: '#10B981' },
+          { icon: '<i class="ti ti-brain" style="color:#6366F1;"></i>', title: 'Vision AI Pipeline Ready', desc: 'SCRFD & ArcFace/MobileFaceNet loaded with FAISS vector store', time: timeStr, badge: 'AI Core', color: '#6366F1' }
         ];
 
         if (alerts.length > 0) {
           alerts.slice(0, 3).forEach(a => {
             events.unshift({
-              icon: a.severity === 'CRITICAL' ? '⚠️' : '🔔',
+              icon: a.severity === 'CRITICAL' ? '<i class="ti ti-alert-triangle" style="color:#EF4444;"></i>' : '<i class="ti ti-bell" style="color:#F59E0B;"></i>',
               title: a.title,
               desc: `${a.message} (Classroom: ${a.classroom_id})`,
               time: timeStr,
@@ -1629,7 +1564,7 @@
         container.innerHTML = events.map(ev => `
           <div style="background:#FFFFFF; border:1px solid var(--border); border-left:3px solid ${ev.color}; border-radius:var(--radius-sm); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
             <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size:1.15rem;">${ev.icon}</span>
+              <span style="font-size:1.15rem; display:inline-flex; align-items:center;">${ev.icon}</span>
               <div>
                 <strong style="color:var(--text-main); font-size:0.86rem; display:block;">${ev.title}</strong>
                 <span style="color:var(--text-muted); font-size:0.78rem;">${ev.desc}</span>

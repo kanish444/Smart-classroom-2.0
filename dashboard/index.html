@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartClass Vision AI - Smart Board Classroom Monitor</title>
+  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
@@ -17,7 +19,7 @@
   <header class="top-bar">
     <div class="brand-group">
       <div class="brand-logo" title="SmartClass Institutional AI">
-        <img src="/static/img/smartclass_logo.png" alt="SmartClass Vision AI Crest" class="brand-crest-logo">
+        <img src="/static/img/smartclass_logo.svg" alt="SmartClass Vision AI Crest" class="brand-crest-logo">
       </div>
       <div>
         <h1 class="brand-title">SmartClass Vision AI</h1>
@@ -58,21 +60,21 @@
 
       <!-- One-By-One Student Face Enrollment Button -->
       <button type="button" class="btn-action btn-enroll-open" id="btn-open-enrollment" title="New One-By-One Student Face Enrollment">
-        + NEW REGISTER
+        <i class="ti ti-user-plus"></i> NEW REGISTER
       </button>
 
       <!-- Operator Status -->
       <button type="button" class="btn-operator" id="btn-operator-toggle" title="Operator Authentication Settings">
-        <span>🔒</span> <span id="operator-label">Viewer</span>
+        <i class="ti ti-lock"></i> <span id="operator-label">Viewer</span>
       </button>
 
       <!-- Institutional Role Access: HOD & ADVISOR Logins -->
       <div class="role-auth-actions">
         <button type="button" class="btn-role-nav btn-role-hod" id="btn-top-hod-login" onclick="openRoleLoginModal('HOD')" title="Sign in with Head of Department Administrative Access">
-          🏛️ HOD LOGIN
+          <i class="ti ti-building"></i> HOD LOGIN
         </button>
         <button type="button" class="btn-role-nav btn-role-advisor" id="btn-top-advisor-login" onclick="openRoleLoginModal('ADVISOR')" title="Sign in with Class Advisor Access">
-          👥 ADVISOR LOGIN
+          <i class="ti ti-users"></i> ADVISOR LOGIN
         </button>
       </div>
     </div>
@@ -98,7 +100,7 @@
     <div class="dept-metrics-grid">
       <!-- 1. Classrooms -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-indigo">🏛️</div>
+        <div class="dept-card-icon icon-indigo"><i class="ti ti-building-community"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">TOTAL CLASSROOMS</span>
           <div class="dept-card-value"><span id="metric-total-classrooms">1</span></div>
@@ -108,7 +110,7 @@
 
       <!-- 2. Students & Attendance -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-blue">👥</div>
+        <div class="dept-card-icon icon-blue"><i class="ti ti-users"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">TOTAL STUDENTS</span>
           <div class="dept-card-value"><span id="metric-total-students">--</span></div>
@@ -118,7 +120,7 @@
 
       <!-- 3. Attendance Rate -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-green">📈</div>
+        <div class="dept-card-icon icon-green"><i class="ti ti-chart-pie"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">ATTENDANCE OVERVIEW</span>
           <div class="dept-card-value"><span id="metric-attendance-rate">--%</span></div>
@@ -128,7 +130,7 @@
 
       <!-- 4. Active Cameras -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-amber">📹</div>
+        <div class="dept-card-icon icon-amber"><i class="ti ti-camera"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">ACTIVE CAMERAS</span>
           <div class="dept-card-value"><span id="metric-active-cameras">1</span></div>
@@ -138,7 +140,7 @@
 
       <!-- 5. ESP32 Devices -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-slate">📡</div>
+        <div class="dept-card-icon icon-slate"><i class="ti ti-antenna"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">ESP32 DEVICES</span>
           <div class="dept-card-value"><span id="metric-esp32-count">0</span></div>
@@ -148,7 +150,7 @@
 
       <!-- 6. Sensor Status -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-teal">🌡️</div>
+        <div class="dept-card-icon icon-teal"><i class="ti ti-temperature"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">SENSOR STATUS</span>
           <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-sensor-summary">Standby</span></div>
@@ -158,7 +160,7 @@
 
       <!-- 7. Active Alerts -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-red">🔔</div>
+        <div class="dept-card-icon icon-red"><i class="ti ti-bell-ringing"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">ACTIVE ALERTS</span>
           <div class="dept-card-value"><span id="metric-active-alerts">0</span></div>
@@ -168,7 +170,7 @@
 
       <!-- 8. Classroom Status -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-teal">⚡</div>
+        <div class="dept-card-icon icon-teal"><i class="ti ti-cpu"></i></div>
         <div class="dept-card-body">
           <span class="dept-card-label">CLASSROOM STATUS</span>
           <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-classroom-name">AIDS-B</span></div>
@@ -211,10 +213,10 @@
 
     <!-- Session Action Buttons -->
     <div class="session-actions" id="session-controls">
-      <button type="button" class="btn-action btn-start" id="btn-start-session">▶ Start Session</button>
-      <button type="button" class="btn-action btn-pause" id="btn-pause-session" style="display:none;">⏸ Pause</button>
-      <button type="button" class="btn-action btn-resume" id="btn-resume-session" style="display:none;">▶ Resume</button>
-      <button type="button" class="btn-action btn-end" id="btn-end-session" style="display:none;">⏹ End Session</button>
+      <button type="button" class="btn-action btn-start" id="btn-start-session"><i class="ti ti-player-play"></i> Start Session</button>
+      <button type="button" class="btn-action btn-pause" id="btn-pause-session" style="display:none;"><i class="ti ti-player-pause"></i> Pause</button>
+      <button type="button" class="btn-action btn-resume" id="btn-resume-session" style="display:none;"><i class="ti ti-player-play"></i> Resume</button>
+      <button type="button" class="btn-action btn-end" id="btn-end-session" style="display:none;"><i class="ti ti-player-stop"></i> End Session</button>
     </div>
   </section>
 
