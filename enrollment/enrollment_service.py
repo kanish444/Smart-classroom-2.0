@@ -5,7 +5,7 @@ import numpy as np
 from loguru import logger
 from pydantic import BaseModel, Field
 
-from core.detector import YOLOv8FaceDetector
+from core.detector import YOLOv8FaceDetector, BaseDetector, get_face_detector
 from core.face_embedder import ArcFaceEmbedder
 from core.face_quality import FaceQualityAssessor
 from core.face_alignment import FaceAligner
@@ -72,7 +72,7 @@ class EnrollmentService:
         embedder: Optional[ArcFaceEmbedder] = None,
         assessor: Optional[FaceQualityAssessor] = None,
         aligner: Optional[FaceAligner] = None,
-        detector: Optional[YOLOv8FaceDetector] = None,
+        detector: Optional[BaseDetector] = None,
         conflict_threshold: float = 0.95,
         db: Optional[DatabaseManager] = None,
         store: Optional[FaissVectorStore] = None,
@@ -86,7 +86,7 @@ class EnrollmentService:
         self.embedder = embedder or ArcFaceEmbedder()
         self.assessor = assessor or FaceQualityAssessor()
         self.aligner = aligner or FaceAligner()
-        self.detector = detector or YOLOv8FaceDetector()
+        self.detector = detector or get_face_detector()
         self.conflict_threshold = conflict_threshold
 
         self.validation_pipeline = EnrollmentValidationPipeline(

@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartClass Vision AI - HOD Administration Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/role_dashboard.css">
+</head>
+<body>
+
+  <!-- ===================================================================== -->
+  <!-- FIXED SIDEBAR                                                         -->
+  <!-- ===================================================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-badge" title="SmartClass Institutional AI">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Logo" class="sidebar-crest-logo">
+      </div>
+      <div class="brand-text">
+        <h2>SmartClass</h2>
+        <span>Vision AI Control</span>
+      </div>
+    </div>
+
+    <!-- Navigation with Modern Line Icons -->
+    <nav class="sidebar-nav">
+      <a class="nav-link active" onclick="switchTab('dashboard')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('classrooms')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18"></path>
+            <path d="M5 21V7l7-4 7 4v14"></path>
+            <path d="M9 10h1"></path>
+            <path d="M9 14h1"></path>
+            <path d="M14 10h1"></path>
+            <path d="M14 14h1"></path>
+          </svg>
+        </span>
+        <span>Classrooms</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('monitoring')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 7l-7 5 7 5V7z"></path>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+        </span>
+        <span>Live Monitoring</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('attendance')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Attendance</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('students')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </span>
+        <span>Students</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('advisors')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+        <span>Advisors</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('sensors')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+          </svg>
+        </span>
+        <span>Sensors</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('alerts')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </span>
+        <span>Alerts</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('reports')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </span>
+        <span>Reports</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('system')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </span>
+        <span>System Status</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('settings')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+        </span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Bottom User Card -->
+    <div class="sidebar-footer">
+      <div class="user-snippet">
+        <div class="user-avatar" id="userInitial">H</div>
+        <div class="user-info-text">
+          <div class="uname" id="displayUserName">Head of Department</div>
+          <div class="urole">Role: System Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN APPLICATION WRAPPER                                              -->
+  <!-- ===================================================================== -->
+  <div class="main-wrapper">
+    <header class="top-navbar">
+      <div class="page-title-box">
+        <h1 id="pageTitle">HOD Executive Dashboard</h1>
+        <p id="pageSubtitle">AI Classroom Monitoring & Institutional Administration</p>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="btn btn-primary" onclick="openEnrollmentModal()">
+          <span>+ ADD NEW DATA</span>
+        </button>
+        <span class="status-chip chip-online">
+          <span class="pulse-dot"></span>
+          <span id="chipSystemStatus">System Operational</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="content-body">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: DASHBOARD OVERVIEW                                         -->
+      <!-- ================================================================= -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <!-- 8 Metric Cards Grid -->
+        <div class="cards-grid">
+          <div class="metric-card">
+            <div class="card-icon-box icon-blue">👥</div>
+            <div class="card-info">
+              <span class="card-label">Total Students</span>
+              <span class="card-value" id="cardTotalStudents">--</span>
+              <span class="card-sub">Enrolled roster</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-green">✅</div>
+            <div class="card-info">
+              <span class="card-label">Present</span>
+              <span class="card-value" id="cardStudentsPresent">--</span>
+              <span class="card-sub">Verified in session</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">❌</div>
+            <div class="card-info">
+              <span class="card-label">Absent</span>
+              <span class="card-value" id="cardStudentsAbsent">--</span>
+              <span class="card-sub">Not yet seen</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-purple">📈</div>
+            <div class="card-info">
+              <span class="card-label">Attendance %</span>
+              <span class="card-value" id="cardActiveAdvisors">--%</span>
+              <span class="card-sub">Session overall</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-amber">📹</div>
+            <div class="card-info">
+              <span class="card-label">Active Cameras</span>
+              <span class="card-value" id="cardActiveCameras">1</span>
+              <span class="card-sub">Smart Board Camera</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-blue">📡</div>
+            <div class="card-info">
+              <span class="card-label">Active ESP32</span>
+              <span class="card-value" id="cardActiveEsp32">0</span>
+              <span class="card-sub">IoT Telemetry Node</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-slate">❓</div>
+            <div class="card-info">
+              <span class="card-label">Unknown Faces</span>
+              <span class="card-value" id="cardActiveClassrooms">0</span>
+              <span class="card-sub">Unregistered detections</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">🔔</div>
+            <div class="card-info">
+              <span class="card-label">Active Alerts</span>
+              <span class="card-value" id="cardActiveAlerts">0</span>
+              <span class="card-sub">System health & events</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advisors Quick Overview Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Class Advisors Overview</h2>
+            <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()">+ ADD NEW ADVISOR</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Advisor ID</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Year</th>
+                  <th>Section</th>
+                  <th>Assigned Classroom</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="advisorsTableBody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading advisors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Real-Time System Diagnostics -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Real-Time System Diagnostics</h2>
+          </div>
+          <div class="status-grid" id="systemStatusGrid">
+            <div class="status-item">
+              <span class="item-name">FastAPI Core</span>
+              <span class="item-val" style="color: var(--success);" id="diagFastAPI">ONLINE</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">MongoDB Database</span>
+              <span class="item-val" id="diagMongoDB">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">Camera Stream</span>
+              <span class="item-val" id="diagCamera">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">AI Recognition Pipeline</span>
+              <span class="item-val" id="diagAI">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">FAISS Vector Store</span>
+              <span class="item-val" id="diagFAISS">READY</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">ESP32 Ingestion</span>
+              <span class="item-val" id="diagESP32">READY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Institutional Events Stream -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Recent Institutional Events & Activity Stream</h2>
+            <span class="badge badge-ai">Live Stream</span>
+          </div>
+          <div id="recentEventsList" style="padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 8px;">
+            <div style="text-align: center; color: var(--text-muted);">Loading activity stream...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: LIVE MONITORING (LARGE PROFESSIONAL MONITORING LAYOUT)      -->
+      <!-- ================================================================= -->
+      <section id="tab-monitoring" class="tab-pane" style="display: none;">
+        
+        <!-- Camera Source Selection Panel -->
+        <div class="camera-source-section">
+          <div class="camera-section-header">
+            <span class="camera-section-title">CAMERA SOURCE SELECTION</span>
+            <div class="camera-ctrl-actions">
+              <button type="button" class="btn-camera-ctrl btn-stop-cam" id="btn-stop-camera" title="Stop camera stream">
+                <span class="ctrl-icon">⏹</span> STOP CAMERA
+              </button>
+              <button type="button" class="btn-camera-ctrl btn-start-cam" id="btn-start-camera" title="Start camera stream" style="display: none;">
+                <span class="ctrl-icon">▶</span> START CAMERA
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Camera Selectable Cards -->
+          <div class="camera-cards-grid">
+            <div class="cam-card active" data-source="pc" id="card-cam-pc">
+              <div class="cam-card-icon">📷</div>
+              <div class="cam-card-title">PC CAMERA</div>
+              <div class="cam-card-sub">Integrated Webcam (Device 0)</div>
+            </div>
+
+            <div class="cam-card" data-source="droidcam" id="card-cam-droidcam">
+              <div class="cam-card-icon">📱</div>
+              <div class="cam-card-title">DROIDCAM</div>
+              <div class="cam-card-sub">Phone Camera via Wi-Fi</div>
+            </div>
+
+            <div class="cam-card" data-source="extension" id="card-cam-extension">
+              <div class="cam-card-icon">🎥</div>
+              <div class="cam-card-title">EXTENSION CAMERA</div>
+              <div class="cam-card-sub">External USB Camera</div>
+            </div>
+
+            <div class="cam-card" data-source="esp32" id="card-cam-esp32">
+              <div class="cam-card-icon">📡</div>
+              <div class="cam-card-title">ESP32 WI-FI CAMERA</div>
+              <div class="cam-card-sub">ESP32 Stream</div>
+            </div>
+          </div>
+
+          <!-- Camera Hardware Config Row -->
+          <div class="cam-config-panel" id="panel-cam-pc">
+            <div class="config-row">
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">Source: <strong>Device 0</strong> (Integrated Laptop / PC Webcam)</span>
+              <div class="config-btns-row">
+                <button type="button" class="btn-cam-action btn-apply" id="btn-connect-pc">CONNECT CAMERA</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cam-config-panel" id="panel-cam-droidcam" style="display: none;">
+            <div class="config-row config-inputs-row">
+              <div class="input-field-group">
+                <label for="input-droidcam-host" class="input-lbl">Host IP</label>
+                <input type="text" id="input-droidcam-host" class="form-control font-mono" value="10.140.159.218">
+              </div>
+              <div class="input-field-group">
+                <label for="input-droidcam-port" class="input-lbl">Port</label>
+                <input type="number" id="input-droidcam-port" class="form-control font-mono" value="4747">
+              </div>
+              <div class="input-field-group">
+                <label for="input-droidcam-videourl" class="input-lbl">Video URL</label>
+                <input type="text" id="input-droidcam-videourl" class="form-control font-mono" value="http://10.140.159.218:4747/video" readonly>
+              </div>
+            </div>
+            <div class="config-row config-btns-row" style="margin-top: 8px;">
+              <button type="button" class="btn-cam-action" id="btn-test-droidcam">TEST CONNECTION</button>
+              <button type="button" class="btn-cam-action btn-apply" id="btn-connect-droidcam">CONNECT CAMERA</button>
+              <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+            </div>
+          </div>
+
+          <div class="cam-config-panel" id="panel-cam-extension" style="display: none;">
+            <div class="config-row">
+              <div class="input-field-group" style="min-width: 200px;">
+                <label for="select-extension-device" class="input-lbl">Camera Device</label>
+                <select id="select-extension-device" class="form-control">
+                  <option value="0">Camera 0</option>
+                  <option value="1" selected>Camera 1</option>
+                  <option value="2">Camera 2</option>
+                </select>
+              </div>
+              <div class="config-btns-row">
+                <button type="button" class="btn-cam-action" id="btn-test-extension">TEST CONNECTION</button>
+                <button type="button" class="btn-cam-action btn-apply" id="btn-connect-extension">CONNECT CAMERA</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cam-config-panel" id="panel-cam-esp32" style="display: none;">
+            <div class="config-row config-inputs-row">
+              <div class="input-field-group" style="grid-column: span 3;">
+                <label for="input-esp32-url" class="input-lbl">ESP32 Stream URL</label>
+                <input type="text" id="input-esp32-url" class="form-control font-mono" value="http://192.168.1.100:81/stream">
+              </div>
+            </div>
+            <div class="config-row config-btns-row" style="margin-top: 8px;">
+              <button type="button" class="btn-cam-action" id="btn-test-esp32">TEST CONNECTION</button>
+              <button type="button" class="btn-cam-action btn-apply" id="btn-connect-esp32">CONNECT CAMERA</button>
+            </div>
+          </div>
+
+          <!-- Camera Status Bar -->
+          <div class="camera-status-bar">
+            <div class="cam-status-info">
+              <span class="status-label">Active Camera:</span>
+              <span class="status-value font-mono" id="active-cam-name">PC Camera</span>
+            </div>
+            <div class="cam-status-info">
+              <span class="status-label">Status:</span>
+              <span class="status-pill status-pill-connected" id="active-cam-status-pill">● CONNECTED</span>
+            </div>
+            <div class="cam-status-info" style="margin-left: auto;">
+              <span class="status-label">Resolution:</span>
+              <span class="status-value font-mono" id="active-cam-res">1280x720</span>
+            </div>
+            <div class="cam-status-info">
+              <span class="status-label">FPS:</span>
+              <span class="status-value font-mono" id="active-cam-fps">30.0 FPS</span>
+            </div>
+          </div>
+
+          <!-- Troubleshooting Notice Strip -->
+          <div class="camera-troubleshoot-box" id="cam-troubleshoot-box" style="display: none;">
+            <div class="troubleshoot-header">
+              <span class="troubleshoot-icon">⚠️</span>
+              <strong id="troubleshoot-title">Camera Connection Advisory</strong>
+            </div>
+            <ul class="troubleshoot-list" id="troubleshoot-list">
+              <li>Verify camera hardware connection and driver state.</li>
+              <li>Ensure device IP and port settings are reachable.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2-COLUMN MONITORING LAYOUT: LEFT CAMERA, RIGHT STATS -->
+        <div class="monitoring-layout-grid">
+          <!-- LEFT: LIVE CAMERA VIEW -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Smart Board Live Camera Feed</h2>
+                <span class="badge badge-present">● LIVE MONITOR</span>
+              </div>
+            </div>
+
+            <div class="monitoring-stream-wrapper">
+              <img 
+                id="liveFeedImg" 
+                class="monitoring-stream-feed"
+                src="/api/video/feed?view_mode=normal" 
+                alt="Live Video Stream" 
+              >
+            </div>
+
+            <div style="padding: 1rem 1.25rem; display: flex; gap: 8px; justify-content: space-between; align-items: center; background: #FFFFFF;">
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="switchCamera('pc', {index: 0}, this)">
+                  ▶ Start Session
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="stopCamera()">
+                  ⏹ Stop Session
+                </button>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="switchTab('settings')">
+                ⚙️ Camera Settings
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: LIVE MONITORING STATISTICS -->
+          <div class="monitoring-stats-card">
+            <div style="border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+              <span style="font-size: 0.70rem; font-weight: 800; text-transform: uppercase; color: var(--secondary); letter-spacing: 0.05em;">AI VISION TELEMETRY</span>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">LIVE CLASSROOM</h3>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Camera</span>
+              <span class="stat-metric-value" id="statsCamName">Smart Board Camera</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Status</span>
+              <span class="badge badge-present">● CONNECTED</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Camera FPS</span>
+              <span class="stat-metric-value" id="statsCamFps">28.0</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">AI Inference FPS</span>
+              <span class="stat-metric-value" id="active-ai-fps">24.5</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">AI Latency</span>
+              <span class="stat-metric-value" id="active-ai-latency">34 ms</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Faces Detected</span>
+              <span class="stat-metric-value" id="active-detected-faces">18</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Recognized</span>
+              <span class="stat-metric-value" style="color: var(--success);" id="statsRecognized">14</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Unknown</span>
+              <span class="stat-metric-value" style="color: var(--danger);" id="statsUnknown">2</span>
+            </div>
+
+            <div class="stat-metric-row">
+              <span class="stat-metric-label">Low Quality</span>
+              <span class="stat-metric-value" style="color: var(--warning);" id="statsLowQuality">2</span>
+            </div>
+
+            <div style="background: var(--bg-muted); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 6px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.45;">
+              <strong style="color: var(--text-main); display: block; margin-bottom: 2px;">AI Pipeline Specs:</strong>
+              SCRFD Face Detection · ArcFace 512-D Embeddings · FAISS IndexFlatIP · ByteTrack Spatial-Temporal Stabilizer
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: ADVISORS FULL MANAGEMENT                                   -->
+      <!-- ================================================================= -->
+      <section id="tab-advisors" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Manage Class Advisors</h2>
+            <button class="btn btn-primary" onclick="openAddAdvisorModal()">+ ADD NEW ADVISOR</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Advisor ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Year</th>
+                  <th>Section</th>
+                  <th>Classroom</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="fullAdvisorsTableBody">
+                <tr><td colspan="9" style="text-align: center;">Loading advisors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: STUDENTS LIST                                              -->
+      <!-- ================================================================= -->
+      <section id="tab-students" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2>Students</h2>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Authoritative Institutional Student Roster</span>
+            </div>
+            <button class="btn btn-primary" onclick="openEnrollmentModal()">+ ADD NEW DATA</button>
+          </div>
+
+          <!-- Student Filter Bar -->
+          <div style="padding: 0.85rem 1.4rem; background: #F8FAFC; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 220px;">
+              <input type="text" class="form-control" placeholder="Search by name or register number...">
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <select class="form-control" style="width: 140px;">
+                <option value="">All Classes</option>
+                <option value="3rd Year" selected>3rd Year</option>
+              </select>
+              <select class="form-control" style="width: 140px;">
+                <option value="">All Depts</option>
+                <option value="AI&DS" selected>AI&DS</option>
+              </select>
+              <select class="form-control" style="width: 110px;">
+                <option value="">All Secs</option>
+                <option value="B" selected>Section B</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Register Number</th>
+                  <th>Student Name</th>
+                  <th>Class / Year</th>
+                  <th>Department</th>
+                  <th>Section</th>
+                  <th>Attendance Status</th>
+                  <th>Recognition Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <tr><td colspan="7" style="text-align: center;">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 5: CLASSROOM SETUP & MANAGEMENT                               -->
+      <!-- ================================================================= -->
+      <section id="tab-classrooms" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2>Classroom Setup & Device Mapping</h2>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Configure physical classrooms, camera bindings, and assigned advisors</span>
+            </div>
+            <button class="btn btn-primary" onclick="openAddClassroomModal()">+ ADD CLASSROOM</button>
+          </div>
+
+          <!-- 4 Summary Cards -->
+          <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue">🏛️</div>
+              <div class="card-info">
+                <span class="card-label">Total Classrooms</span>
+                <span class="card-value" id="clsTotalCount">1</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-green">📹</div>
+              <div class="card-info">
+                <span class="card-label">Cameras Mapped</span>
+                <span class="card-value" id="clsCamerasMapped">1</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple">👥</div>
+              <div class="card-info">
+                <span class="card-label">Advisors Assigned</span>
+                <span class="card-value" id="clsAdvisorsAssigned">1</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-amber">📡</div>
+              <div class="card-info">
+                <span class="card-label">ESP32 Devices</span>
+                <span class="card-value" id="clsEsp32Count">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="padding: 0 1.4rem 1.4rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Classroom ID</th>
+                  <th>Classroom Name</th>
+                  <th>Class / Section</th>
+                  <th>Assigned Advisor</th>
+                  <th>Camera Source</th>
+                  <th>Camera Status</th>
+                  <th>ESP32 Device</th>
+                  <th>AI Pipeline</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="classroomsTableBody">
+                <tr><td colspan="9" style="text-align: center;">Loading classrooms...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 6: ATTENDANCE                                                 -->
+      <!-- ================================================================= -->
+      <section id="tab-attendance" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2>Institutional Attendance Records</h2>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time classroom session attendance verification</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">📥 Export CSV</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('json')">📥 Export JSON</button>
+            </div>
+          </div>
+
+          <!-- Top 5 Attendance Metric Cards -->
+          <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue">👥</div>
+              <div class="card-info">
+                <span class="card-label">Total Students</span>
+                <span class="card-value">15</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-green">✅</div>
+              <div class="card-info">
+                <span class="card-label">Present</span>
+                <span class="card-value">0</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-red">❌</div>
+              <div class="card-info">
+                <span class="card-label">Absent</span>
+                <span class="card-value">15</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-amber">⏰</div>
+              <div class="card-info">
+                <span class="card-label">Late</span>
+                <span class="card-value">0</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple">📈</div>
+              <div class="card-info">
+                <span class="card-label">Attendance %</span>
+                <span class="card-value">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="padding: 0 1.4rem 1.4rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Register Number</th>
+                  <th>Student Name</th>
+                  <th>Class / Section</th>
+                  <th>Attendance Status</th>
+                  <th>Attendance %</th>
+                  <th>Last Verified</th>
+                  <th>Recognition Status</th>
+                </tr>
+              </thead>
+              <tbody id="hodAttendanceTableBody">
+                <tr><td colspan="7" style="text-align: center;">Loading attendance records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 7: SENSORS (IoT & ESP32)                                      -->
+      <!-- ================================================================= -->
+      <section id="tab-sensors" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Classroom IoT & Environmental Sensors</h2>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time ESP32 classroom telemetry</span>
+            </div>
+          </div>
+          <!-- 7 Modern IoT Cards -->
+          <div class="cards-grid" style="padding: 1.4rem;">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue">🌡️</div>
+              <div class="card-info">
+                <span class="card-label">Temperature</span>
+                <span class="card-value" id="sensorTemp">27.4 °C</span>
+                <span class="card-sub">Normal</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-teal">💧</div>
+              <div class="card-info">
+                <span class="card-label">Humidity</span>
+                <span class="card-value" id="sensorHum">55 %</span>
+                <span class="card-sub">Comfortable</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-green">🍃</div>
+              <div class="card-info">
+                <span class="card-label">Air Quality</span>
+                <span class="card-value" id="sensorAqi">42 AQI</span>
+                <span class="card-sub">Good</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple">👥</div>
+              <div class="card-info">
+                <span class="card-label">Occupancy</span>
+                <span class="card-value" id="sensorOcc">-- / 60</span>
+                <span class="card-sub">Vision AI count</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-amber">💡</div>
+              <div class="card-info">
+                <span class="card-label">Light Level</span>
+                <span class="card-value" id="sensorLight">320 Lux</span>
+                <span class="card-sub">Sufficient</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-indigo">🌀</div>
+              <div class="card-info">
+                <span class="card-label">Fan / Ventilation</span>
+                <span class="card-value" style="font-size: 1.25rem;">Active</span>
+                <span class="card-sub">Auto Mode</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-slate">📡</div>
+              <div class="card-info">
+                <span class="card-label">Device Status</span>
+                <span class="card-value" style="font-size: 1.15rem;">ESP32-AIDS-B</span>
+                <span class="status-pill status-pill-connected" style="margin-top: 4px;">● ONLINE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 8: ALERTS                                                     -->
+      <!-- ================================================================= -->
+      <section id="tab-alerts" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>System & Operational Alert Center</h2>
+            <span class="badge badge-ai">3 Categories</span>
+          </div>
+          <div id="alertsListContainer" style="padding: 1.4rem; display: flex; flex-direction: column; gap: 10px;">
+            <!-- Example Alerts Styled with Modern Categorization -->
+            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--danger); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--text-main); font-size:0.88rem;">Camera Disconnected Check</strong>
+                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Extension camera connection probe timed out on device 1.</p>
+                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 2 mins ago</span>
+              </div>
+              <span class="badge badge-unknown">Critical</span>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--warning); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--text-main); font-size:0.88rem;">Unknown Face Detected</strong>
+                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Face track #18 did not match enrolled gallery threshold (0.65).</p>
+                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 5 mins ago</span>
+              </div>
+              <span class="badge badge-late">Warning</span>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--secondary); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--text-main); font-size:0.88rem;">ESP32 Telemetry Synchronized</strong>
+                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Environmental metrics packet received from ESP32-AIDS-B.</p>
+                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 12 mins ago</span>
+              </div>
+              <span class="badge badge-ai">Information</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 9: REPORTS                                                    -->
+      <!-- ================================================================= -->
+      <section id="tab-reports" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+            <h2>Institutional Reports & Analytics</h2>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('pdf')">Export PDF</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('xlsx')">Export Excel</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">Download CSV</button>
+            </div>
+          </div>
+          <div style="padding: 1.4rem;">
+            <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.25rem; margin-bottom:1.5rem; display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+              <div>
+                <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:4px;">Class / Section</label>
+                <select id="reportClassFilter" class="form-control" style="width:200px;">
+                  <option value="ALL">All Classes</option>
+                  <option value="3rd Year AI&DS - B" selected>3rd Year AI&DS - B</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="generateReport()">Generate Summary Report</button>
+            </div>
+
+            <div id="reportResultContainer">
+              <div style="background:#FFFFFF; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.5rem;">
+                <h3 style="margin-bottom:6px; font-size: 1.05rem;">Attendance Summary</h3>
+                <p style="color:var(--text-muted); font-size:0.84rem;">Date: Today | Class: 3rd Year AI&DS - B | Subject: Machine Learning</p>
+                <div style="display:flex; gap:24px; margin-top:16px; flex-wrap:wrap;">
+                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Total Students</span><strong style="font-size:1.4rem;" id="repTotal">15</strong></div>
+                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Present</span><strong style="font-size:1.4rem; color:var(--success);" id="repPresent">0</strong></div>
+                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Absent</span><strong style="font-size:1.4rem; color:var(--danger);" id="repAbsent">15</strong></div>
+                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Late</span><strong style="font-size:1.4rem; color:var(--warning);">0</strong></div>
+                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Attendance %</span><strong style="font-size:1.4rem; color:var(--secondary);" id="repRate">0%</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 10: SYSTEM STATUS                                             -->
+      <!-- ================================================================= -->
+      <section id="tab-system" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Technical System Architecture & Service Health</h2>
+          </div>
+          <div style="padding: 1.4rem;">
+            <div class="cards-grid" id="systemHealthCards">
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">Camera</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
+                  <span class="card-sub">Smart Board Camera (Index 0)</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">SCRFD</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-sub">PyTorch Core Face Detector</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">ArcFace</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-sub">w600k_mbf.onnx (512-D)</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">FAISS</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
+                  <span class="card-sub">IndexFlatIP Normalized Store</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">ByteTrack</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-sub">Kalman Temporal Stabilizer</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">MongoDB</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
+                  <span class="card-sub">smartclass database</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">FastAPI</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-sub">Port 8008 Uvicorn Engine</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">ESP32</span>
+                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
+                  <span class="card-sub">HTTP Ingestion Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 11: SETTINGS                                                  -->
+      <!-- ================================================================= -->
+      <section id="tab-settings" class="tab-pane" style="display: none;">
+        <div class="panel" style="max-width: 750px;">
+          <div class="panel-header">
+            <h2>System Configuration & Model Thresholds</h2>
+          </div>
+          <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem;">
+            <div class="form-group">
+              <label>Face Detection Confidence Threshold</label>
+              <input type="text" class="form-control" value="0.35" readonly>
+            </div>
+            <div class="form-group">
+              <label>ArcFace Embedding Similarity Threshold</label>
+              <input type="text" class="form-control" value="0.65" readonly>
+            </div>
+            <div class="form-group">
+              <label>Tracking Target Frame Rate</label>
+              <input type="text" class="form-control" value="30 FPS" readonly>
+            </div>
+            <div class="form-group">
+              <label>Default Session Duration</label>
+              <input type="text" class="form-control" value="45 minutes" readonly>
+            </div>
+            <div class="form-group">
+              <label>Institutional Timezone</label>
+              <input type="text" class="form-control" value="Asia/Kolkata (IST)" readonly>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODALS                                                                -->
+  <!-- ===================================================================== -->
+
+  <!-- MODAL: ADD ADVISOR -->
+  <div id="addAdvisorModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Create New Class Advisor</h3>
+        <button class="btn-close" onclick="closeModal('addAdvisorModal')">&times;</button>
+      </div>
+      <form onsubmit="handleCreateAdvisor(event)">
+        <div class="modal-body">
+          <div id="modalAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Advisor User ID *</label>
+              <input type="text" id="advUserId" class="form-control" placeholder="e.g. ADV001" required>
+            </div>
+            <div class="form-group">
+              <label>Advisor Full Name *</label>
+              <input type="text" id="advName" class="form-control" placeholder="e.g. Dr. K. Rajesh" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Password *</label>
+              <input type="password" id="advPassword" class="form-control" placeholder="Min 6 characters" required>
+            </div>
+            <div class="form-group">
+              <label>Confirm Password *</label>
+              <input type="password" id="advConfirmPassword" class="form-control" placeholder="Repeat password" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department *</label>
+              <input type="text" id="advDept" class="form-control" value="AI&DS" required>
+            </div>
+            <div class="form-group">
+              <label>Year *</label>
+              <input type="text" id="advYear" class="form-control" value="3rd Year" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Section *</label>
+              <input type="text" id="advSection" class="form-control" value="B" required>
+            </div>
+            <div class="form-group">
+              <label>Assigned Classroom</label>
+              <input type="text" id="advClassroom" class="form-control" value="AIDS-B">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="advEmail" class="form-control" placeholder="advisor@college.edu">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addAdvisorModal')">Cancel</button>
+          <button type="submit" id="saveAdvBtn" class="btn btn-primary">Create Advisor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD CLASSROOM -->
+  <div id="addClassroomModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Configure New Classroom</h3>
+        <button class="btn-close" onclick="closeModal('addClassroomModal')">&times;</button>
+      </div>
+      <form onsubmit="handleCreateClassroom(event)">
+        <div class="modal-body">
+          <div id="addClassroomAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Classroom ID *</label>
+              <input type="text" id="newClassroomId" class="form-control" placeholder="e.g. AIDS-B" required>
+            </div>
+            <div class="form-group">
+              <label>Classroom Name *</label>
+              <input type="text" id="newClassroomName" class="form-control" placeholder="e.g. AIDS-B Smart Classroom" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department *</label>
+              <input type="text" id="newClassroomDept" class="form-control" value="AI&DS" required>
+            </div>
+            <div class="form-group">
+              <label>Year *</label>
+              <input type="text" id="newClassroomYear" class="form-control" value="3rd Year" required>
+            </div>
+            <div class="form-group">
+              <label>Section *</label>
+              <input type="text" id="newClassroomSec" class="form-control" value="B" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assign Class Advisor</label>
+            <select id="newClassroomAdvisor" class="form-control">
+              <option value="">-- Select Advisor --</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Camera Source *</label>
+              <select id="newClassroomCamSource" class="form-control" onchange="toggleNewCamUrlField()">
+                <option value="pc" selected>PC / USB Camera (Index 0)</option>
+                <option value="droidcam">DroidCam (Mobile Wireless)</option>
+                <option value="extension">Extension Camera (Index 1/2)</option>
+                <option value="esp32">ESP32-CAM (Wi-Fi Stream)</option>
+                <option value="none">No Camera (Unconfigured)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ESP32 Device ID</label>
+              <input type="text" id="newClassroomEsp32" class="form-control" value="ESP32-AIDS-B">
+            </div>
+          </div>
+          <div class="form-group" id="newCamUrlGroup" style="display:none;">
+            <label>Camera Stream URL / IP</label>
+            <input type="text" id="newClassroomCamUrl" class="form-control" placeholder="http://10.140.159.218:4747/video">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addClassroomModal')">Cancel</button>
+          <button type="submit" id="saveClassroomBtn" class="btn btn-primary">Save Configuration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT CLASSROOM -->
+  <div id="editClassroomModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Edit Classroom & Device Mapping</h3>
+        <button class="btn-close" onclick="closeModal('editClassroomModal')">&times;</button>
+      </div>
+      <form onsubmit="handleUpdateClassroom(event)">
+        <input type="hidden" id="editClassroomId">
+        <div class="modal-body">
+          <div id="editClassroomAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div class="form-group">
+            <label>Classroom Name *</label>
+            <input type="text" id="editClassroomName" class="form-control" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" id="editClassroomDept" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Year</label>
+              <input type="text" id="editClassroomYear" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Section</label>
+              <input type="text" id="editClassroomSec" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Assign Class Advisor</label>
+            <select id="editClassroomAdvisor" class="form-control">
+              <option value="">-- Select Advisor --</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Camera Source</label>
+              <select id="editClassroomCamSource" class="form-control" onchange="toggleEditCamUrlField()">
+                <option value="pc">PC / USB Camera (Index 0)</option>
+                <option value="droidcam">DroidCam (Mobile Wireless)</option>
+                <option value="extension">Extension Camera (Index 1/2)</option>
+                <option value="esp32">ESP32-CAM (Wi-Fi Stream)</option>
+                <option value="none">No Camera (Unconfigured)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Camera Status</label>
+              <select id="editClassroomCamStatus" class="form-control">
+                <option value="connected">Connected (Online)</option>
+                <option value="disconnected">Disconnected (Offline)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>ESP32 Device ID</label>
+              <input type="text" id="editClassroomEsp32" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>ESP32 Status</label>
+              <select id="editClassroomEspStatus" class="form-control">
+                <option value="connected">Connected</option>
+                <option value="disconnected">Disconnected</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="editCamUrlGroup" style="display:none;">
+            <label>Camera Stream URL / IP</label>
+            <input type="text" id="editClassroomCamUrl" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('editClassroomModal')">Cancel</button>
+          <button type="submit" id="updateClassroomBtn" class="btn btn-primary">Update Configuration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: STUDENT FACE ENROLLMENT WIZARD -->
+  <div id="enrollmentModal" class="modal-overlay">
+    <div class="modal-enrollment-card">
+      <div class="enroll-modal-header">
+        <div class="enroll-badge-title">
+          <span class="enroll-step-badge">ENROLLMENT</span>
+          <h3>Student Face Registration</h3>
+        </div>
+        <button class="btn-close" onclick="closeEnrollmentModal()">&times;</button>
+      </div>
+
+      <!-- 4-Step Progress Navigation Wizard -->
+      <div class="enroll-wizard-steps">
+        <div class="wizard-step-item active" id="wiz-step-1" onclick="setEnrollStep(1)">
+          <span class="wizard-step-num">1</span>
+          <span>Student Details</span>
+        </div>
+        <div class="wizard-step-item" id="wiz-step-2" onclick="setEnrollStep(2)">
+          <span class="wizard-step-num">2</span>
+          <span>Camera Source</span>
+        </div>
+        <div class="wizard-step-item" id="wiz-step-3" onclick="setEnrollStep(3)">
+          <span class="wizard-step-num">3</span>
+          <span>Camera Connection</span>
+        </div>
+        <div class="wizard-step-item" id="wiz-step-4" onclick="setEnrollStep(4)">
+          <span class="wizard-step-num">4</span>
+          <span>Live Enrollment</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: STUDENT DETAILS -->
+      <div class="enroll-step-pane" id="enroll-step-pane-1">
+        <div class="enroll-form-card">
+          <div class="enroll-section-title">Student Identification Details</div>
+          <div class="enroll-form-grid">
+            <div class="enroll-field">
+              <label for="enrollRegNo">Register Number *</label>
+              <input type="text" id="enrollRegNo" class="font-mono" placeholder="e.g. 922524243069" required autocomplete="off">
+            </div>
+            <div class="enroll-field">
+              <label for="enrollName">Student Name *</label>
+              <input type="text" id="enrollName" placeholder="e.g. KANISH M" required autocomplete="off">
+            </div>
+            <div class="enroll-field">
+              <label for="enrollYear">Class / Year *</label>
+              <select id="enrollYear">
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year" selected>3rd Year</option>
+                <option value="4th Year">4th Year</option>
+              </select>
+            </div>
+            <div class="enroll-field">
+              <label for="enrollDept">Department *</label>
+              <input type="text" id="enrollDept" value="AI&DS" required autocomplete="off">
+            </div>
+            <div class="enroll-field">
+              <label for="enrollSec">Section *</label>
+              <input type="text" id="enrollSec" value="B" required autocomplete="off">
+            </div>
+          </div>
+        </div>
+        <div class="enroll-footer-actions">
+          <button type="button" class="btn btn-outline" onclick="closeEnrollmentModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="proceedToStep2()">Continue to Camera Source →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: CAMERA SOURCE -->
+      <div class="enroll-step-pane" id="enroll-step-pane-2" style="display: none;">
+        <div class="enroll-form-card">
+          <div class="enroll-section-title">Select Enrollment Camera Source</div>
+          <div class="enroll-source-grid">
+            <div class="enroll-source-card active" id="enroll-src-pc" onclick="selectEnrollSource('pc')">
+              <div class="enroll-source-icon">📷</div>
+              <div class="enroll-source-name">PC CAMERA</div>
+              <div class="enroll-source-desc">Integrated Webcam (Device 0)</div>
+            </div>
+            <div class="enroll-source-card" id="enroll-src-droidcam" onclick="selectEnrollSource('droidcam')">
+              <div class="enroll-source-icon">📱</div>
+              <div class="enroll-source-name">DROIDCAM</div>
+              <div class="enroll-source-desc">Mobile Phone over Wi-Fi</div>
+            </div>
+            <div class="enroll-source-card" id="enroll-src-extension" onclick="selectEnrollSource('extension')">
+              <div class="enroll-source-icon">🎥</div>
+              <div class="enroll-source-name">EXTENSION CAMERA</div>
+              <div class="enroll-source-desc">External USB Camera</div>
+            </div>
+            <div class="enroll-source-card" id="enroll-src-esp32" onclick="selectEnrollSource('esp32')">
+              <div class="enroll-source-icon">📡</div>
+              <div class="enroll-source-name">ESP32 CAMERA</div>
+              <div class="enroll-source-desc">ESP32 Wi-Fi Stream</div>
+            </div>
+          </div>
+        </div>
+        <div class="enroll-footer-actions">
+          <button type="button" class="btn btn-outline" onclick="setEnrollStep(1)">← Back to Details</button>
+          <button type="button" class="btn btn-primary" onclick="setEnrollStep(3)">Configure Connection →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CAMERA CONNECTION -->
+      <div class="enroll-step-pane" id="enroll-step-pane-3" style="display: none;">
+        <div class="enroll-form-card">
+          <div class="enroll-section-title">Configure Camera Hardware Connection</div>
+          
+          <div id="enroll-cfg-pc" class="cam-config-panel">
+            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+              Device Index: <strong>0</strong> (Integrated Laptop / PC Webcam)
+            </p>
+          </div>
+
+          <div id="enroll-cfg-droidcam" class="cam-config-panel" style="display: none;">
+            <div class="enroll-form-grid" style="margin-bottom: 10px;">
+              <div class="enroll-field">
+                <label>IP Address</label>
+                <input type="text" id="enroll-dc-ip" class="form-control font-mono" value="10.140.159.218">
+              </div>
+              <div class="enroll-field">
+                <label>Port</label>
+                <input type="number" id="enroll-dc-port" class="form-control font-mono" value="4747">
+              </div>
+              <div class="enroll-field" style="grid-column: span 2;">
+                <label>Video Stream URL</label>
+                <input type="text" id="enroll-dc-url" class="form-control font-mono" value="http://10.140.159.218:4747/video" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div id="enroll-cfg-extension" class="cam-config-panel" style="display: none;">
+            <div class="enroll-field" style="max-width: 320px; margin-bottom: 10px;">
+              <label>External Camera Device</label>
+              <select id="enroll-ext-device" class="form-control">
+                <option value="0">Camera Index 0</option>
+                <option value="1" selected>Camera Index 1 (External)</option>
+                <option value="2">Camera Index 2</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="enroll-cfg-esp32" class="cam-config-panel" style="display: none;">
+            <div class="enroll-field" style="margin-bottom: 10px;">
+              <label>ESP32 Stream URL</label>
+              <input type="text" id="enroll-esp-url" class="form-control font-mono" value="http://192.168.1.100:81/stream">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px;">
+            <button type="button" class="btn btn-outline btn-sm" id="btn-enroll-test" onclick="testEnrollCameraConnection()">TEST CONNECTION</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-enroll-connect" onclick="connectEnrollCameraSource()">CONNECT CAMERA</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-enroll-stop" onclick="stopEnrollCameraSource()">STOP CAMERA</button>
+            <span class="status-pill status-pill-connected" id="enroll-cam-pill" style="margin-left: auto;">● READY</span>
+          </div>
+        </div>
+
+        <div class="enroll-footer-actions">
+          <button type="button" class="btn btn-outline" onclick="setEnrollStep(2)">← Back to Source</button>
+          <button type="button" class="btn btn-primary" onclick="proceedToStep4()">Open Live Enrollment →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: LIVE ENROLLMENT -->
+      <div class="enroll-step-pane" id="enroll-step-pane-4" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-muted); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 0.84rem; margin-bottom: 10px;">
+          <div>Student: <strong id="lblEnrollStudent">--</strong> (<span class="font-mono" id="lblEnrollReg">--</span>)</div>
+          <div>Camera: <strong id="lblEnrollCamSource">PC Camera</strong> &nbsp;|&nbsp; <span class="status-pill status-pill-connected" id="lblEnrollCamStatus">● CONNECTED</span></div>
+        </div>
+
+        <div class="enroll-live-container">
+          <div class="enroll-feed-card">
+            <div class="enroll-quality-pill quality-good" id="enrollQualityBanner">
+              <span id="enrollQualityText">GOOD QUALITY ✓</span>
+            </div>
+            <img id="enrollLiveFeedImg" class="enroll-feed-img" src="/api/video/feed?view_mode=normal" alt="Live Camera Preview">
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="samples-card">
+              <div class="samples-card-header">
+                <h4>Face Samples</h4>
+                <span class="samples-badge" id="lblSampleCount">0 / 10 Captured</span>
+              </div>
+              <div class="samples-grid-10" id="enrollThumbsGrid"></div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary" id="btnEnrollCapture" onclick="captureEnrollSample()" style="flex: 1;">
+                  📸 CAPTURE SAMPLE
+                </button>
+                <button type="button" class="btn btn-outline" id="btnEnrollRetake" onclick="retakeEnrollSample()" disabled>
+                  ↺ RETAKE
+                </button>
+              </div>
+            </div>
+
+            <div class="progress-checklist-card">
+              <div class="progress-checklist-title">Enrollment Progress</div>
+              <div class="progress-items-list">
+                <div class="progress-item-row done" id="prog-chk-details">
+                  <span class="progress-item-icon">✓</span> Student Details Verified
+                </div>
+                <div class="progress-item-row done" id="prog-chk-camera">
+                  <span class="progress-item-icon">✓</span> Camera Connected & Streaming
+                </div>
+                <div class="progress-item-row" id="prog-chk-samples">
+                  <span class="progress-item-icon" id="prog-icon-samples">○</span> <span id="prog-text-samples">Face Samples (0 / 10, min 5 required)</span>
+                </div>
+                <div class="progress-item-row" id="prog-chk-save">
+                  <span class="progress-item-icon" id="prog-icon-save">○</span> Save Enrollment
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="enroll-footer-actions">
+          <button type="button" class="btn btn-outline" onclick="setEnrollStep(3)">← Back to Connection</button>
+          <button type="button" class="btn btn-primary" id="btnSaveEnrollment" onclick="saveEnrollment()" disabled style="font-weight: 700; background: var(--success); border-color: var(--success);">
+            💾 SAVE ENROLLMENT
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION ENGINE SCRIPTS                                            -->
+  <!-- ===================================================================== -->
+  <script>
+    let token = localStorage.getItem("smartclass_token");
+    let currentUser = null;
+
+    async function checkAuth() {
+      try {
+        const resp = await fetch("/api/auth/me", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success && data.data.role === "hod") {
+          currentUser = data.data;
+          document.getElementById("displayUserName").innerText = currentUser.name;
+          document.getElementById("userInitial").innerText = currentUser.name.charAt(0);
+          loadDashboardData();
+        } else {
+          window.location.href = "/login";
+        }
+      } catch (e) {
+        window.location.href = "/login";
+      }
+    }
+
+    async function loadDashboardData() {
+      try {
+        const sumResp = await fetch("/api/dashboard/role-summary", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const sumData = await sumResp.json();
+        if (sumResp.ok && sumData.success) {
+          const cards = sumData.data.cards;
+          document.getElementById("cardTotalStudents").innerText = cards.total_students || '--';
+          document.getElementById("cardStudentsPresent").innerText = cards.students_present || '--';
+          document.getElementById("cardStudentsAbsent").innerText = cards.students_absent || '--';
+          document.getElementById("cardActiveAdvisors").innerText = cards.active_advisors || '--';
+          document.getElementById("cardActiveCameras").innerText = cards.active_cameras || '1';
+          document.getElementById("cardActiveEsp32").innerText = cards.active_esp32_devices || '0';
+          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts || '0';
+
+          const sys = sumData.data.system_status;
+          if (sys) {
+            document.getElementById("diagFastAPI").innerText = sys.fastapi || 'ONLINE';
+            document.getElementById("diagMongoDB").innerText = sys.mongodb || 'ONLINE';
+            document.getElementById("diagCamera").innerText = sys.camera || 'ONLINE';
+            document.getElementById("diagAI").innerText = sys.ai_pipeline || 'ONLINE';
+            document.getElementById("diagFAISS").innerText = sys.faiss || 'READY';
+            document.getElementById("diagESP32").innerText = sys.esp32 || 'READY';
+          }
+        }
+
+        loadAdvisors();
+        loadStudents();
+        loadRecentEvents();
+      } catch (err) {
+        console.error("Dashboard data load error:", err);
+      }
+    }
+
+    async function loadRecentEvents() {
+      const container = document.getElementById("recentEventsList");
+      if (!container) return;
+      try {
+        const resp = await fetch("/api/alerts", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const alertsData = await resp.json();
+        const alerts = (alertsData.success && alertsData.data) ? alertsData.data : [];
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        let events = [
+          { icon: '🏛️', title: 'Classroom Setup Synchronized', desc: 'Classroom AIDS-B mapped with PC Camera & ESP32-AIDS-B', time: timeStr, badge: 'System', color: '#2563EB' },
+          { icon: '👥', title: 'Advisor Authentication Active', desc: 'Prof. Ramesh Kumar (ADV001) assigned to 3rd Year AI&DS - B', time: timeStr, badge: 'RBAC', color: '#10B981' },
+          { icon: '🧠', title: 'Vision AI Pipeline Ready', desc: 'SCRFD & ArcFace/MobileFaceNet loaded with FAISS vector store', time: timeStr, badge: 'AI Core', color: '#6366F1' }
+        ];
+
+        if (alerts.length > 0) {
+          alerts.slice(0, 3).forEach(a => {
+            events.unshift({
+              icon: a.severity === 'CRITICAL' ? '⚠️' : '🔔',
+              title: a.title,
+              desc: `${a.message} (Classroom: ${a.classroom_id})`,
+              time: timeStr,
+              badge: a.severity,
+              color: a.severity === 'CRITICAL' ? '#EF4444' : '#F59E0B'
+            });
+          });
+        }
+
+        container.innerHTML = events.map(ev => `
+          <div style="background:#FFFFFF; border:1px solid var(--border); border-left:3px solid ${ev.color}; border-radius:var(--radius-sm); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:1.15rem;">${ev.icon}</span>
+              <div>
+                <strong style="color:var(--text-main); font-size:0.86rem; display:block;">${ev.title}</strong>
+                <span style="color:var(--text-muted); font-size:0.78rem;">${ev.desc}</span>
+              </div>
+            </div>
+            <div style="text-align:right; flex-shrink:0;">
+              <span class="badge" style="background:#F1F5F9; color:#475569; font-size:0.72rem;">${ev.badge}</span>
+              <div style="font-size:0.70rem; color:#94A3B8; margin-top:2px;">${ev.time}</div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 1rem;">No recent events recorded.</div>`;
+      }
+    }
+
+    async function loadAdvisors() {
+      try {
+        const resp = await fetch("/api/hod/advisors", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          const advisors = data.data;
+          renderAdvisorsTable("advisorsTableBody", advisors, false);
+          renderAdvisorsTable("fullAdvisorsTableBody", advisors, true);
+        }
+      } catch (e) {
+        console.error("Advisors load error:", e);
+      }
+    }
+
+    function renderAdvisorsTable(elementId, advisors, full) {
+      const tbody = document.getElementById(elementId);
+      if (!tbody) return;
+      if (!advisors || advisors.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted);">No Class Advisors enrolled yet. Click '+ ADD NEW ADVISOR' to register one.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = advisors.map(a => `
+        <tr>
+          <td><strong class="font-mono">${a.user_id}</strong></td>
+          <td>${a.name}</td>
+          ${full ? `<td>${a.email || '-'}</td>` : ''}
+          <td>${a.department || '-'}</td>
+          <td>${a.year || '-'}</td>
+          <td><span class="badge" style="background:#EFF6FF; color:#2563EB;">${a.section || '-'}</span></td>
+          <td>${a.assigned_classroom || '-'}</td>
+          <td>
+            <span class="badge ${a.status === 'active' ? 'badge-present' : 'badge-disabled'}">
+              ${a.status.toUpperCase()}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="toggleAdvisorStatus('${a.user_id}', '${a.status}')">
+              ${a.status === 'active' ? 'Disable' : 'Enable'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadStudents() {
+      try {
+        const resp = await fetch("/api/scoped/students", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          const students = data.data;
+          const tbody = document.getElementById("studentsTableBody");
+          if (!tbody) return;
+          if (!students || students.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No students found.</td></tr>`;
+            return;
+          }
+          tbody.innerHTML = students.map(s => `
+            <tr>
+              <td><strong class="font-mono">${s.register_no}</strong></td>
+              <td>${s.student_name}</td>
+              <td>${s.year}</td>
+              <td>${s.department}</td>
+              <td>${s.section}</td>
+              <td><span class="badge ${s.attendance_status === 'Present' ? 'badge-present' : 'badge-absent'}">${s.attendance_status}</span></td>
+              <td><span class="badge badge-ai">${s.recognition_status}</span></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        console.error("Students load error:", e);
+      }
+    }
+
+    async function toggleAdvisorStatus(userId, currentStatus) {
+      const nextStatus = (currentStatus === "active") ? "disabled" : "active";
+      if (!confirm(`Are you sure you want to set Advisor '${userId}' to ${nextStatus}?`)) return;
+
+      try {
+        const resp = await fetch(`/api/hod/advisors/${userId}/status?status=${nextStatus}`, {
+          method: "PATCH",
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        if (resp.ok) {
+          loadAdvisors();
+        } else {
+          alert("Failed to update status.");
+        }
+      } catch (e) {
+        alert("Status update failed.");
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-pane").forEach(p => p.style.display = "none");
+      document.querySelectorAll(".sidebar-nav .nav-link").forEach(l => l.classList.remove("active"));
+      
+      const targetPane = document.getElementById(`tab-${tabId}`) || document.getElementById("tab-dashboard");
+      targetPane.style.display = "flex";
+
+      const navs = document.querySelectorAll(".sidebar-nav .nav-link");
+      navs.forEach(n => {
+        if (n.innerText.toLowerCase().includes(tabId)) {
+          n.classList.add("active");
+        }
+      });
+
+      if (tabId === 'monitoring') {
+        loadCameraSources();
+        updateCameraStatus();
+        const feed = document.getElementById('liveFeedImg');
+        if (feed) {
+          feed.src = `/api/video/feed?view_mode=normal&t=${Date.now()}`;
+        }
+      } else if (tabId === 'classrooms') {
+        loadClassrooms();
+      } else if (tabId === 'attendance') {
+        loadAttendanceRecords();
+      } else if (tabId === 'students') {
+        loadStudents();
+      } else if (tabId === 'advisors') {
+        loadAdvisors();
+      } else if (tabId === 'sensors') {
+        loadSensors();
+      } else if (tabId === 'alerts') {
+        loadAlerts();
+      } else if (tabId === 'system') {
+        loadSystemStatus();
+      }
+    }
+
+    let allClassrooms = [];
+    let cachedAdvisorsList = [];
+
+    async function loadClassrooms() {
+      try {
+        const resp = await fetch("/api/classrooms", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (data.success && data.data) {
+          allClassrooms = data.data;
+          renderClassroomsTable(allClassrooms);
+          updateClassroomCards(allClassrooms);
+        }
+      } catch (err) {
+        console.error("Load classrooms error:", err);
+      }
+      populateAdvisorDropdowns();
+    }
+
+    function renderClassroomsTable(classrooms) {
+      const tbody = document.getElementById("classroomsTableBody");
+      if (!tbody) return;
+      if (!classrooms || classrooms.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 2rem;">No classrooms configured yet. Click "+ ADD CLASSROOM" to configure one.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = classrooms.map(c => `
+        <tr>
+          <td><strong class="font-mono">${c.classroom_id}</strong></td>
+          <td>${c.classroom_name}</td>
+          <td><span class="badge" style="background:#EFF6FF; color:#2563EB;">${c.year} - ${c.section}</span></td>
+          <td>${c.assigned_advisor_name || (c.assigned_advisor_id ? `Advisor (${c.assigned_advisor_id})` : '<span style="color:#94A3B8; font-style:italic;">Unassigned</span>')}</td>
+          <td><span class="font-mono">${(c.camera_source || 'none').toUpperCase()}</span></td>
+          <td><span class="badge ${c.camera_status === 'connected' ? 'badge-present' : 'badge-absent'}">${c.camera_status === 'connected' ? '● Connected' : '○ Offline'}</span></td>
+          <td>${c.esp32_device_id || '<span style="color:#94A3B8;">None</span>'}</td>
+          <td><span class="badge ${c.ai_pipeline_status === 'running' ? 'badge-present' : 'badge-absent'}">${c.ai_pipeline_status}</span></td>
+          <td>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-secondary btn-sm" onclick="openEditClassroomModal('${c.classroom_id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteClassroom('${c.classroom_id}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateClassroomCards(classrooms) {
+      const elTot = document.getElementById("clsTotalCount");
+      const elCam = document.getElementById("clsCamerasMapped");
+      const elAdv = document.getElementById("clsAdvisorsAssigned");
+      const elEsp = document.getElementById("clsEsp32Count");
+
+      if (elTot) elTot.textContent = classrooms.length;
+      if (elCam) elCam.textContent = classrooms.filter(c => c.camera_source && c.camera_source !== 'none').length;
+      if (elAdv) elAdv.textContent = classrooms.filter(c => c.assigned_advisor_id).length;
+      if (elEsp) elEsp.textContent = classrooms.filter(c => c.esp32_device_id).length;
+    }
+
+    async function populateAdvisorDropdowns() {
+      try {
+        const resp = await fetch("/api/hod/advisors", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (data.success && data.data) {
+          cachedAdvisorsList = data.data;
+          const optionsHtml = '<option value="">-- Select Advisor --</option>' +
+            cachedAdvisorsList.map(a => `<option value="${a.user_id}">${a.name} (${a.user_id} - ${a.year} ${a.section})</option>`).join('');
+          
+          const newSelect = document.getElementById("newClassroomAdvisor");
+          const editSelect = document.getElementById("editClassroomAdvisor");
+          if (newSelect) newSelect.innerHTML = optionsHtml;
+          if (editSelect) editSelect.innerHTML = optionsHtml;
+        }
+      } catch (e) {}
+    }
+
+    function toggleNewCamUrlField() {
+      const src = document.getElementById("newClassroomCamSource").value;
+      const group = document.getElementById("newCamUrlGroup");
+      if (group) group.style.display = (src === 'droidcam' || src === 'esp32') ? 'block' : 'none';
+    }
+
+    function toggleEditCamUrlField() {
+      const src = document.getElementById("editClassroomCamSource").value;
+      const group = document.getElementById("editCamUrlGroup");
+      if (group) group.style.display = (src === 'droidcam' || src === 'esp32') ? 'block' : 'none';
+    }
+
+    function openAddClassroomModal() {
+      const modal = document.getElementById("addClassroomModal");
+      const alertBox = document.getElementById("addClassroomAlert");
+      if (alertBox) alertBox.style.display = 'none';
+      populateAdvisorDropdowns();
+      if (modal) modal.style.display = "flex";
+    }
+
+    async function handleCreateClassroom(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById("addClassroomAlert");
+      alertBox.style.display = 'none';
+
+      const payload = {
+        classroom_id: document.getElementById("newClassroomId").value.trim(),
+        classroom_name: document.getElementById("newClassroomName").value.trim(),
+        department: document.getElementById("newClassroomDept").value.trim(),
+        year: document.getElementById("newClassroomYear").value.trim(),
+        section: document.getElementById("newClassroomSec").value.trim(),
+        assigned_advisor_id: document.getElementById("newClassroomAdvisor").value || null,
+        camera_source: document.getElementById("newClassroomCamSource").value,
+        camera_url: document.getElementById("newClassroomCamUrl") ? document.getElementById("newClassroomCamUrl").value.trim() : null,
+        esp32_device_id: document.getElementById("newClassroomEsp32").value.trim() || null
+      };
+
+      try {
+        const resp = await fetch("/api/hod/classrooms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          closeModal("addClassroomModal");
+          loadClassrooms();
+        } else {
+          alertBox.innerText = data.error?.message || data.detail || "Failed to create classroom.";
+          alertBox.style.display = 'block';
+        }
+      } catch (err) {
+        alertBox.innerText = "Network error creating classroom.";
+        alertBox.style.display = 'block';
+      }
+    }
+
+    function openEditClassroomModal(cid) {
+      const cls = allClassrooms.find(c => c.classroom_id === cid);
+      if (!cls) return;
+
+      document.getElementById("editClassroomId").value = cls.classroom_id;
+      document.getElementById("editClassroomName").value = cls.classroom_name;
+      document.getElementById("editClassroomDept").value = cls.department;
+      document.getElementById("editClassroomYear").value = cls.year;
+      document.getElementById("editClassroomSec").value = cls.section;
+      document.getElementById("editClassroomCamSource").value = cls.camera_source || "pc";
+      document.getElementById("editClassroomCamStatus").value = cls.camera_status || "connected";
+      document.getElementById("editClassroomEsp32").value = cls.esp32_device_id || "";
+      document.getElementById("editClassroomEspStatus").value = cls.esp32_status || "disconnected";
+      if (document.getElementById("editClassroomCamUrl")) {
+        document.getElementById("editClassroomCamUrl").value = cls.camera_url || "";
+      }
+      toggleEditCamUrlField();
+
+      populateAdvisorDropdowns().then(() => {
+        const advSelect = document.getElementById("editClassroomAdvisor");
+        if (advSelect) advSelect.value = cls.assigned_advisor_id || "";
+      });
+
+      const modal = document.getElementById("editClassroomModal");
+      if (modal) modal.style.display = "flex";
+    }
+
+    async function handleUpdateClassroom(e) {
+      e.preventDefault();
+      const cid = document.getElementById("editClassroomId").value;
+      const alertBox = document.getElementById("editClassroomAlert");
+      alertBox.style.display = 'none';
+
+      const payload = {
+        classroom_name: document.getElementById("editClassroomName").value.trim(),
+        department: document.getElementById("editClassroomDept").value.trim(),
+        year: document.getElementById("editClassroomYear").value.trim(),
+        section: document.getElementById("editClassroomSec").value.trim(),
+        assigned_advisor_id: document.getElementById("editClassroomAdvisor").value || null,
+        camera_source: document.getElementById("editClassroomCamSource").value,
+        camera_status: document.getElementById("editClassroomCamStatus").value,
+        esp32_device_id: document.getElementById("editClassroomEsp32").value.trim() || null,
+        esp32_status: document.getElementById("editClassroomEspStatus").value,
+        camera_url: document.getElementById("editClassroomCamUrl") ? document.getElementById("editClassroomCamUrl").value.trim() : null
+      };
+
+      try {
+        const resp = await fetch(`/api/hod/classrooms/${cid}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          closeModal("editClassroomModal");
+          loadClassrooms();
+        } else {
+          alertBox.innerText = data.error?.message || data.detail || "Failed to update classroom.";
+          alertBox.style.display = 'block';
+        }
+      } catch (err) {
+        alertBox.innerText = "Network error updating classroom.";
+        alertBox.style.display = 'block';
+      }
+    }
+
+    async function deleteClassroom(cid) {
+      if (!confirm(`Are you sure you want to delete Classroom '${cid}'?`)) return;
+      try {
+        const resp = await fetch(`/api/hod/classrooms/${cid}`, {
+          method: "DELETE",
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        if (resp.ok) {
+          loadClassrooms();
+        } else {
+          alert("Failed to delete classroom.");
+        }
+      } catch (e) {
+        alert("Delete failed.");
+      }
+    }
+
+    async function loadAttendanceRecords() {
+      const tbody = document.getElementById("hodAttendanceTableBody");
+      if (!tbody) return;
+      try {
+        const resp = await fetch("/api/scoped/students", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (data.success && data.data) {
+          tbody.innerHTML = data.data.map(s => `
+            <tr>
+              <td><strong class="font-mono">${s.register_no}</strong></td>
+              <td>${s.student_name}</td>
+              <td>${s.year} - ${s.section}</td>
+              <td><span class="badge ${s.attendance_status === 'Present' ? 'badge-present' : 'badge-absent'}">${s.attendance_status}</span></td>
+              <td>${s.attendance_percentage}%</td>
+              <td>${s.last_seen}</td>
+              <td><span class="badge badge-ai">${s.recognition_status}</span></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger);">Failed to load attendance records.</td></tr>`;
+      }
+    }
+
+    async function loadSensors() {
+      try {
+        const resp = await fetch("/api/dashboard/summary");
+        const data = await resp.json();
+        if (data.success && data.data) {
+          const occ = document.getElementById("sensorOcc");
+          if (occ) occ.textContent = `${data.data.active_track_count || 0} / 60`;
+        }
+      } catch (e) {}
+    }
+
+    async function loadAlerts() {
+      const container = document.getElementById("alertsListContainer");
+      if (!container) return;
+      try {
+        const resp = await fetch("/api/scoped/alerts", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (data.success && data.data && data.data.length > 0) {
+          container.innerHTML = data.data.map(a => `
+            <div style="background:#FFFFFF; border:1px solid var(--border); border-left: 4px solid ${a.severity === 'CRITICAL' ? 'var(--danger)' : 'var(--warning)'}; border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--text-main); font-size:0.88rem;">${a.title}</strong>
+                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">${a.message}</p>
+                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: ${a.classroom_id}</span>
+              </div>
+              <span class="badge ${a.severity === 'CRITICAL' ? 'badge-unknown' : 'badge-late'}">${a.severity}</span>
+            </div>
+          `).join('');
+        }
+      } catch (e) {}
+    }
+
+    async function loadSystemStatus() {
+      try {
+        const resp = await fetch("/api/health");
+        const data = await resp.json();
+        if (data.success && data.data) {
+          const comps = data.data.components;
+          const container = document.getElementById("systemHealthCards");
+          if (container && comps) {
+            container.innerHTML = Object.entries(comps).map(([name, info]) => `
+              <div class="metric-card">
+                <div class="card-info">
+                  <span class="card-label">${name.toUpperCase()}</span>
+                  <span class="card-value" style="font-size:1.1rem; color:${info.status === 'ONLINE' ? 'var(--success)' : 'var(--danger)'};">● ${info.status}</span>
+                  <span class="card-sub">${info.message || ''}</span>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (e) {}
+    }
+
+    function generateReport() {
+      const repTotal = document.getElementById("repTotal");
+      const repPresent = document.getElementById("repPresent");
+      const repAbsent = document.getElementById("repAbsent");
+      const repRate = document.getElementById("repRate");
+
+      fetch("/api/dashboard/summary").then(r => r.json()).then(data => {
+        if (data.success && data.data) {
+          const tot = data.data.total_enrolled || 15;
+          const pres = data.data.present_count || 0;
+          const abs = Math.max(0, tot - pres);
+          const rate = tot > 0 ? Math.round((pres / tot) * 100) : 0;
+          if (repTotal) repTotal.textContent = tot;
+          if (repPresent) repPresent.textContent = pres;
+          if (repAbsent) repAbsent.textContent = abs;
+          if (repRate) repRate.textContent = `${rate}%`;
+        }
+      }).catch(() => {});
+    }
+
+    function exportAttendanceReport(format) {
+      window.open(`/api/export/attendance/current/${format}`, '_blank');
+    }
+
+    // Camera Source UI Handlers
+    let currentSelectedSource = 'pc';
+    let cameraStatusInterval = null;
+
+    function showCameraSourcePanel(source) {
+      currentSelectedSource = source;
+      const cards = [
+        { id: 'pc', card: document.getElementById('card-cam-pc'), panel: document.getElementById('panel-cam-pc') },
+        { id: 'droidcam', card: document.getElementById('card-cam-droidcam'), panel: document.getElementById('panel-cam-droidcam') },
+        { id: 'extension', card: document.getElementById('card-cam-extension'), panel: document.getElementById('panel-cam-extension') },
+        { id: 'esp32', card: document.getElementById('card-cam-esp32'), panel: document.getElementById('panel-cam-esp32') }
+      ];
+
+      cards.forEach(item => {
+        const isMatch = (item.id === source) || (item.id === 'pc' && source === 'laptop') || (item.id === 'extension' && source === 'external');
+        if (item.card) {
+          if (isMatch) item.card.classList.add('active');
+          else item.card.classList.remove('active');
+        }
+        if (item.panel) {
+          item.panel.style.display = isMatch ? 'flex' : 'none';
+        }
+      });
+    }
+
+    function updateDroidCamUrlPreview() {
+      const hostInput = document.getElementById('input-droidcam-host');
+      const portInput = document.getElementById('input-droidcam-port');
+      const urlInput = document.getElementById('input-droidcam-videourl');
+      const remoteLink = document.getElementById('link-droidcam-remote');
+      const host = hostInput ? hostInput.value.trim() : '10.140.159.218';
+      const port = portInput ? portInput.value.trim() : '4747';
+      if (urlInput) urlInput.value = `http://${host}:${port}/video`;
+      if (remoteLink) remoteLink.href = `http://${host}:${port}`;
+    }
+
+    async function loadCameraSources() {
+      try {
+        const res = await fetch('/api/camera/sources');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data) {
+            const d = json.data;
+            showCameraSourcePanel((d.active_source || 'pc').toLowerCase());
+            if (d.droidcam_config) {
+              const hInput = document.getElementById('input-droidcam-host');
+              const pInput = document.getElementById('input-droidcam-port');
+              if (hInput && d.droidcam_config.host) hInput.value = d.droidcam_config.host;
+              if (pInput && d.droidcam_config.port) pInput.value = d.droidcam_config.port;
+              updateDroidCamUrlPreview();
+            }
+          }
+        }
+      } catch (err) {}
+    }
+
+    async function switchCamera(sourceType, payload, triggerBtn) {
+      if (triggerBtn) {
+        triggerBtn.disabled = true;
+        triggerBtn.textContent = 'CONNECTING...';
+      }
+      try {
+        const res = await fetch('/api/camera/select', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign({ source: sourceType }, payload))
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          updateCameraStatus();
+          const feed = document.getElementById('liveFeedImg');
+          if (feed) feed.src = `/api/video/feed?view_mode=normal&t=${Date.now()}`;
+        } else {
+          alert(json.error ? json.error.message : 'Failed to switch camera.');
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      } finally {
+        if (triggerBtn) {
+          triggerBtn.disabled = false;
+          triggerBtn.textContent = 'CONNECT CAMERA';
+        }
+      }
+    }
+
+    async function testCamera(sourceType, payload, triggerBtn) {
+      if (triggerBtn) {
+        triggerBtn.disabled = true;
+        triggerBtn.textContent = 'TESTING...';
+      }
+      try {
+        const res = await fetch('/api/camera/test', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign({ source: sourceType }, payload))
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          const d = json.data;
+          alert(d.connected ? `● CONNECTED: ${d.message}` : `● NOT CONNECTED: ${d.message}`);
+        }
+      } catch (err) {
+        alert(`Test error: ${err.message}`);
+      } finally {
+        if (triggerBtn) {
+          triggerBtn.disabled = false;
+          triggerBtn.textContent = 'TEST CONNECTION';
+        }
+      }
+    }
+
+    async function stopCamera() {
+      try {
+        await fetch('/api/camera/stop', { method: 'POST' });
+        updateCameraStatus();
+      } catch (err) {}
+    }
+
+    async function startCamera() {
+      try {
+        await fetch('/api/camera/start', { method: 'POST' });
+        updateCameraStatus();
+      } catch (err) {}
+    }
+
+    async function updateCameraStatus() {
+      try {
+        const res = await fetch('/api/camera/status');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data) {
+            const d = json.data;
+            const isOnline = Boolean(d.camera_online);
+            const isWorkerRunning = Boolean(d.worker_running);
+            const nameEl = document.getElementById('active-cam-name');
+            const resEl = document.getElementById('active-cam-res');
+            const fpsEl = document.getElementById('active-cam-fps');
+            const pill = document.getElementById('active-cam-status-pill');
+
+            if (nameEl) nameEl.textContent = (d.active_source || 'PC Camera').toUpperCase();
+            if (resEl) resEl.textContent = isOnline ? '1280x720' : '--';
+            if (fpsEl) fpsEl.textContent = isOnline ? `${Number(d.camera_fps || 30.0).toFixed(1)} FPS` : '-- FPS';
+
+            const stopBtn = document.getElementById('btn-stop-camera');
+            const startBtn = document.getElementById('btn-start-camera');
+            if (stopBtn && startBtn) {
+              if (isWorkerRunning || isOnline) {
+                stopBtn.style.display = 'inline-flex';
+                startBtn.style.display = 'none';
+              } else {
+                stopBtn.style.display = 'none';
+                startBtn.style.display = 'inline-flex';
+              }
+            }
+
+            if (pill) {
+              if (isOnline) {
+                pill.className = 'status-pill status-pill-connected';
+                pill.textContent = '● CONNECTED';
+              } else {
+                pill.className = 'status-pill status-pill-disconnected';
+                pill.textContent = '● DISCONNECTED';
+              }
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    function initCameraControls() {
+      const cPc = document.getElementById('card-cam-pc');
+      const cDroid = document.getElementById('card-cam-droidcam');
+      const cExt = document.getElementById('card-cam-extension');
+      const cEsp = document.getElementById('card-cam-esp32');
+
+      if (cPc) cPc.addEventListener('click', () => showCameraSourcePanel('pc'));
+      if (cDroid) cDroid.addEventListener('click', () => showCameraSourcePanel('droidcam'));
+      if (cExt) cExt.addEventListener('click', () => showCameraSourcePanel('extension'));
+      if (cEsp) cEsp.addEventListener('click', () => showCameraSourcePanel('esp32'));
+
+      const dcHost = document.getElementById('input-droidcam-host');
+      const dcPort = document.getElementById('input-droidcam-port');
+      if (dcHost) dcHost.addEventListener('input', updateDroidCamUrlPreview);
+      if (dcPort) dcPort.addEventListener('input', updateDroidCamUrlPreview);
+
+      const btnPc = document.getElementById('btn-connect-pc');
+      if (btnPc) btnPc.addEventListener('click', () => switchCamera('pc', { index: 0 }, btnPc));
+
+      const btnTestDc = document.getElementById('btn-test-droidcam');
+      if (btnTestDc) btnTestDc.addEventListener('click', () => {
+        const h = dcHost ? dcHost.value.trim() : '10.140.159.218';
+        const p = dcPort ? parseInt(dcPort.value.trim()) || 4747 : 4747;
+        testCamera('droidcam', { host: h, port: p, video_path: '/video' }, btnTestDc);
+      });
+
+      const btnConnDc = document.getElementById('btn-connect-droidcam');
+      if (btnConnDc) btnConnDc.addEventListener('click', () => {
+        const h = dcHost ? dcHost.value.trim() : '10.140.159.218';
+        const p = dcPort ? parseInt(dcPort.value.trim()) || 4747 : 4747;
+        switchCamera('droidcam', { host: h, port: p, video_path: '/video' }, btnConnDc);
+      });
+
+      const selExt = document.getElementById('select-extension-device');
+      const btnTestExt = document.getElementById('btn-test-extension');
+      if (btnTestExt) btnTestExt.addEventListener('click', () => {
+        const idx = selExt ? parseInt(selExt.value) || 0 : 0;
+        testCamera('extension', { index: idx }, btnTestExt);
+      });
+
+      const btnConnExt = document.getElementById('btn-connect-extension');
+      if (btnConnExt) btnConnExt.addEventListener('click', () => {
+        const idx = selExt ? parseInt(selExt.value) || 0 : 0;
+        switchCamera('extension', { index: idx }, btnConnExt);
+      });
+
+      const espUrl = document.getElementById('input-esp32-url');
+      const btnTestEsp = document.getElementById('btn-test-esp32');
+      if (btnTestEsp) btnTestEsp.addEventListener('click', () => {
+        const u = espUrl ? espUrl.value.trim() : 'http://192.168.1.100:81/stream';
+        testCamera('esp32', { stream_url: u }, btnTestEsp);
+      });
+
+      const btnConnEsp = document.getElementById('btn-connect-esp32');
+      if (btnConnEsp) btnConnEsp.addEventListener('click', () => {
+        const u = espUrl ? espUrl.value.trim() : 'http://192.168.1.100:81/stream';
+        switchCamera('esp32', { stream_url: u }, btnConnEsp);
+      });
+
+      const btnStopTop = document.getElementById('btn-stop-camera');
+      if (btnStopTop) btnStopTop.addEventListener('click', stopCamera);
+
+      const btnStartTop = document.getElementById('btn-start-camera');
+      if (btnStartTop) btnStartTop.addEventListener('click', startCamera);
+
+      loadCameraSources();
+      updateCameraStatus();
+      if (!cameraStatusInterval) {
+        cameraStatusInterval = setInterval(updateCameraStatus, 3000);
+      }
+    }
+
+    function openAddAdvisorModal() {
+      document.getElementById("modalAlert").style.display = "none";
+      document.getElementById("addAdvisorModal").style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    async function handleCreateAdvisor(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById("modalAlert");
+      alertBox.style.display = "none";
+
+      const p1 = document.getElementById("advPassword").value;
+      const p2 = document.getElementById("advConfirmPassword").value;
+      if (p1 !== p2) {
+        alertBox.innerText = "Passwords do not match.";
+        alertBox.style.display = "block";
+        return;
+      }
+
+      const payload = {
+        user_id: document.getElementById("advUserId").value.trim(),
+        name: document.getElementById("advName").value.trim(),
+        password: p1,
+        confirm_password: p2,
+        department: document.getElementById("advDept").value.trim(),
+        year: document.getElementById("advYear").value.trim(),
+        section: document.getElementById("advSection").value.trim(),
+        assigned_classroom: document.getElementById("advClassroom").value.trim(),
+        email: document.getElementById("advEmail").value.trim() || null
+      };
+
+      try {
+        const resp = await fetch("/api/hod/advisors", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          closeModal("addAdvisorModal");
+          loadAdvisors();
+        } else {
+          alertBox.innerText = data.error?.message || data.detail || "Failed to create advisor.";
+          alertBox.style.display = "block";
+        }
+      } catch (err) {
+        alertBox.innerText = "Error connecting to server.";
+        alertBox.style.display = "block";
+      }
+    }
+
+    async function handleLogout() {
+      await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("smartclass_token");
+      localStorage.removeItem("smartclass_user");
+      window.location.href = "/login";
+    }
+
+    // Enrollment Wizard
+    let currentEnrollStep = 1;
+    let selectedEnrollSource = 'pc';
+    let currentStudentDetails = null;
+    let enrollSamples = [];
+    let enrollThumbs = [];
+    let enrollQualityInterval = null;
+
+    function openEnrollmentModal() {
+      resetEnrollmentForm();
+      document.getElementById('enrollmentModal').style.display = 'flex';
+      setEnrollStep(1);
+    }
+
+    function closeEnrollmentModal() {
+      stopEnrollQualityPolling();
+      document.getElementById('enrollmentModal').style.display = 'none';
+    }
+
+    function setEnrollStep(step) {
+      currentEnrollStep = step;
+      for (let i = 1; i <= 4; i++) {
+        const item = document.getElementById(`wiz-step-${i}`);
+        const pane = document.getElementById(`enroll-step-pane-${i}`);
+        if (item) {
+          item.classList.remove('active');
+          if (i === step) item.classList.add('active');
+        }
+        if (pane) {
+          pane.style.display = (i === step) ? 'flex' : 'none';
+        }
+      }
+
+      if (step === 4) {
+        startEnrollQualityPolling();
+        renderEnrollSlots();
+        const img = document.getElementById('enrollLiveFeedImg');
+        if (img) img.src = `/api/video/feed?view_mode=normal&t=${Date.now()}`;
+      } else {
+        stopEnrollQualityPolling();
+      }
+    }
+
+    async function proceedToStep2() {
+      const reg = (document.getElementById('enrollRegNo').value || '').trim();
+      const name = (document.getElementById('enrollName').value || '').trim();
+      const year = (document.getElementById('enrollYear').value || '').trim();
+      const dept = (document.getElementById('enrollDept').value || '').trim();
+      const sec = (document.getElementById('enrollSec').value || '').trim();
+
+      if (!reg || !name || !year || !dept || !sec) {
+        alert('Please fill in all student details before proceeding.');
+        return;
+      }
+
+      currentStudentDetails = { register_number: reg, name, class_name: year, department: dept, section: sec };
+      document.getElementById('lblEnrollStudent').textContent = name;
+      document.getElementById('lblEnrollReg').textContent = reg;
+      setEnrollStep(2);
+    }
+
+    function selectEnrollSource(src) {
+      selectedEnrollSource = src;
+      ['pc', 'droidcam', 'extension', 'esp32'].forEach(s => {
+        const c = document.getElementById(`enroll-src-${s}`);
+        const p = document.getElementById(`enroll-cfg-${s}`);
+        if (c) {
+          if (s === src) c.classList.add('active');
+          else c.classList.remove('active');
+        }
+        if (p) p.style.display = (s === src) ? 'block' : 'none';
+      });
+
+      const labelMap = { pc: 'PC Camera', droidcam: 'DroidCam', extension: 'Extension Camera', esp32: 'ESP32 Wi-Fi Camera' };
+      document.getElementById('lblEnrollCamSource').textContent = labelMap[src] || src.toUpperCase();
+    }
+
+    async function testEnrollCameraConnection() {
+      const btn = document.getElementById('btn-enroll-test');
+      if (btn) { btn.disabled = true; btn.textContent = 'TESTING...'; }
+      let payload = { source: selectedEnrollSource };
+      if (selectedEnrollSource === 'droidcam') {
+        payload.host = document.getElementById('enroll-dc-ip').value.trim();
+        payload.port = parseInt(document.getElementById('enroll-dc-port').value.trim()) || 4747;
+        payload.video_path = '/video';
+      } else if (selectedEnrollSource === 'extension') {
+        payload.index = parseInt(document.getElementById('enroll-ext-device').value) || 0;
+      } else if (selectedEnrollSource === 'esp32') {
+        payload.stream_url = document.getElementById('enroll-esp-url').value.trim();
+      }
+
+      try {
+        const res = await fetch('/api/camera/test', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        const pill = document.getElementById('enroll-cam-pill');
+        if (json.success && json.data && json.data.connected) {
+          alert(`● CONNECTED: ${json.data.message}`);
+          if (pill) { pill.className = 'status-pill status-pill-connected'; pill.textContent = '● CONNECTED'; }
+        } else {
+          alert('Camera test probe failed.');
+        }
+      } catch (err) {
+        alert(`Test error: ${err.message}`);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'TEST CONNECTION'; }
+      }
+    }
+
+    async function connectEnrollCameraSource() {
+      const btn = document.getElementById('btn-enroll-connect');
+      if (btn) { btn.disabled = true; btn.textContent = 'CONNECTING...'; }
+      let payload = { source: selectedEnrollSource };
+      if (selectedEnrollSource === 'droidcam') {
+        payload.host = document.getElementById('enroll-dc-ip').value.trim();
+        payload.port = parseInt(document.getElementById('enroll-dc-port').value.trim()) || 4747;
+        payload.video_path = '/video';
+      } else if (selectedEnrollSource === 'extension') {
+        payload.index = parseInt(document.getElementById('enroll-ext-device').value) || 0;
+      } else if (selectedEnrollSource === 'esp32') {
+        payload.stream_url = document.getElementById('enroll-esp-url').value.trim();
+      }
+
+      try {
+        const res = await fetch('/api/camera/select', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        const pill = document.getElementById('enroll-cam-pill');
+        if (res.ok && json.success) {
+          if (pill) { pill.className = 'status-pill status-pill-connected'; pill.textContent = '● CONNECTED'; }
+          alert(`Camera connected: ${selectedEnrollSource.toUpperCase()}`);
+        }
+      } catch (err) {
+        alert(`Connection error: ${err.message}`);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'CONNECT CAMERA'; }
+      }
+    }
+
+    async function stopEnrollCameraSource() {
+      try {
+        await fetch('/api/camera/stop', { method: 'POST' });
+        const pill = document.getElementById('enroll-cam-pill');
+        if (pill) { pill.className = 'status-pill status-pill-disconnected'; pill.textContent = '⏹ STOPPED'; }
+      } catch (e) {}
+    }
+
+    function proceedToStep4() {
+      setEnrollStep(4);
+    }
+
+    function startEnrollQualityPolling() {
+      stopEnrollQualityPolling();
+      pollEnrollQuality();
+      enrollQualityInterval = setInterval(pollEnrollQuality, 650);
+    }
+
+    function stopEnrollQualityPolling() {
+      if (enrollQualityInterval) {
+        clearInterval(enrollQualityInterval);
+        enrollQualityInterval = null;
+      }
+    }
+
+    async function pollEnrollQuality() {
+      try {
+        const res = await fetch('/api/enrollment/one-by-one/validate-sample', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const json = await res.json();
+        if (json.success && json.data) {
+          updateEnrollQualityBanner(json.data);
+        }
+      } catch (e) {}
+    }
+
+    function updateEnrollQualityBanner(d) {
+      const banner = document.getElementById('enrollQualityBanner');
+      const text = document.getElementById('enrollQualityText');
+      const capBtn = document.getElementById('btnEnrollCapture');
+      if (!banner || !text) return;
+
+      const numFaces = d.num_faces || 0;
+      const canCapture = Boolean(d.can_capture);
+      const status = d.status || '';
+
+      if (numFaces === 0) {
+        banner.style.background = '#EF4444';
+        text.textContent = 'NO FACE DETECTED';
+      } else if (numFaces > 1) {
+        banner.style.background = '#F59E0B';
+        text.textContent = 'MULTIPLE FACES DETECTED — ONLY 1 ALLOWED';
+      } else if (status === 'PASS') {
+        banner.style.background = '#10B981';
+        text.textContent = 'GOOD QUALITY ✓';
+      } else {
+        banner.style.background = '#F59E0B';
+        text.textContent = d.message || 'LOW QUALITY — RETAKE';
+      }
+
+      if (capBtn) {
+        capBtn.disabled = !canCapture || enrollSamples.length >= 10;
+      }
+    }
+
+    async function captureEnrollSample() {
+      if (enrollSamples.length >= 10) return;
+      const capBtn = document.getElementById('btnEnrollCapture');
+      if (capBtn) capBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/enrollment/one-by-one/capture-current', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const json = await res.json();
+        if (json.success && json.data) {
+          const d = json.data;
+          if (d.can_capture && d.frame_base64) {
+            enrollSamples.push(d.frame_base64);
+            enrollThumbs.push(d.crop_base64 || d.frame_base64);
+            renderEnrollSlots();
+          }
+        }
+      } catch (err) {}
+      finally {
+        if (capBtn) capBtn.disabled = false;
+      }
+    }
+
+    function retakeEnrollSample() {
+      if (enrollSamples.length > 0) {
+        enrollSamples.pop();
+        enrollThumbs.pop();
+        renderEnrollSlots();
+      }
+    }
+
+    function renderEnrollSlots() {
+      const grid = document.getElementById('enrollThumbsGrid');
+      const countLbl = document.getElementById('lblSampleCount');
+      const retakeBtn = document.getElementById('btnEnrollRetake');
+      const saveBtn = document.getElementById('btnSaveEnrollment');
+      if (!grid) return;
+
+      const count = enrollSamples.length;
+      if (countLbl) countLbl.textContent = `${count} / 10 Captured`;
+      if (retakeBtn) retakeBtn.disabled = (count === 0);
+
+      grid.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'sample-slot' + (i < count ? ' captured' : '');
+        if (i < count && enrollThumbs[i]) {
+          const img = document.createElement('img');
+          img.src = enrollThumbs[i].startsWith('data:') ? enrollThumbs[i] : `data:image/jpeg;base64,${enrollThumbs[i]}`;
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          slot.appendChild(img);
+        } else {
+          slot.textContent = `${i + 1}`;
+        }
+        grid.appendChild(slot);
+      }
+
+      if (saveBtn) saveBtn.disabled = (count < 5);
+      const progStatus = document.getElementById('prog-text-samples');
+      if (progStatus) progStatus.textContent = `Face Samples (${count} / 10, min 5 required)`;
+    }
+
+    async function saveEnrollment() {
+      if (!currentStudentDetails || enrollSamples.length < 5) return;
+      const saveBtn = document.getElementById('btnSaveEnrollment');
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+
+      const payload = {
+        register_number: currentStudentDetails.register_number,
+        name: currentStudentDetails.name,
+        class_name: currentStudentDetails.class_name,
+        department: currentStudentDetails.department,
+        section: currentStudentDetails.section,
+        samples: enrollSamples
+      };
+
+      try {
+        const res = await fetch('/api/enrollment/one-by-one/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          alert(`Student "${currentStudentDetails.name}" (${currentStudentDetails.register_number}) enrolled successfully!`);
+          closeEnrollmentModal();
+          loadStudents();
+          loadDashboardData();
+        } else {
+          alert(json.error ? json.error.message : 'Enrollment failed.');
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = '💾 SAVE ENROLLMENT';
+        }
+      }
+    }
+
+    function resetEnrollmentForm() {
+      currentStudentDetails = null;
+      enrollSamples = [];
+      enrollThumbs = [];
+      const reg = document.getElementById('enrollRegNo');
+      const name = document.getElementById('enrollName');
+      if (reg) reg.value = '';
+      if (name) name.value = '';
+      selectEnrollSource('pc');
+      renderEnrollSlots();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      checkAuth();
+      initCameraControls();
+    });
+  </script>
+
+</body>
+</html>

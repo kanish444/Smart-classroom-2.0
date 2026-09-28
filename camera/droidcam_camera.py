@@ -43,8 +43,12 @@ class DroidCamCamera(BaseCamera):
         self.is_connected = False
         self.last_error_message = ""
 
-        # Threaded acquisition lock
+        # Threaded acquisition lock & low-latency single-frame buffer (maxsize=1)
         self._lock = threading.Lock()
+        self._frame_lock = threading.Lock()
+        self._latest_frame: Optional[np.ndarray] = None
+        self._stop_reader = threading.Event()
+        self._reader_thread: Optional[threading.Thread] = None
 
         self._initialize_camera()
 
@@ -111,6 +115,11 @@ class DroidCamCamera(BaseCamera):
             self.cap.release()
             return False
 
+        try:
+            self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        except Exception:
+            pass
+
         self._actual_height, self._actual_width = frame.shape[:2]
         self._reported_fps = self.cap.get(cv2.CAP_PROP_FPS) or 30.0
         self.is_connected = True
@@ -118,31 +127,81 @@ class DroidCamCamera(BaseCamera):
         self._frame_count = 1
         self._start_time = time.time()
 
+        with self._frame_lock:
+            self._latest_frame = frame
+
+        # Start dedicated background capture thread to prevent OpenCV buffer accumulation
+        self._stop_reader.clear()
+        self._reader_thread = threading.Thread(
+            target=self._capture_worker,
+            name="DroidCamCaptureWorker",
+            daemon=True
+        )
+        self._reader_thread.start()
+
         logger.info(
-            f"DroidCamCamera connected successfully! "
+            f"DroidCamCamera connected successfully with low-latency worker! "
             f"Resolution: {self._actual_width}x{self._actual_height} @ ~{self._reported_fps:.1f} reported FPS"
         )
         return True
 
+    def _capture_worker(self):
+        """
+        Continuously pulls frames from DroidCam to prevent OpenCV internal buffer bloat.
+        Maintains ONLY the latest frame in a single-slot bounded buffer (maxsize=1).
+        Discards stale frames when AI processing cannot consume as fast as camera streams.
+        """
+        while not self._stop_reader.is_set():
+            with self._lock:
+                if not self.cap or not self.cap.isOpened():
+                    break
+                try:
+                    ret, frame = self.cap.read()
+                except Exception as e:
+                    logger.error(f"DroidCam worker exception reading frame: {e}")
+                    ret, frame = False, None
+
+            if not ret or frame is None or frame.size == 0:
+                time.sleep(0.005)
+                continue
+
+            with self._frame_lock:
+                # Overwrite single-slot buffer with newest frame (discarding old stale frames)
+                self._latest_frame = frame
+                self._frame_count += 1
+
     def get_frame(self) -> Tuple[bool, Any]:
-        """Reads the next video frame from the DroidCam stream."""
-        if not self.is_connected or not self.cap or not self.cap.isOpened():
+        """Reads the newest video frame from the DroidCam stream without buffering lag."""
+        if not self.is_connected:
             return False, None
 
-        try:
-            ret, frame = self.cap.read()
-        except Exception as e:
-            logger.error(f"DroidCam exception while reading frame: {e}")
-            ret, frame = False, None
+        # Prefer newest frame from dedicated capture worker (bounded buffer maxsize=1)
+        if self._reader_thread and self._reader_thread.is_alive():
+            with self._frame_lock:
+                if self._latest_frame is not None:
+                    return True, self._latest_frame
+            time.sleep(0.01)
+            with self._frame_lock:
+                if self._latest_frame is not None:
+                    return True, self._latest_frame
 
-        if not ret or frame is None or frame.size == 0:
-            logger.warning("DroidCam failed to return a valid frame. Stream may be disconnected.")
-            self.is_connected = False
-            self.last_error_message = "Stream interrupted or disconnected."
-            return False, None
+        # Fallback direct read (used in test mocks where reader thread is not running)
+        if self.cap and self.cap.isOpened():
+            try:
+                ret, frame = self.cap.read()
+            except Exception as e:
+                logger.error(f"DroidCam direct read exception: {e}")
+                ret, frame = False, None
 
-        self._frame_count += 1
-        return True, frame
+            if ret and frame is not None and frame.size > 0:
+                self._frame_count += 1
+                return True, frame
+
+        return False, None
+
+    def read_frame(self) -> Tuple[bool, Any]:
+        """Alias for get_frame to satisfy frame interface."""
+        return self.get_frame()
 
     def get_true_fps(self) -> float:
         """Calculates actual measured FPS based on successfully decoded frames."""
@@ -164,7 +223,12 @@ class DroidCamCamera(BaseCamera):
         self.release()
 
     def release(self) -> None:
-        """Releases the camera handle cleanly."""
+        """Releases the camera handle cleanly and terminates capture worker cleanly."""
+        self._stop_reader.set()
+        if self._reader_thread and self._reader_thread.is_alive():
+            self._reader_thread.join(timeout=1.0)
+        self._reader_thread = None
+
         with self._lock:
             if self.cap:
                 try:
@@ -172,8 +236,16 @@ class DroidCamCamera(BaseCamera):
                 except Exception as e:
                     logger.warning(f"Error releasing DroidCam capture: {e}")
                 self.cap = None
+            with self._frame_lock:
+                self._latest_frame = None
             self.is_connected = False
             logger.info("DroidCamCamera released.")
+
+    def __del__(self) -> None:
+        try:
+            self.release()
+        except Exception:
+            pass
 
     @property
     def resolution(self) -> Tuple[int, int]:

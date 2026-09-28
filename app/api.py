@@ -27,8 +27,11 @@ from app.schemas import (
     EnrollmentReportResponse,
     EnrollStudentRequest,
     SelectCameraRequest,
-    TestCameraRequest
+    TestCameraRequest,
+    OneByOneValidateFrameRequest,
+    OneByOneEnrollRequest
 )
+import cv2
 import base64
 from enrollment.data_importer import StudentDataImporter, ImporterValidationError
 from enrollment.validation_pipeline import EnrollmentStatus
@@ -565,7 +568,7 @@ def get_video_feed(
                     b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
                 )
                 count += 1
-            time.sleep(0.04)  # ~25 FPS streaming
+            time.sleep(0.03)  # ~30-33 FPS low-latency streaming
 
     return StreamingResponse(
         frame_generator(),
@@ -797,25 +800,30 @@ def get_enrollment_status(state: AppState = Depends(get_app_state)):
 
 @router.get("/camera/sources", response_model=ApiResponse[Dict[str, Any]])
 def get_camera_sources(state: AppState = Depends(get_app_state)):
-    """Returns available camera sources, active source, and DroidCam configuration."""
+    """Returns available camera sources, active source, device enumeration, and configurations."""
+    from camera.camera_manager import CameraManager
     settings = get_settings().camera
-    active_source = "laptop"
+    active_source = "pc"
     if state.camera_manager:
         active_source = getattr(state.camera_manager, "current_source", settings.source)
     else:
         active_source = settings.source
 
     sources = [
-        {"id": "droidcam", "label": "DroidCam Wi-Fi", "type": "ip_stream", "description": "Mobile phone camera via Wi-Fi"},
-        {"id": "laptop", "label": "Laptop Camera", "type": "uvc_index", "index": settings.laptop_index, "description": "Built-in laptop webcam"},
-        {"id": "smart_board", "label": "Smart Board Camera", "type": "uvc_index", "index": settings.smart_board_index, "description": "Classroom Smart Board camera"},
-        {"id": "external", "label": "External Camera", "type": "uvc_index", "index": settings.external_index, "description": "External USB/UVC camera"}
+        {"id": "pc", "label": "PC CAMERA", "subtitle": "Integrated Webcam", "icon": "📷", "type": "uvc_index", "index": settings.laptop_index, "description": "Built-in PC / laptop webcam"},
+        {"id": "droidcam", "label": "DROIDCAM", "subtitle": "Phone Camera", "icon": "📱", "type": "ip_stream", "description": "Mobile phone camera via Wi-Fi"},
+        {"id": "extension", "label": "EXTENSION", "subtitle": "USB Camera", "icon": "🎥", "type": "uvc_index", "index": getattr(settings, "extension_index", settings.external_index), "description": "External USB camera"},
+        {"id": "esp32", "label": "ESP32 CAMERA", "subtitle": "Wi-Fi Camera", "icon": "📡", "type": "ip_stream", "description": "ESP32-CAM Wi-Fi video stream"}
     ]
 
+    devices = CameraManager.enumerate_cameras()
     dc = settings.droidcam
+    esp = settings.esp32
+
     return ApiResponse.ok({
         "active_source": active_source,
         "sources": sources,
+        "available_devices": devices,
         "droidcam_config": {
             "enabled": dc.enabled,
             "host": dc.host,
@@ -823,8 +831,20 @@ def get_camera_sources(state: AppState = Depends(get_app_state)):
             "video_path": dc.video_path,
             "base_url": dc.base_url,
             "video_url": dc.video_url
+        },
+        "esp32_config": {
+            "enabled": esp.enabled,
+            "stream_url": esp.stream_url
         }
     })
+
+
+@router.get("/camera/devices", response_model=ApiResponse[List[Dict[str, Any]]])
+def get_camera_devices():
+    """Returns enumerated local OpenCV camera devices for Extension Camera."""
+    from camera.camera_manager import CameraManager
+    devices = CameraManager.enumerate_cameras()
+    return ApiResponse.ok(devices)
 
 
 @router.post("/camera/select", response_model=ApiResponse[Dict[str, Any]])
@@ -833,7 +853,7 @@ def select_camera_source(
     state: AppState = Depends(get_app_state)
 ):
     """
-    Dynamically switches active camera source (e.g. DroidCam Wi-Fi, Laptop Camera).
+    Dynamically switches active camera source (PC CAMERA, DROIDCAM, EXTENSION, ESP32).
     Does NOT restart FastAPI or disrupt attendance database state.
     """
     kwargs = {}
@@ -845,6 +865,8 @@ def select_camera_source(
         kwargs["video_path"] = payload.video_path
     if payload.index is not None:
         kwargs["index"] = payload.index
+    if payload.stream_url:
+        kwargs["stream_url"] = payload.stream_url
 
     success, message = state.switch_camera_source(payload.source, **kwargs)
     status_info = state.camera_manager.get_status() if state.camera_manager else {}
@@ -864,59 +886,149 @@ def test_camera_connection(
     state: AppState = Depends(get_app_state)
 ):
     """
-    Tests connectivity to specified camera or DroidCam IP without interrupting active session.
-    Probes TCP port and verifies stream accessibility.
+    Tests connectivity to specified camera (DroidCam, ESP32, or PC/Extension OpenCV device)
+    without interrupting active session. Probes connection and verifies frame accessibility.
     """
-    from camera.droidcam_camera import DroidCamCamera
+    source = (payload.source or "droidcam").lower()
 
-    host = payload.host or "10.140.159.218"
-    port = payload.port or 4747
-    video_path = payload.video_path or "/video"
+    if source == "esp32":
+        from camera.esp32_camera import ESP32Camera
+        settings = get_settings().camera
+        stream_url = payload.stream_url or settings.esp32.stream_url
 
-    reachable, msg = DroidCamCamera.probe_endpoint(host, port, timeout=1.5)
-    if not reachable:
+        reachable, msg = ESP32Camera.probe_endpoint(stream_url, timeout=1.5)
+        if not reachable:
+            return ApiResponse.ok({
+                "connected": False,
+                "status": "NOT CONNECTED",
+                "stream_url": stream_url,
+                "message": f"ESP32 Wi-Fi camera stream unavailable at {stream_url}. ({msg})",
+                "reasons": [
+                    "Check ESP32 is powered on and running camera firmware",
+                    "Check ESP32 and computer are on the same Wi-Fi network",
+                    f"Check Stream URL is correct ({stream_url})",
+                    "Check firewall settings"
+                ]
+            })
+
+        test_cam = ESP32Camera(stream_url=stream_url)
+        is_conn = test_cam.is_connected
+        w, h = test_cam.resolution
+        fps = test_cam.reported_fps
+        test_cam.release()
+
+        if is_conn:
+            return ApiResponse.ok({
+                "connected": True,
+                "status": "CONNECTED",
+                "stream_url": stream_url,
+                "resolution": f"{w}x{h}",
+                "fps": fps,
+                "message": f"Successfully connected to ESP32 stream ({w}x{h} @ {fps:.1f} FPS)."
+            })
+        else:
+            return ApiResponse.ok({
+                "connected": False,
+                "status": "NOT CONNECTED",
+                "stream_url": stream_url,
+                "message": f"Unable to decode video frame from ESP32 at {stream_url}."
+            })
+
+    elif source in ["pc", "laptop", "extension", "external"]:
+        import cv2
+        import os
+        settings = get_settings().camera
+        if payload.index is not None:
+            idx = int(payload.index)
+        elif source in ["pc", "laptop"]:
+            idx = settings.laptop_index
+        else:
+            idx = getattr(settings, "extension_index", settings.external_index)
+
+        backend = cv2.CAP_DSHOW if os.name == 'nt' else cv2.CAP_ANY
+        cap = cv2.VideoCapture(idx, backend)
+        if not cap.isOpened():
+            cap = cv2.VideoCapture(idx)
+
+        if cap.isOpened():
+            ret, frame = cap.read()
+            w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            cap.release()
+            if ret and frame is not None:
+                return ApiResponse.ok({
+                    "connected": True,
+                    "status": "CONNECTED",
+                    "index": idx,
+                    "resolution": f"{w}x{h}",
+                    "message": f"Camera {idx} connected successfully ({w}x{h})."
+                })
+
         return ApiResponse.ok({
             "connected": False,
             "status": "NOT CONNECTED",
-            "host": host,
-            "port": port,
-            "video_url": f"http://{host}:{port}{video_path}",
-            "message": f"DroidCam video stream unavailable at http://{host}:{port}{video_path}. ({msg})",
-            "reasons": [
-                "Phone and laptop not connected to the same Wi-Fi network",
-                "DroidCam mobile app is not currently open/streaming on the phone",
-                f"Incorrect phone Wi-Fi IP address ({host})",
-                "Windows Firewall is blocking incoming connections on port 4747"
-            ]
+            "index": idx,
+            "message": f"Unable to open camera device at index {idx}."
         })
 
-    # If TCP port is reachable, perform short test capture
-    test_cam = DroidCamCamera(host=host, port=port, video_path=video_path)
-    is_conn = test_cam.is_connected
-    w, h = test_cam.resolution
-    fps = test_cam.reported_fps
-    test_cam.release()
-
-    if is_conn:
-        return ApiResponse.ok({
-            "connected": True,
-            "status": "CONNECTED",
-            "host": host,
-            "port": port,
-            "video_url": f"http://{host}:{port}{video_path}",
-            "resolution": f"{w}x{h}",
-            "fps": fps,
-            "message": f"Successfully connected to DroidCam video stream ({w}x{h} @ {fps:.1f} FPS)."
-        })
     else:
-        return ApiResponse.ok({
-            "connected": False,
-            "status": "NOT CONNECTED",
-            "host": host,
-            "port": port,
-            "video_url": f"http://{host}:{port}{video_path}",
-            "message": "TCP port reached, but video frame decoding failed. Verify that video streaming is active in DroidCam."
-        })
+        # Default: DroidCam
+        from camera.droidcam_camera import DroidCamCamera
+        host = payload.host or "10.140.159.218"
+        port = payload.port or 4747
+        video_path = payload.video_path or "/video"
+
+        reachable, msg = DroidCamCamera.probe_endpoint(host, port, timeout=1.5)
+        if not reachable:
+            return ApiResponse.ok({
+                "connected": False,
+                "status": "NOT CONNECTED",
+                "host": host,
+                "port": port,
+                "video_url": f"http://{host}:{port}{video_path}",
+                "message": f"Unable to connect to DroidCam.",
+                "reasons": [
+                    "Check phone DroidCam app",
+                    "Check same Wi-Fi",
+                    f"Check IP address ({host})",
+                    f"Check port ({port})",
+                    "Check firewall"
+                ]
+            })
+
+        test_cam = DroidCamCamera(host=host, port=port, video_path=video_path)
+        is_conn = test_cam.is_connected
+        w, h = test_cam.resolution
+        fps = test_cam.reported_fps
+        test_cam.release()
+
+        if is_conn:
+            return ApiResponse.ok({
+                "connected": True,
+                "status": "CONNECTED",
+                "host": host,
+                "port": port,
+                "video_url": f"http://{host}:{port}{video_path}",
+                "resolution": f"{w}x{h}",
+                "fps": fps,
+                "message": f"Successfully connected to DroidCam video stream ({w}x{h} @ {fps:.1f} FPS)."
+            })
+        else:
+            return ApiResponse.ok({
+                "connected": False,
+                "status": "NOT CONNECTED",
+                "host": host,
+                "port": port,
+                "video_url": f"http://{host}:{port}{video_path}",
+                "message": "Unable to connect to DroidCam.",
+                "reasons": [
+                    "Check phone DroidCam app",
+                    "Check same Wi-Fi",
+                    f"Check IP address ({host})",
+                    f"Check port ({port})",
+                    "Check firewall"
+                ]
+            })
 
 
 @router.get("/camera/status", response_model=ApiResponse[Dict[str, Any]])
@@ -936,6 +1048,10 @@ def get_camera_status(state: AppState = Depends(get_app_state)):
         "worker_running": state._camera_thread is not None and state._camera_thread.is_alive(),
         "active_source": active_source,
         "fps": round(state.latest_fps, 1),
+        "camera_fps": round(state.latest_fps, 1),
+        "ai_inference_fps": round(getattr(state, "ai_inference_fps", 0.0), 1),
+        "ai_latency_ms": round(getattr(state, "ai_latency_ms", 0.0), 1),
+        "detected_faces_count": getattr(state, "detected_faces_count", 0),
         "details": cam_status
     })
 
@@ -958,6 +1074,168 @@ def stop_camera_feed(state: AppState = Depends(get_app_state)):
         "message": "Camera worker stopped and hardware released",
         "camera_online": False
     })
+
+
+# =============================================================================
+# 10. Phase 10: New One-By-One Student Face Enrollment Endpoints
+# =============================================================================
+
+@router.get("/enrollment/one-by-one/check/{register_number}", response_model=ApiResponse[Dict[str, Any]])
+def check_register_number_duplicate(
+    register_number: str = Path(...),
+    state: AppState = Depends(get_app_state)
+):
+    """
+    Checks if a Register Number is already enrolled in the new enrollment database.
+    Prevents duplicate silent creation.
+    """
+    service = state.get_one_by_one_enrollment_service()
+    exists, profile = service.check_duplicate_register_number(register_number)
+    return ApiResponse.ok({
+        "register_number": register_number,
+        "exists": exists,
+        "student": profile
+    })
+
+
+@router.post("/enrollment/one-by-one/validate-sample", response_model=ApiResponse[Dict[str, Any]])
+def validate_enrollment_sample_frame(
+    payload: OneByOneValidateFrameRequest,
+    state: AppState = Depends(get_app_state)
+):
+    """
+    Validates a face sample frame:
+    - 0 faces: "No face detected. Please position your face clearly."
+    - >1 faces: "Multiple faces detected. Only one person can be enrolled at a time."
+    - 1 face: Quality assessment -> "GOOD QUALITY ✓" or "LOW QUALITY — RETAKE"
+    """
+    service = state.get_one_by_one_enrollment_service()
+
+    if payload.image_base64:
+        frame_input = payload.image_base64
+    else:
+        frame_input = state.latest_frame
+
+    if frame_input is None:
+        return ApiResponse.ok({
+            "can_capture": False,
+            "status": "NO_FRAME",
+            "message": "No camera frame available.",
+            "quality_status": "LOW QUALITY — RETAKE",
+            "num_faces": 0,
+            "rejection_reason": "Camera stream returned empty frame."
+        })
+
+    val_res = service.validate_frame(frame_input)
+    res_dict = val_res.to_dict()
+
+    # Encode crop to base64 thumbnail if available
+    crop_b64 = None
+    if val_res.crop_image is not None and val_res.crop_image.size > 0:
+        try:
+            _, buffer = cv2.imencode(".jpg", val_res.crop_image, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
+            crop_b64 = base64.b64encode(buffer).decode("utf-8")
+        except Exception:
+            crop_b64 = None
+
+    res_dict["crop_base64"] = crop_b64
+    return ApiResponse.ok(res_dict)
+
+
+@router.post("/enrollment/one-by-one/capture-current", response_model=ApiResponse[Dict[str, Any]])
+def capture_current_frame(state: AppState = Depends(get_app_state)):
+    """
+    Captures the current frame from active camera worker, evaluates face quality,
+    and returns the validation status and thumbnail base64 for sample card preview.
+    """
+    service = state.get_one_by_one_enrollment_service()
+    frame = state.latest_frame
+    if frame is None:
+        return ApiResponse.ok({
+            "can_capture": False,
+            "status": "NO_FRAME",
+            "message": "No live camera frame currently available.",
+            "quality_status": "LOW QUALITY — RETAKE",
+            "num_faces": 0,
+            "rejection_reason": "Live camera frame is None."
+        })
+
+    val_res = service.validate_frame(frame)
+    res_dict = val_res.to_dict()
+
+    crop_b64 = None
+    full_frame_b64 = None
+    if val_res.crop_image is not None and val_res.crop_image.size > 0:
+        try:
+            _, buffer = cv2.imencode(".jpg", val_res.crop_image, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
+            crop_b64 = base64.b64encode(buffer).decode("utf-8")
+        except Exception:
+            pass
+
+    try:
+        _, full_buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
+        full_frame_b64 = base64.b64encode(full_buffer).decode("utf-8")
+    except Exception:
+        pass
+
+    res_dict["crop_base64"] = crop_b64
+    res_dict["frame_base64"] = full_frame_b64
+    return ApiResponse.ok(res_dict)
+
+
+@router.post("/enrollment/one-by-one/enroll", response_model=ApiResponse[Dict[str, Any]])
+def enroll_student_one_by_one(
+    payload: OneByOneEnrollRequest,
+    state: AppState = Depends(get_app_state)
+):
+    """
+    Enrolls a single student with 5 to 10 verified face samples.
+    Executes atomic database persistence and FAISS vector index synchronization.
+    """
+    service = state.get_one_by_one_enrollment_service()
+
+    try:
+        result = service.enroll_student(
+            register_number=payload.register_number,
+            name=payload.name,
+            class_name=payload.class_name,
+            department=payload.department,
+            section=payload.section,
+            sample_frames=payload.samples,
+            min_samples=5,
+            max_samples=10
+        )
+        state.sync_active_recognition()
+        return ApiResponse.ok(result)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Enrollment failure: {str(e)}")
+
+
+@router.get("/enrollment/one-by-one/students", response_model=ApiResponse[List[Dict[str, Any]]])
+def list_enrolled_students(state: AppState = Depends(get_app_state)):
+    """Retrieves all students enrolled through the Phase 10 new enrollment database."""
+    service = state.get_one_by_one_enrollment_service()
+    students = service.db.get_all_students()
+    return ApiResponse.ok(students)
+
+
+@router.get("/enrollment/one-by-one/student/{register_number}", response_model=ApiResponse[Dict[str, Any]])
+def get_enrolled_student(
+    register_number: str = Path(...),
+    state: AppState = Depends(get_app_state)
+):
+    """Retrieves details and sample count for an enrolled student by Register Number."""
+    service = state.get_one_by_one_enrollment_service()
+    student = service.db.get_student_by_register_number(register_number)
+    if not student:
+        raise HTTPException(status_code=404, detail=f"Student with Register Number '{register_number}' not found.")
+
+    embeddings = service.db.get_embeddings_for_student(student["student_id"])
+    student["sample_count"] = len(embeddings)
+    return ApiResponse.ok(student)
+
 
 
 

@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartClass Vision AI - Smart Board Classroom Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
@@ -13,11 +16,8 @@
   <!-- ===================================================================== -->
   <header class="top-bar">
     <div class="brand-group">
-      <div class="brand-logo">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-        </svg>
+      <div class="brand-logo" title="SmartClass Institutional AI">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Vision AI Crest" class="brand-crest-logo">
       </div>
       <div>
         <h1 class="brand-title">SmartClass Vision AI</h1>
@@ -42,7 +42,7 @@
       <div class="health-pill" id="health-tracking" title="ByteTrack Stabilization">
         <span class="health-dot online"></span> Tracking
       </div>
-      <div class="health-pill" id="health-db" title="SQLite Database">
+      <div class="health-pill" id="health-db" title="Database">
         <span class="health-dot online"></span> Database
       </div>
     </div>
@@ -50,19 +50,133 @@
     <!-- Controls Cluster -->
     <div class="header-actions">
       <!-- Mode Toggle Switch -->
-      <div class="view-toggle" title="Switch between Normal View, Debug View, and Raw Detector">
+      <div class="view-toggle" title="Switch View Mode">
         <button type="button" class="toggle-btn active" id="btn-mode-normal">Normal View</button>
         <button type="button" class="toggle-btn" id="btn-mode-debug">Debug View</button>
         <button type="button" class="toggle-btn" id="btn-mode-raw">Raw Detector</button>
       </div>
 
+      <!-- One-By-One Student Face Enrollment Button -->
+      <button type="button" class="btn-action btn-enroll-open" id="btn-open-enrollment" title="New One-By-One Student Face Enrollment">
+        + NEW REGISTER
+      </button>
 
       <!-- Operator Status -->
       <button type="button" class="btn-operator" id="btn-operator-toggle" title="Operator Authentication Settings">
-        <span class="icon-lock">🔒</span> <span id="operator-label">Viewer</span>
+        <span>🔒</span> <span id="operator-label">Viewer</span>
       </button>
+
+      <!-- Institutional Role Access: HOD & ADVISOR Logins -->
+      <div class="role-auth-actions">
+        <button type="button" class="btn-role-nav btn-role-hod" id="btn-top-hod-login" onclick="openRoleLoginModal('HOD')" title="Sign in with Head of Department Administrative Access">
+          🏛️ HOD LOGIN
+        </button>
+        <button type="button" class="btn-role-nav btn-role-advisor" id="btn-top-advisor-login" onclick="openRoleLoginModal('ADVISOR')" title="Sign in with Class Advisor Access">
+          👥 ADVISOR LOGIN
+        </button>
+      </div>
     </div>
   </header>
+
+  <!-- ===================================================================== -->
+  <!-- General Department & Classroom Institutional Overview                 -->
+  <!-- ===================================================================== -->
+  <section class="dept-overview-section" id="dept-overview-section">
+    <div class="dept-overview-header">
+      <div class="dept-header-title">
+        <span class="dept-pill">INSTITUTIONAL OVERVIEW</span>
+        <h2>Department of AI & Data Science — Smart Classrooms</h2>
+      </div>
+      <div class="dept-header-status">
+        <span class="status-indicator-badge live" id="dept-ai-status">
+          <span class="pulse-dot"></span> AI Pipeline: SCRFD + ArcFace Active
+        </span>
+      </div>
+    </div>
+
+    <!-- Overview Metrics Grid -->
+    <div class="dept-metrics-grid">
+      <!-- 1. Classrooms -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-indigo">🏛️</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">TOTAL CLASSROOMS</span>
+          <div class="dept-card-value"><span id="metric-total-classrooms">1</span></div>
+          <span class="dept-card-sub" id="metric-active-classrooms-sub">Active: 1 (AIDS-B)</span>
+        </div>
+      </div>
+
+      <!-- 2. Students & Attendance -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-blue">👥</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">TOTAL STUDENTS</span>
+          <div class="dept-card-value"><span id="metric-total-students">--</span></div>
+          <span class="dept-card-sub"><span id="metric-students-present">0</span> Present · <span id="metric-students-absent">--</span> Absent</span>
+        </div>
+      </div>
+
+      <!-- 3. Attendance Rate -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-green">📈</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">ATTENDANCE OVERVIEW</span>
+          <div class="dept-card-value"><span id="metric-attendance-rate">--%</span></div>
+          <span class="dept-card-sub" id="metric-attendance-sub">Waiting for session data</span>
+        </div>
+      </div>
+
+      <!-- 4. Active Cameras -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-amber">📹</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">ACTIVE CAMERAS</span>
+          <div class="dept-card-value"><span id="metric-active-cameras">1</span></div>
+          <span class="dept-card-sub" id="metric-camera-status-sub">PC Camera (Online)</span>
+        </div>
+      </div>
+
+      <!-- 5. ESP32 Devices -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-slate">📡</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">ESP32 DEVICES</span>
+          <div class="dept-card-value"><span id="metric-esp32-count">0</span></div>
+          <span class="dept-card-sub empty-state-sub" id="metric-esp32-status">ESP32 not connected</span>
+        </div>
+      </div>
+
+      <!-- 6. Sensor Status -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-teal">🌡️</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">SENSOR STATUS</span>
+          <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-sensor-summary">Standby</span></div>
+          <span class="dept-card-sub empty-state-sub" id="metric-sensor-sub">No sensor data available</span>
+        </div>
+      </div>
+
+      <!-- 7. Active Alerts -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-red">🔔</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">ACTIVE ALERTS</span>
+          <div class="dept-card-value"><span id="metric-active-alerts">0</span></div>
+          <span class="dept-card-sub" id="metric-alerts-sub">No critical alerts</span>
+        </div>
+      </div>
+
+      <!-- 8. Classroom Status -->
+      <div class="dept-card">
+        <div class="dept-card-icon icon-teal">⚡</div>
+        <div class="dept-card-body">
+          <span class="dept-card-label">CLASSROOM STATUS</span>
+          <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-classroom-name">AIDS-B</span></div>
+          <span class="dept-card-sub" id="metric-classroom-state">3rd Year AI&DS - B · Online</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ===================================================================== -->
   <!-- Active Session Hero Banner & Control Panel                            -->
@@ -95,7 +209,7 @@
       </div>
     </div>
 
-    <!-- Session Action Buttons (Operator protected) -->
+    <!-- Session Action Buttons -->
     <div class="session-actions" id="session-controls">
       <button type="button" class="btn-action btn-start" id="btn-start-session">▶ Start Session</button>
       <button type="button" class="btn-action btn-pause" id="btn-pause-session" style="display:none;">⏸ Pause</button>
@@ -105,7 +219,7 @@
   </section>
 
   <!-- ===================================================================== -->
-  <!-- KPI Metric Overview Cards (Smart Board High Readability)              -->
+  <!-- KPI Metric Overview Cards                                             -->
   <!-- ===================================================================== -->
   <section class="kpi-grid">
     <div class="kpi-card card-total">
@@ -159,45 +273,149 @@
         </div>
         <div class="panel-tools">
           <span class="mode-pill" id="view-mode-indicator">NORMAL VIEW</span>
-          <button type="button" class="btn-icon" id="btn-fullscreen" title="Toggle Fullscreen for Smart Board">⛶ Fullscreen</button>
+          <button type="button" class="btn-icon" id="btn-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
         </div>
       </div>
 
-      <!-- Camera Source Selection & DroidCam Control Toolbar -->
-      <div class="camera-source-toolbar">
-        <div class="source-select-group">
-          <label for="camera-source-select" class="source-label">CAMERA SOURCE:</label>
-          <select id="camera-source-select" class="source-dropdown">
-            <option value="droidcam">DroidCam Wi-Fi</option>
-            <option value="laptop">Laptop Camera</option>
-            <option value="smart_board">Smart Board Camera</option>
-            <option value="external">External Camera</option>
-          </select>
+      <!-- Camera Source Selection -->
+      <div class="camera-source-section">
+        <div class="camera-section-header">
+          <span class="camera-section-title">CAMERA SOURCE</span>
+          <div class="camera-ctrl-actions">
+            <button type="button" class="btn-action btn-end" id="btn-stop-camera" title="Stop camera stream">
+              <span>⏹</span> STOP CAMERA
+            </button>
+            <button type="button" class="btn-action btn-start" id="btn-start-camera" title="Start camera stream" style="display: none;">
+              <span>▶</span> START CAMERA
+            </button>
+          </div>
         </div>
 
-        <div class="droidcam-ip-group" id="droidcam-ip-group">
-          <label for="input-droidcam-host" class="ip-label">PHONE IP:</label>
-          <input type="text" id="input-droidcam-host" class="input-ip" value="10.140.159.218" placeholder="10.140.159.218">
-          <span class="ip-port">:4747</span>
-          <button type="button" class="btn-cam-action" id="btn-test-camera" title="Probe DroidCam connection">Test Camera</button>
-          <button type="button" class="btn-cam-action btn-apply" id="btn-apply-camera" title="Connect to camera">Connect</button>
-          <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action btn-remote" title="Open DroidCam Remote Web Controller in a new tab" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+        <!-- 4 Camera Cards -->
+        <div class="camera-cards-grid">
+          <div class="cam-card active" data-source="pc" id="card-cam-pc" title="Integrated PC / Laptop Webcam">
+            <div class="cam-card-icon">📷</div>
+            <div class="cam-card-title">PC CAMERA</div>
+            <div class="cam-card-sub">Device 0</div>
+          </div>
+
+          <div class="cam-card" data-source="droidcam" id="card-cam-droidcam" title="Mobile Phone Camera over Wi-Fi">
+            <div class="cam-card-icon">📱</div>
+            <div class="cam-card-title">DROIDCAM</div>
+            <div class="cam-card-sub">Phone Camera</div>
+          </div>
+
+          <div class="cam-card" data-source="extension" id="card-cam-extension" title="External USB Camera">
+            <div class="cam-card-icon">🎥</div>
+            <div class="cam-card-title">EXTENSION</div>
+            <div class="cam-card-sub">USB Camera</div>
+          </div>
+
+          <div class="cam-card" data-source="esp32" id="card-cam-esp32" title="ESP32 Wi-Fi Camera Stream">
+            <div class="cam-card-icon">📡</div>
+            <div class="cam-card-title">ESP32 CAM</div>
+            <div class="cam-card-sub">Wi-Fi Stream</div>
+          </div>
         </div>
 
+        <!-- Configuration Panels for Selected Camera -->
+        <div class="cam-config-panel" id="panel-cam-pc">
+          <div class="config-row">
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">Connected to integrated PC / laptop webcam (Device 0).</span>
+            <button type="button" class="btn-cam-action btn-apply" id="btn-connect-pc">Connect Camera</button>
+          </div>
+        </div>
 
-        <div class="camera-status-strip" id="camera-status-strip">
-          <span class="cam-badge" id="cam-active-badge">Camera: DroidCam Wi-Fi</span>
-          <span class="cam-badge" id="cam-res-badge">Res: --</span>
-          <span class="cam-badge" id="cam-fps-badge">FPS: --</span>
-          <span class="cam-status-pill status-disconnected" id="cam-status-pill">CHECKING...</span>
+        <div class="cam-config-panel" id="panel-cam-droidcam" style="display: none;">
+          <div class="config-row config-inputs-row">
+            <div class="input-field-group">
+              <label for="input-droidcam-host" class="input-lbl">IP Address</label>
+              <input type="text" id="input-droidcam-host" class="input-cam-text font-mono" value="10.140.159.218">
+            </div>
+            <div class="input-field-group">
+              <label for="input-droidcam-port" class="input-lbl">Port</label>
+              <input type="number" id="input-droidcam-port" class="input-cam-text font-mono" value="4747">
+            </div>
+            <div class="input-field-group">
+              <label for="input-droidcam-videourl" class="input-lbl">Video URL</label>
+              <input type="text" id="input-droidcam-videourl" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" readonly>
+            </div>
+          </div>
+          <div class="config-row config-btns-row" style="margin-top: 6px;">
+            <button type="button" class="btn-cam-action" id="btn-test-droidcam">Test Connection</button>
+            <button type="button" class="btn-cam-action btn-apply" id="btn-connect-droidcam">Connect Camera</button>
+            <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+          </div>
+        </div>
+
+        <div class="cam-config-panel" id="panel-cam-extension" style="display: none;">
+          <div class="config-row">
+            <div class="input-field-group" style="min-width: 180px;">
+              <label for="select-extension-device" class="input-lbl">Camera Device:</label>
+              <select id="select-extension-device" class="input-cam-text">
+                <option value="0">Camera 0</option>
+                <option value="1" selected>Camera 1</option>
+                <option value="2">Camera 2</option>
+              </select>
+            </div>
+            <div class="config-btns-row">
+              <button type="button" class="btn-cam-action" id="btn-test-extension">Test Connection</button>
+              <button type="button" class="btn-cam-action btn-apply" id="btn-connect-extension">Connect Camera</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cam-config-panel" id="panel-cam-esp32" style="display: none;">
+          <div class="config-row config-inputs-row">
+            <div class="input-field-group" style="grid-column: span 3;">
+              <label for="input-esp32-url" class="input-lbl">Stream URL:</label>
+              <input type="text" id="input-esp32-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream">
+            </div>
+          </div>
+          <div class="config-row config-btns-row" style="margin-top: 6px;">
+            <button type="button" class="btn-cam-action" id="btn-test-esp32">Test Connection</button>
+            <button type="button" class="btn-cam-action btn-apply" id="btn-connect-esp32">Connect Camera</button>
+          </div>
+        </div>
+
+        <!-- Camera Status Bar -->
+        <div class="camera-status-bar">
+          <div class="cam-status-info">
+            <span class="status-label">Camera:</span>
+            <span class="status-value font-mono" id="active-cam-name">PC Camera</span>
+          </div>
+          <div class="cam-status-info">
+            <span class="status-label">Status:</span>
+            <span class="status-pill status-pill-connected" id="active-cam-status-pill">● Connected</span>
+          </div>
+          <div class="cam-status-info" style="margin-left: auto;">
+            <span class="status-label">Resolution:</span>
+            <span class="status-value font-mono" id="active-cam-res">--</span>
+          </div>
+          <div class="cam-status-info">
+            <span class="status-label">FPS:</span>
+            <span class="status-value font-mono" id="active-cam-fps">-- FPS</span>
+          </div>
+        </div>
+
+        <!-- Troubleshooting Box -->
+        <div class="camera-troubleshoot-box" id="cam-troubleshoot-box" style="display: none;">
+          <div class="troubleshoot-header">
+            <span>⚠️</span>
+            <strong id="troubleshoot-title">Camera Connection Advisory</strong>
+          </div>
+          <ul class="troubleshoot-list" id="troubleshoot-list">
+            <li>Check device connection and ensure same network</li>
+          </ul>
         </div>
       </div>
 
+      <!-- Live Stream Viewport -->
       <div class="video-container" id="video-wrapper">
         <img id="camera-stream" src="/api/video/feed?view_mode=normal" alt="Smart Board Live Camera Feed" class="video-stream">
         <div class="video-offline-overlay" id="video-offline-overlay" style="display:none;">
           <div class="offline-box">
-            <span class="offline-icon">⚠️</span>
+            <span>⚠️</span>
             <h3>CAMERA OFFLINE</h3>
             <p>Smart Board camera stream currently disconnected or unavailable.</p>
           </div>
@@ -206,9 +424,9 @@
 
       <!-- Unknown Face Alert Strip -->
       <div class="unknown-alert-strip" id="unknown-alert" style="display:none;">
-        <span class="alert-icon">⚠️</span>
-        <div class="alert-content">
-          <strong>UNKNOWN FACE DETECTED:</strong> One or more detected faces do not match any enrolled student in the database. No identity guessed.
+        <span>⚠️</span>
+        <div>
+          <strong>UNKNOWN FACE DETECTED:</strong> One or more detected faces do not match any enrolled student in the database.
         </div>
       </div>
     </div>
@@ -221,12 +439,11 @@
           <span class="count-badge" id="roster-count-badge">0 Students</span>
         </div>
 
-        <!-- Export Buttons -->
         <div class="export-actions">
-          <button type="button" class="btn-export" id="btn-export-csv" title="Export session attendance as CSV">
+          <button type="button" class="btn-export" id="btn-export-csv" title="Export as CSV">
             📄 CSV Export
           </button>
-          <button type="button" class="btn-export" id="btn-export-json" title="Export session attendance as JSON">
+          <button type="button" class="btn-export" id="btn-export-json" title="Export as JSON">
             📋 JSON Export
           </button>
         </div>
@@ -245,21 +462,21 @@
         </div>
       </div>
 
-      <!-- Roster Table Container -->
+      <!-- Roster Table -->
       <div class="table-container">
         <table class="roster-table">
           <thead>
             <tr>
               <th style="width: 140px;">Register No</th>
               <th>Student Name</th>
-              <th style="width: 130px;">Status</th>
-              <th style="width: 110px;">First Seen</th>
-              <th style="width: 110px;">Last Seen</th>
+              <th style="width: 110px;">Status</th>
+              <th style="width: 90px;">First Seen</th>
+              <th style="width: 90px;">Last Seen</th>
             </tr>
           </thead>
           <tbody id="roster-tbody">
             <tr>
-              <td colspan="5" class="empty-state">Loading attendance roster...</td>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading attendance roster...</td>
             </tr>
           </tbody>
         </table>
@@ -269,16 +486,18 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- End Session Confirmation Modal                                        -->
+  <!-- MODALS                                                                -->
   <!-- ===================================================================== -->
+
+  <!-- End Session Confirmation Modal -->
   <div class="modal-backdrop" id="end-session-modal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>End Active Session?</h3>
+        <h3 style="font-size: 1.1rem; font-weight: 700;">End Active Session?</h3>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to end the current instructional session?</p>
-        <p class="modal-sub">Final attendance will be locked and archived into the SQLite database. This terminal operation cannot be undone.</p>
+        <p style="font-size: 0.80rem; color: var(--text-muted); margin-top: 4px;">Final attendance will be locked and archived into the database.</p>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-modal btn-cancel" id="btn-modal-cancel">Cancel</button>
@@ -291,11 +510,11 @@
   <div class="modal-backdrop" id="operator-modal" style="display: none;">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Operator Authorization</h3>
+        <h3 style="font-size: 1.1rem; font-weight: 700;">Operator Authorization</h3>
       </div>
       <div class="modal-body">
-        <p>Enter the Operator Token to unlock session management and administrative actions:</p>
-        <input type="password" id="input-operator-token" class="modal-input" placeholder="Operator Token...">
+        <p style="margin-bottom: 8px;">Enter the Operator Token to unlock session management actions:</p>
+        <input type="password" id="input-operator-token" class="input-cam-text" style="width: 100%;" placeholder="Operator Token...">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-modal btn-cancel" id="btn-operator-cancel">Cancel</button>
@@ -303,6 +522,379 @@
       </div>
     </div>
   </div>
+
+  <!-- Student Face Enrollment Modal -->
+  <div class="modal-backdrop" id="enrollment-modal" style="display: none;">
+    <div class="modal-card" style="width: 860px; max-width: 95vw; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="status-badge badge-active" style="background: var(--secondary); color: #fff;">ENROLLMENT</span>
+          <h3 style="font-size: 1.1rem; font-weight: 700;">Student Face Registration</h3>
+        </div>
+        <button type="button" class="btn-icon" id="btn-enroll-close" title="Close Enrollment">✕</button>
+      </div>
+
+      <!-- 4-Step Wizard Nav -->
+      <div style="display: flex; gap: 8px; justify-content: space-between; background: #F8FAFC; padding: 10px 14px; border-bottom: 1px solid var(--border-subtle);">
+        <div class="wizard-step-item active" id="idx-wiz-step-1" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <span style="width: 20px; height: 20px; border-radius: 50%; background: var(--secondary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">1</span>
+          <span>Student Details</span>
+        </div>
+        <div class="wizard-step-item" id="idx-wiz-step-2" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">2</span>
+          <span>Camera Source</span>
+        </div>
+        <div class="wizard-step-item" id="idx-wiz-step-3" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">3</span>
+          <span>Connection</span>
+        </div>
+        <div class="wizard-step-item" id="idx-wiz-step-4" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">4</span>
+          <span>Live Enrollment</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Form -->
+      <div id="enroll-step-form" style="padding: 1.25rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+          <div class="input-field-group">
+            <label for="enroll-input-reg" class="input-lbl">Register Number:</label>
+            <input type="text" id="enroll-input-reg" class="input-cam-text font-mono" placeholder="e.g. 922524243069" required autocomplete="off">
+            <span id="enroll-reg-hint" style="font-size: 0.70rem; color: var(--text-muted);">Unique registration ID</span>
+          </div>
+
+          <div class="input-field-group">
+            <label for="enroll-input-name" class="input-lbl">Student Name:</label>
+            <input type="text" id="enroll-input-name" class="input-cam-text" placeholder="e.g. KANISH M" required autocomplete="off">
+          </div>
+
+          <div class="input-field-group">
+            <label for="enroll-input-class" class="input-lbl">Class / Year:</label>
+            <select id="enroll-input-class" class="input-cam-text" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year" selected>3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+
+          <div class="input-field-group">
+            <label for="enroll-input-dept" class="input-lbl">Department:</label>
+            <input type="text" id="enroll-input-dept" class="input-cam-text" value="AI&DS" required autocomplete="off">
+          </div>
+
+          <div class="input-field-group">
+            <label for="enroll-input-sec" class="input-lbl">Section:</label>
+            <input type="text" id="enroll-input-sec" class="input-cam-text" value="B" required autocomplete="off">
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-to-step2">
+            Next: Camera Source →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Source Selection -->
+      <div id="enroll-step-source" style="display: none; padding: 1.25rem;">
+        <div class="camera-cards-grid" style="margin-bottom: 14px;">
+          <div class="cam-card active" data-source="pc" id="idx-cam-pc">
+            <div class="cam-card-icon">📷</div>
+            <div class="cam-card-title">PC CAMERA</div>
+            <div class="cam-card-sub">Webcam</div>
+          </div>
+          <div class="cam-card" data-source="droidcam" id="idx-cam-droidcam">
+            <div class="cam-card-icon">📱</div>
+            <div class="cam-card-title">DROIDCAM</div>
+            <div class="cam-card-sub">Phone</div>
+          </div>
+          <div class="cam-card" data-source="extension" id="idx-cam-extension">
+            <div class="cam-card-icon">🎥</div>
+            <div class="cam-card-title">EXTENSION</div>
+            <div class="cam-card-sub">External USB</div>
+          </div>
+          <div class="cam-card" data-source="esp32" id="idx-cam-esp32">
+            <div class="cam-card-icon">📡</div>
+            <div class="cam-card-title">ESP32 CAM</div>
+            <div class="cam-card-sub">Stream</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn-action btn-cancel" id="btn-idx-back-1">← Back</button>
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-idx-to-step3">Next: Connection →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Hardware Connection -->
+      <div id="enroll-step-conn" style="display: none; padding: 1.25rem;">
+        <div id="idx-conn-box-pc" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Device Index: <strong>0</strong> (Integrated Laptop / PC Webcam)</p>
+        </div>
+
+        <div id="idx-conn-box-droidcam" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <input type="text" id="idx-dc-host" class="input-cam-text font-mono" value="10.140.159.218">
+            <input type="number" id="idx-dc-port" class="input-cam-text font-mono" value="4747">
+          </div>
+          <input type="text" id="idx-dc-url" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" readonly>
+        </div>
+
+        <div id="idx-conn-box-extension" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
+          <select id="idx-ext-index" class="input-cam-text font-mono">
+            <option value="0">Camera 0</option>
+            <option value="1" selected>Camera 1</option>
+            <option value="2">Camera 2</option>
+          </select>
+        </div>
+
+        <div id="idx-conn-box-esp32" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
+          <input type="text" id="idx-esp-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream">
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 14px;">
+          <button type="button" class="btn-cam-action" id="btn-idx-test-cam">TEST CONNECTION</button>
+          <button type="button" class="btn-cam-action btn-apply" id="btn-idx-connect-cam">CONNECT CAMERA</button>
+          <button type="button" class="btn-cam-action" id="btn-idx-stop-cam">STOP CAMERA</button>
+          <span class="status-pill status-pill-connected" id="idx-conn-pill" style="margin-left: auto;">● READY</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn-action btn-cancel" id="btn-idx-back-2">← Back</button>
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-idx-to-step4">Open Live Enrollment →</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Live Capture -->
+      <div id="enroll-step-camera" style="display: none; padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; margin-bottom: 10px;">
+          <div>Student: <strong id="enroll-current-name">KANISH M</strong> (<span class="font-mono" id="enroll-current-reg">922524243069</span>)</div>
+          <div>Camera: <strong id="enroll-current-source">PC Camera</strong></div>
+          <span id="enroll-current-dept" style="display:none;"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px;">
+          <div style="position: relative; background: #0B132B; border-radius: 8px; overflow: hidden; min-height: 260px; display: flex; align-items: center; justify-content: center;">
+            <img id="enroll-camera-feed" class="video-stream" src="/api/video/feed?view_mode=normal" alt="Enrollment Camera Stream">
+            <div id="enroll-quality-hud" style="position: absolute; top: 8px; left: 8px; padding: 4px 8px; border-radius: 4px; background: rgba(16, 185, 129, 0.9); color: #fff; font-size: 0.72rem; font-weight: 700;">
+              <span id="enroll-hud-dot">●</span> <span id="enroll-hud-text">Checking camera frame...</span>
+            </div>
+            <div id="enroll-capture-flash" style="display:none;"></div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.80rem; font-weight: 700; margin-bottom: 6px;">
+                <span>Face Samples</span>
+                <span id="enroll-samples-count">0 of 10 captured</span>
+              </div>
+              <div id="idx-samples-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;"></div>
+            </div>
+
+            <div style="background: #FAFCFF; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; font-size: 0.78rem;">
+              <div style="font-weight: 700; color: var(--secondary); margin-bottom: 4px;">Progress</div>
+              <div id="chk-samples-status">○ Face Samples (min 5 required)</div>
+              <div id="chk-save-status">○ Save Enrollment</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end;">
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-capture">📸 CAPTURE SAMPLE</button>
+          <button type="button" class="btn-action btn-cancel" id="btn-enroll-retake" disabled>↺ RETAKE</button>
+          <button type="button" class="btn-action btn-start" id="btn-enroll-save" disabled>💾 SAVE ENROLLMENT</button>
+          <button type="button" class="btn-action btn-cancel" id="btn-enroll-cancel">✕ CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Duplicate Register Modal -->
+  <div class="modal-backdrop" id="duplicate-reg-modal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="color: var(--danger);">Register Number already enrolled</h3>
+      </div>
+      <div class="modal-body" id="duplicate-modal-body">
+        <p>The register number <strong id="dup-reg-number" class="font-mono">--</strong> is already registered.</p>
+        <div id="dup-student-details" style="display:none; margin-top: 8px; font-size: 0.82rem;">
+          <div><strong>Name:</strong> <span id="dup-student-name">--</span></div>
+          <div><strong>Class:</strong> <span id="dup-student-class">--</span></div>
+          <div><strong>Dept:</strong> <span id="dup-student-dept">--</span></div>
+          <div><strong>Sec:</strong> <span id="dup-student-sec">--</span></div>
+          <div><strong>Enrolled:</strong> <span id="dup-student-date">--</span></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-cancel" id="btn-dup-cancel">CANCEL</button>
+        <button type="button" class="btn-modal btn-confirm-primary" id="btn-dup-view">VIEW EXISTING</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Institutional Role Authentication Modal (HOD & Advisor) -->
+  <div class="modal-backdrop" id="role-login-modal" style="display: none;">
+    <div class="role-modal-card">
+      <div class="role-modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:32px; height:32px; border-radius:6px; background:var(--secondary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800;">SC</div>
+          <div>
+            <h3 style="font-size:1rem; font-weight:700; margin:0;">Institutional Access</h3>
+            <span style="font-size:0.72rem; color:var(--text-muted);">SmartClass Vision AI Gateway</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeRoleLoginModal()">✕</button>
+      </div>
+
+      <div class="role-tab-bar">
+        <button type="button" class="role-tab-btn active" id="tab-btn-hod" onclick="switchRoleLoginTab('HOD')">
+          🏛️ HOD Access
+        </button>
+        <button type="button" class="role-tab-btn" id="tab-btn-adv" onclick="switchRoleLoginTab('ADVISOR')">
+          👥 Advisor Access
+        </button>
+      </div>
+
+      <div class="role-modal-body">
+        <div class="role-desc-box">
+          <strong id="modal-role-title" style="display:block; margin-bottom:2px;">🏛️ Head of Department (HOD) Portal</strong>
+          <span id="modal-role-desc">Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.</span>
+        </div>
+
+        <div id="roleLoginAlert" class="alert-box alert-error" style="display:none; padding:8px 12px; font-size:0.80rem; border-radius:6px;"></div>
+
+        <form id="roleLoginForm" onsubmit="handleRoleModalLogin(event)">
+          <div class="role-form-group">
+            <label for="modal-user-id">Institutional User ID</label>
+            <input type="text" id="modal-user-id" class="form-control" value="HOD001" required autocomplete="username">
+          </div>
+
+          <div class="role-form-group" style="margin-top: 8px;">
+            <label for="modal-password">Password</label>
+            <input type="password" id="modal-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" id="modal-submit-login" class="role-btn-submit" style="margin-top: 12px;">
+            Sign In to HOD Dashboard
+          </button>
+        </form>
+
+        <div class="role-quick-hints">
+          <span id="role-default-hint">Default HOD: <code>HOD001</code> / <code>admin123</code></span>
+          <a href="/login" style="color:var(--secondary); text-decoration:none; font-weight:600;">Full Portal Login ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentRoleLogin = 'HOD';
+
+    function openRoleLoginModal(role) {
+      const modal = document.getElementById('role-login-modal');
+      if (!modal) return;
+      modal.style.display = 'flex';
+      switchRoleLoginTab(role);
+    }
+
+    function closeRoleLoginModal() {
+      const modal = document.getElementById('role-login-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function switchRoleLoginTab(role) {
+      currentRoleLogin = role;
+      const tabHod = document.getElementById('tab-btn-hod');
+      const tabAdv = document.getElementById('tab-btn-adv');
+      const roleTitle = document.getElementById('modal-role-title');
+      const roleDesc = document.getElementById('modal-role-desc');
+      const userIdInput = document.getElementById('modal-user-id');
+      const submitBtn = document.getElementById('modal-submit-login');
+      const hint = document.getElementById('role-default-hint');
+      const alertBox = document.getElementById('roleLoginAlert');
+      if (alertBox) alertBox.style.display = 'none';
+
+      if (role === 'HOD') {
+        tabHod.classList.add('active');
+        tabAdv.classList.remove('active');
+        roleTitle.innerText = '🏛️ Head of Department (HOD) Portal';
+        roleDesc.innerText = 'Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.';
+        userIdInput.value = 'HOD001';
+        submitBtn.innerText = 'Sign In to HOD Dashboard';
+        if (hint) hint.innerHTML = 'Default HOD: <code>HOD001</code> / <code>admin123</code>';
+      } else {
+        tabAdv.classList.add('active');
+        tabHod.classList.remove('active');
+        roleTitle.innerText = '👥 Class Advisor Portal';
+        roleDesc.innerText = 'Dedicated live camera monitoring and attendance verification for your assigned class & section.';
+        userIdInput.value = 'ADV001';
+        submitBtn.innerText = 'Sign In to Advisor Dashboard';
+        if (hint) hint.innerHTML = 'Default Advisor: <code>ADV001</code> / <code>password123</code>';
+      }
+      const pwdInput = document.getElementById('modal-password');
+      if (pwdInput) {
+        pwdInput.value = '';
+        setTimeout(() => pwdInput.focus(), 80);
+      }
+    }
+
+    async function handleRoleModalLogin(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById('roleLoginAlert');
+      const submitBtn = document.getElementById('modal-submit-login');
+      alertBox.style.display = 'none';
+
+      const userId = document.getElementById('modal-user-id').value.trim();
+      const password = document.getElementById('modal-password').value;
+
+      if (!userId || !password) {
+        alertBox.innerText = 'Please enter both User ID and password.';
+        alertBox.style.display = 'block';
+        return;
+      }
+
+      const origText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Verifying credentials...';
+
+      try {
+        const resp = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, password: password })
+        });
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          const authData = data.data;
+          localStorage.setItem('smartclass_token', authData.access_token);
+          localStorage.setItem('smartclass_user', JSON.stringify(authData.user));
+          alertBox.innerText = `Welcome, ${authData.user.name}! Redirecting...`;
+          alertBox.style.display = 'block';
+          setTimeout(() => {
+            window.location.href = authData.redirect_url;
+          }, 350);
+        } else {
+          alertBox.innerText = data.error?.message || data.detail || 'Authentication failed.';
+          alertBox.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerText = origText;
+        }
+      } catch (err) {
+        alertBox.innerText = 'Unable to reach authentication server.';
+        alertBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.innerText = origText;
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('role-login-modal');
+      if (modal && e.target === modal) {
+        closeRoleLoginModal();
+      }
+    });
+  </script>
 
   <!-- Application Logic -->
   <script src="/static/js/dashboard.js"></script>

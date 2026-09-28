@@ -1,14 +1,29 @@
 import os
 from fastapi import FastAPI, Request, HTTPException, status
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from loguru import logger
 
+from contextlib import asynccontextmanager
 from app.api import router as api_router
 from app.schemas import ApiResponse
 from config.settings import get_settings
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Guaranteed lifecycle manager ensuring background camera worker cleanly starts and releases."""
+    logger.info("SmartClass Vision AI starting up - initializing camera pipeline...")
+    from app.state import get_app_state
+    state = get_app_state()
+    state.start_camera_worker()
+    try:
+        yield
+    finally:
+        logger.info("SmartClass Vision AI shutting down - releasing camera resources...")
+        state.stop_camera_worker()
 
 
 def create_app() -> FastAPI:
@@ -20,7 +35,8 @@ def create_app() -> FastAPI:
         description="High-Accuracy Single-Camera Multi-Student Face Identification & Attendance System",
         version="1.0.0",
         docs_url="/docs",
-        redoc_url="/redoc"
+        redoc_url="/redoc",
+        lifespan=lifespan
     )
 
     # 1. CORS Middleware
@@ -62,10 +78,12 @@ def create_app() -> FastAPI:
             content=ApiResponse.fail(code="INTERNAL_SERVER_ERROR", message="An internal server error occurred.").model_dump()
         )
 
-    # 3. Include API router
+    # 3. Include API routers
     app.include_router(api_router)
+    from app.api_rbac import router as rbac_router
+    app.include_router(rbac_router)
 
-    # 4. Static Files & Root HTML Page
+    # 4. Static Files & Root HTML Pages
     dashboard_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dashboard")
     static_dir = os.path.join(dashboard_dir, "static")
     os.makedirs(static_dir, exist_ok=True)
@@ -73,23 +91,58 @@ def create_app() -> FastAPI:
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
     @app.get("/", include_in_schema=False)
-    async def serve_dashboard():
+    @app.get("/login", include_in_schema=False)
+    async def serve_login(request: Request):
+        """Authoritative flow: Root URL serves LOGIN PAGE directly. Authenticated sessions route to role dashboard."""
+        token = request.cookies.get("access_token")
+        if token:
+            from app.core.security import decode_access_token
+            payload = decode_access_token(token)
+            if payload:
+                role = payload.get("role")
+                if role == "hod":
+                    return RedirectResponse(url="/hod/dashboard", status_code=303)
+                elif role == "class_advisor":
+                    return RedirectResponse(url="/advisor/dashboard", status_code=303)
+        return FileResponse(os.path.join(dashboard_dir, "login.html"))
+
+    @app.get("/dashboard", include_in_schema=False)
+    async def serve_dashboard(request: Request):
+        """Dashboard redirect based on active authenticated role or back to login."""
+        token = request.cookies.get("access_token")
+        if token:
+            from app.core.security import decode_access_token
+            payload = decode_access_token(token)
+            if payload:
+                role = payload.get("role")
+                if role == "hod":
+                    return RedirectResponse(url="/hod/dashboard", status_code=303)
+                elif role == "class_advisor":
+                    return RedirectResponse(url="/advisor/dashboard", status_code=303)
+        return RedirectResponse(url="/login", status_code=303)
+
+    @app.get("/hod/dashboard", include_in_schema=False)
+    async def serve_hod_dashboard():
+        hod_file = os.path.join(dashboard_dir, "hod_dashboard.html")
+        if os.path.exists(hod_file):
+            return FileResponse(hod_file)
+        return RedirectResponse(url="/login", status_code=303)
+
+    @app.get("/advisor/dashboard", include_in_schema=False)
+    async def serve_advisor_dashboard():
+        advisor_file = os.path.join(dashboard_dir, "advisor_dashboard.html")
+        if os.path.exists(advisor_file):
+            return FileResponse(advisor_file)
+        return RedirectResponse(url="/login", status_code=303)
+
+    @app.get("/smartboard", include_in_schema=False)
+    @app.get("/live", include_in_schema=False)
+    @app.get("/classroom/monitor", include_in_schema=False)
+    async def serve_smartboard_monitor():
         index_file = os.path.join(dashboard_dir, "index.html")
         if os.path.exists(index_file):
             return FileResponse(index_file)
-    @app.on_event("startup")
-    def on_startup():
-        logger.info("SmartClass Vision AI starting up - initializing camera pipeline...")
-        from app.state import get_app_state
-        state = get_app_state()
-        state.start_camera_worker()
-
-    @app.on_event("shutdown")
-    def on_shutdown():
-        logger.info("SmartClass Vision AI shutting down - releasing camera resources...")
-        from app.state import get_app_state
-        state = get_app_state()
-        state.stop_camera_worker()
+        return RedirectResponse(url="/login", status_code=303)
 
     return app
 

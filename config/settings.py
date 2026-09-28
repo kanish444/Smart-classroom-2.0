@@ -20,42 +20,61 @@ class DroidCamSettings(BaseModel):
         vpath = self.video_path if self.video_path.startswith("/") else f"/{self.video_path}"
         return f"http://{self.host}:{self.port}{vpath}"
 
+class ESP32CamSettings(BaseModel):
+    enabled: bool = Field(default_factory=lambda: os.getenv("ESP32_ENABLED", "True").lower() == "true")
+    stream_url: str = Field(default_factory=lambda: os.getenv("ESP32_STREAM_URL", "http://192.168.1.100:81/stream"))
+
 class CameraRetrySettings(BaseModel):
     enabled: bool = Field(default_factory=lambda: os.getenv("CAMERA_RETRY_ENABLED", "True").lower() == "true")
     max_attempts: int = Field(default_factory=lambda: int(os.getenv("CAMERA_RETRY_MAX", "5")))
     delay_seconds: float = Field(default_factory=lambda: float(os.getenv("CAMERA_RETRY_DELAY", "2.0")))
 
 class CameraSettings(BaseModel):
-    source: str = Field(default_factory=lambda: os.getenv("CAMERA_SOURCE", "droidcam"))
+    source: str = Field(default_factory=lambda: os.getenv("CAMERA_SOURCE", "pc"))
     index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_INDEX", "0")))
     laptop_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_LAPTOP_INDEX", "0")))
     smart_board_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_SMART_BOARD_INDEX", "1")))
     external_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_EXTERNAL_INDEX", "2")))
+    extension_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_EXTENSION_INDEX", "1")))
     width: int = Field(default_factory=lambda: int(os.getenv("CAMERA_WIDTH", "1280")))
     height: int = Field(default_factory=lambda: int(os.getenv("CAMERA_HEIGHT", "720")))
     droidcam: DroidCamSettings = Field(default_factory=DroidCamSettings)
+    esp32: ESP32CamSettings = Field(default_factory=ESP32CamSettings)
     retry: CameraRetrySettings = Field(default_factory=CameraRetrySettings)
 
 class DetectionSettings(BaseModel):
-    confidence_threshold: float = Field(default_factory=lambda: float(os.getenv("DETECTION_CONFIDENCE", "0.35")))
-    nms_iou_threshold: float = Field(default_factory=lambda: float(os.getenv("DETECTION_NMS_IOU", "0.45")))
-    padding_ratio: float = Field(default_factory=lambda: float(os.getenv("DETECTION_PADDING", "0.0")))
-    model_name: str = Field(default_factory=lambda: os.getenv("DETECTOR_MODEL", "yolov8n-face.pt"))
+    model_type: str = Field(default_factory=lambda: os.getenv("DETECTION_MODEL_TYPE", "scrfd")) # "scrfd" or "yolov8"
+    model_name: str = Field(default_factory=lambda: os.getenv("DETECTOR_MODEL", "models/face_detection/scrfd/scrfd_10g_kps.onnx"))
+    model_path: str = Field(default_factory=lambda: os.getenv("DETECTION_MODEL_PATH", "models/face_detection/scrfd/scrfd_10g_kps.onnx"))
+    input_width: int = Field(default_factory=lambda: int(os.getenv("DETECTION_INPUT_WIDTH", "640")))
+    input_height: int = Field(default_factory=lambda: int(os.getenv("DETECTION_INPUT_HEIGHT", "640")))
     input_size: int = Field(default_factory=lambda: int(os.getenv("DETECTION_INPUT_SIZE", "640")))
+    confidence_threshold: float = Field(default_factory=lambda: float(os.getenv("DETECTION_CONFIDENCE", "0.35")))
+    nms_iou_threshold: float = Field(default_factory=lambda: float(os.getenv("DETECTION_NMS_IOU", "0.40")))
+    padding_ratio: float = Field(default_factory=lambda: float(os.getenv("DETECTION_PADDING", "0.0")))
     max_faces: int = Field(default_factory=lambda: int(os.getenv("DETECTION_MAX_FACES", "100")))
-    min_face_size: int = Field(default_factory=lambda: int(os.getenv("DETECTION_MIN_FACE_SIZE", "20")))
+    min_face_size: int = Field(default_factory=lambda: int(os.getenv("DETECTION_MIN_FACE_SIZE", "16")))
+    enable_tiling: bool = Field(default_factory=lambda: os.getenv("DETECTION_ENABLE_TILING", "True").lower() == "true")
+    tile_interval: int = Field(default_factory=lambda: int(os.getenv("DETECTION_TILE_INTERVAL", "3")))
     debug_mode: bool = Field(default_factory=lambda: os.getenv("DETECTION_DEBUG_MODE", "False").lower() == "true")
 
 class QualitySettings(BaseModel):
-    min_face_area: int = Field(default_factory=lambda: int(os.getenv("MIN_FACE_AREA", "3000"))) # FAR zone minimum
-    min_sharpness: float = Field(default_factory=lambda: float(os.getenv("MIN_SHARPNESS", "50.0"))) # Laplacian variance threshold
+    min_face_area: int = Field(default_factory=lambda: int(os.getenv("MIN_FACE_AREA", "3000"))) # FAR zone minimum (~55x55px)
+    min_face_dimension: int = Field(default_factory=lambda: int(os.getenv("MIN_FACE_DIMENSION", "36")))
+    min_sharpness: float = Field(default_factory=lambda: float(os.getenv("MIN_SHARPNESS", "35.0"))) # Laplacian variance threshold
     min_brightness: float = Field(default_factory=lambda: float(os.getenv("MIN_BRIGHTNESS", "30.0")))
     max_brightness: float = Field(default_factory=lambda: float(os.getenv("MAX_BRIGHTNESS", "230.0")))
+    min_contrast: float = Field(default_factory=lambda: float(os.getenv("MIN_CONTRAST", "12.0")))
+    max_glare_ratio: float = Field(default_factory=lambda: float(os.getenv("MAX_GLARE_RATIO", "0.40")))
+    max_tilt_angle: float = Field(default_factory=lambda: float(os.getenv("MAX_TILT_ANGLE", "35.0")))
+    max_yaw_offset: float = Field(default_factory=lambda: float(os.getenv("MAX_YAW_OFFSET", "0.80")))
 
 class RecognitionSettings(BaseModel):
     model_name: str = Field(default_factory=lambda: os.getenv("RECOGNITION_MODEL", "w600k_mbf.onnx"))
     embedding_dim: int = Field(default_factory=lambda: int(os.getenv("EMBEDDING_DIM", "512")))
-    similarity_threshold: float = Field(default_factory=lambda: float(os.getenv("RECOGNITION_THRESHOLD", "0.65")))
+    similarity_threshold: float = Field(default_factory=lambda: float(os.getenv("RECOGNITION_THRESHOLD", "0.50")))
+    margin_threshold: float = Field(default_factory=lambda: float(os.getenv("MARGIN_THRESHOLD", "0.08")))
+    top_k: int = Field(default_factory=lambda: int(os.getenv("RECOGNITION_TOP_K", "10")))
     index_path: str = Field(default_factory=lambda: os.getenv("FAISS_INDEX_PATH", "database/faiss_index.bin"))
     device: str = Field(default_factory=lambda: os.getenv("RECOGNITION_DEVICE", "cpu"))
 

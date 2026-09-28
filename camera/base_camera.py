@@ -15,6 +15,10 @@ class BaseCamera(ABC):
             Tuple[bool, Any]: A boolean indicating success, and the frame data (e.g., numpy array).
         """
         pass
+
+    def read_frame(self) -> Tuple[bool, Any]:
+        """Alias for get_frame to satisfy frame interface."""
+        return self.get_frame()
         
     @abstractmethod
     def release(self) -> None:

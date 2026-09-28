@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any, Tuple, List
 from loguru import logger
 from pydantic import BaseModel, Field
 
-from core.detector import YOLOv8FaceDetector
+from core.detector import YOLOv8FaceDetector, BaseDetector, get_face_detector
 from core.face_quality import FaceQualityAssessor
 from core.face_alignment import FaceAligner
 from core.schemas import FaceQualityResult
@@ -51,11 +51,11 @@ class EnrollmentValidationPipeline:
 
     def __init__(
         self,
-        detector: Optional[YOLOv8FaceDetector] = None,
+        detector: Optional[BaseDetector] = None,
         assessor: Optional[FaceQualityAssessor] = None,
         aligner: Optional[FaceAligner] = None
     ):
-        self.detector = detector or YOLOv8FaceDetector()
+        self.detector = detector or get_face_detector()
         self.assessor = assessor or FaceQualityAssessor()
         self.aligner = aligner or FaceAligner()
 
@@ -182,8 +182,8 @@ class EnrollmentValidationPipeline:
                 quality_metrics=quality_res
             )
 
-        # Calculate quality score (0.0 to 1.0)
-        q_score = min(1.0, quality_res.sharpness / 200.0)
+        # Calculate quality score (0.0 to 1.0) using composite score
+        q_score = getattr(quality_res, "quality_score", min(1.0, quality_res.sharpness / 200.0))
 
         return FaceValidationResult(
             is_valid=True,

@@ -207,7 +207,7 @@ class AttendanceEngine:
         if not session_info:
             raise AttendanceEngineError(f"Session '{session_id}' not found.")
 
-        # Get all enrolled students in this section
+        # Get all enrolled students from authoritative enrollment registry
         all_students = self.db.get_all_students()
         enrolled_in_section = [
             s for s in all_students
@@ -220,9 +220,31 @@ class AttendanceEngine:
 
         enrolled_ids = {s["student_id"] for s in enrolled_in_section}
 
+        # Build student details mapping for robust roster rendering
+        student_details = {
+            s["student_id"]: {
+                "student_id": s["student_id"],
+                "student_name": s["student_name"],
+                "register_no": s.get("register_no", s["student_id"]),
+                "department": s.get("department", ""),
+                "section": s.get("section", ""),
+                "class_name": s.get("class_name", "")
+            }
+            for s in all_students
+        }
+        for s in all_students:
+            reg = s.get("register_no")
+            if reg and reg not in student_details:
+                student_details[reg] = student_details[s["student_id"]]
+
         # Retrieve recorded attendances
         raw_records = self.db.get_attendance_for_session(session_id)
-        records = [AttendanceRecord(**r) for r in raw_records]
+        records = []
+        for r in raw_records:
+            rec_dict = dict(r)
+            if not rec_dict.get("student_name") and rec_dict["student_id"] in student_details:
+                rec_dict["student_name"] = student_details[rec_dict["student_id"]]["student_name"]
+            records.append(AttendanceRecord(**rec_dict))
 
         seen_ids = {r.student_id for r in records}
         present_count = sum(1 for r in records if r.status == AttendanceStatus.PRESENT)
@@ -237,5 +259,6 @@ class AttendanceEngine:
             late_count=late_count,
             not_seen_count=len(not_seen_ids),
             records=records,
-            not_seen_students=not_seen_ids
+            not_seen_students=not_seen_ids,
+            student_details=student_details
         )

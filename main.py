@@ -33,6 +33,18 @@ def main():
     # 5. Launch Smart Board Dashboard server
     if "--check-only" not in sys.argv:
         import uvicorn
+        import signal
+        from app.state import get_app_state
+
+        def _handle_exit(sig, frame):
+            print(f"\nShutdown signal ({sig}) received. Releasing camera hardware...")
+            get_app_state().stop_camera_worker()
+            sys.exit(0)
+
+        signal.signal(signal.SIGINT, _handle_exit)
+        if hasattr(signal, "SIGTERM"):
+            signal.signal(signal.SIGTERM, _handle_exit)
+
         port = 8008
         host = "127.0.0.1"
         for arg in sys.argv:
@@ -41,7 +53,12 @@ def main():
             elif arg.startswith("--host="):
                 host = arg.split("=")[1]
         print(f"Launching Smart Board Dashboard on http://{host}:{port}...")
-        uvicorn.run("app.main:app", host=host, port=port, reload=False)
+        try:
+            uvicorn.run("app.main:app", host=host, port=port, reload=False)
+        except (KeyboardInterrupt, SystemExit):
+            print("\nShutting down server and releasing camera hardware...")
+        finally:
+            get_app_state().stop_camera_worker()
         sys.exit(0)
 
     # 6. Exit cleanly

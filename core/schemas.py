@@ -1,5 +1,32 @@
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 from pydantic import BaseModel, Field
+
+class FaceDetectionResult(BaseModel):
+    """
+    Standardized face detection output produced by SCRFD / detection engines.
+    """
+    bbox: List[int] = Field(description="[x1, y1, x2, y2] bounding box coordinates")
+    confidence: float = Field(description="Detection confidence score")
+    keypoints: Optional[List[List[float]]] = Field(default=None, description="5 facial landmarks [[x,y],...]")
+    face_area: Optional[int] = Field(default=0, description="Face area in pixels")
+    crop_bbox: Optional[List[int]] = Field(default=None, description="Padded crop coordinates")
+    zone: Optional[str] = Field(default="FAR", description="Distance zone: NEAR, MIDDLE, FAR")
+    class_id: Optional[int] = Field(default=0, description="Class ID")
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Converts detection result to downstream dictionary format."""
+        w = max(0, self.bbox[2] - self.bbox[0])
+        h = max(0, self.bbox[3] - self.bbox[1])
+        return {
+            "bbox": self.bbox,
+            "crop_bbox": self.crop_bbox or self.bbox,
+            "confidence": self.confidence,
+            "face_area": self.face_area if self.face_area else (w * h),
+            "zone": self.zone or "FAR",
+            "class_id": self.class_id if self.class_id is not None else 0,
+            "keypoints": self.keypoints or []
+        }
+
 
 class FaceQualityResult(BaseModel):
     """
@@ -13,9 +40,16 @@ class FaceQualityResult(BaseModel):
     area: int
     sharpness: float = Field(description="Variance of Laplacian score")
     brightness: float = Field(description="Mean pixel intensity")
+    contrast: float = Field(default=0.0, description="Standard deviation pixel intensity (contrast)")
+    glare_score: float = Field(default=0.0, description="Fraction of overexposed/saturated pixels")
     pose: Optional[str] = Field(default="UNKNOWN", description="Pose estimation if available")
-    quality_status: str = Field(description="RECOGNITION_READY or LOW_QUALITY")
-    rejection_reason: Optional[str] = Field(default=None, description="Reason for rejection if LOW_QUALITY")
+    quality_status: str = Field(description="RECOGNITION_READY, FACE_TOO_SMALL, or LOW_QUALITY")
+    rejection_reason: Optional[str] = Field(default=None, description="Reason for rejection if LOW_QUALITY or FACE_TOO_SMALL")
+    quality_state: str = Field(default="GOOD", description="Granular quality state: GOOD, LOW QUALITY, FACE TOO SMALL, TOO BLURRY, TOO DARK, OVEREXPOSED, EXTREME POSE, PARTIAL")
+    quality_score: float = Field(default=1.0, description="Composite normalized quality score [0.0, 1.0]")
+    is_acceptable: bool = Field(default=True, description="Whether face crop passes all quality gating")
+    tilt_angle: float = Field(default=0.0, description="Facial tilt/roll angle in degrees")
+    yaw_offset: float = Field(default=0.0, description="Facial yaw offset ratio")
 
 class RecognitionReadyFace(BaseModel):
     """
@@ -28,7 +62,12 @@ class RecognitionReadyFace(BaseModel):
 
 class RecognitionStatus:
     MATCH = "MATCH"
+    RECOGNIZED = "RECOGNIZED"
+    VERIFYING = "VERIFYING"
     UNKNOWN = "UNKNOWN"
+    FACE_TOO_SMALL = "FACE TOO SMALL"
+    LOW_QUALITY = "LOW QUALITY"
+    NOT_ATTEMPTED = "NOT ATTEMPTED"
     INVALID = "INVALID"
     ERROR = "ERROR"
 
@@ -46,6 +85,9 @@ class RecognitionResult(BaseModel):
     processing_time_ms: float = Field(description="Inference + search latency in milliseconds")
     bbox: List[int] = Field(default_factory=list, description="Original bounding box")
     quality_metrics: Optional[FaceQualityResult] = Field(default=None, description="Phase 5 quality metrics")
+    second_best_student_id: Optional[str] = Field(default=None, description="Second-best enrolled student ID")
+    second_best_similarity: float = Field(default=0.0, description="Similarity score of second-best candidate")
+    margin: float = Field(default=0.0, description="Margin between best and second-best candidate similarity")
 
 class EnrollmentSample(BaseModel):
     """
@@ -104,6 +146,8 @@ class TrackedFace(BaseModel):
     last_seen: float = Field(default=0.0, description="Timestamp of last detection")
     history_len: int = Field(default=0, description="Observations recorded in temporal buffer")
     quality_metrics: Optional[FaceQualityResult] = Field(default=None, description="Latest quality assessment")
+    display_status: str = Field(default="UNKNOWN", description="User-facing status: RECOGNIZED, VERIFYING, UNKNOWN, FACE TOO SMALL, LOW QUALITY")
+    diagnostics: Dict[str, Any] = Field(default_factory=dict, description="Diagnostic metrics for difficult faces")
 
 # ===========================================================================
 # Phase 8 Schemas: Session Management & Attendance Engine
@@ -183,6 +227,7 @@ class SessionAttendanceReport(BaseModel):
     not_seen_count: int
     records: List[AttendanceRecord] = Field(default_factory=list)
     not_seen_students: List[str] = Field(default_factory=list)
+    student_details: Optional[Dict[str, Dict[str, Any]]] = Field(default_factory=dict)
 
 
 

@@ -75,12 +75,16 @@ class TemporalStabilizer:
             self.track_histories[track_id] = deque(maxlen=self.history_length)
         return self.track_states[track_id]
 
-    def should_recognize(self, track_id: int, frame_id: int) -> bool:
+    def should_recognize(self, track_id: int, frame_id: int, force_recheck: bool = False) -> bool:
         """
         Determines whether recognition (ArcFace embedding + FAISS search) should execute
         for this track on the current frame.
         Throttling saves up to 75% CPU by skipping redundant embeddings on stable faces.
+        If force_recheck is True (e.g. track reassociated after loss), fresh recognition is forced.
         """
+        if force_recheck:
+            return True
+
         if track_id not in self.track_states:
             return True
 
@@ -147,7 +151,10 @@ class TemporalStabilizer:
         # -------------------------------------------------------------
         # 1. Quality-Aware Filtering
         # -------------------------------------------------------------
-        if quality_status == "LOW_QUALITY":
+        if quality_status in (
+            "FACE_TOO_SMALL", "LOW_QUALITY", "TOO BLURRY", "TOO DARK",
+            "OVEREXPOSED", "EXTREME POSE", "PARTIAL", "FACE TOO SMALL", "LOW QUALITY"
+        ):
             state["poor_quality_count"] += 1
             if state["stable_student_id"] is not None:
                 if state["poor_quality_count"] < self.poor_quality_timeout:
@@ -202,7 +209,7 @@ class TemporalStabilizer:
                 return (None, None, result.similarity, RecognitionStatus.UNKNOWN)
 
         # Case B: MATCH (Similarity >= Threshold)
-        elif result.status == RecognitionStatus.MATCH:
+        elif result.status in (RecognitionStatus.MATCH, RecognitionStatus.RECOGNIZED):
             new_id = result.matched_student_id
             new_name = result.matched_student_name
             sim = result.similarity
@@ -211,7 +218,10 @@ class TemporalStabilizer:
             # Subcase B1: Track has no stable identity yet (NEW / UNCONFIRMED)
             if state["stable_student_id"] is None:
                 # Count recent observations of new_id in history
-                match_count = sum(1 for o in history if o.student_id == new_id and o.status == RecognitionStatus.MATCH)
+                match_count = sum(
+                    1 for o in history
+                    if o.student_id == new_id and o.status in (RecognitionStatus.MATCH, RecognitionStatus.RECOGNIZED)
+                )
                 if match_count >= self.min_stable_observations:
                     state["stable_student_id"] = new_id
                     state["stable_student_name"] = new_name
@@ -219,8 +229,9 @@ class TemporalStabilizer:
                     state["stable_status"] = RecognitionStatus.MATCH
                     return (new_id, new_name, sim, RecognitionStatus.MATCH)
                 else:
-                    # Accumulating evidence; hold as UNKNOWN until min_stable_observations reached
-                    return (None, None, sim, RecognitionStatus.UNKNOWN)
+                    # Accumulating evidence; hold as VERIFYING until min_stable_observations reached
+                    state["stable_status"] = "VERIFYING"
+                    return (None, None, sim, "VERIFYING")
 
             # Subcase B2: Matches current stable identity
             elif state["stable_student_id"] == new_id:

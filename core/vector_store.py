@@ -67,6 +67,14 @@ class FaissVectorStore:
         if vec.size != self.embedding_dim:
             raise ValueError(f"Vector dimension mismatch: expected {self.embedding_dim}, got {vec.size}.")
 
+        # Ensure unique vector ID across the index to prevent collisions and overwritten metadata
+        actual_id = int(emb_id)
+        if actual_id in self.id_to_metadata:
+            actual_id = max(self.id_to_metadata.keys()) + 1
+
+        meta = dict(metadata or {})
+        meta["embedding_id"] = actual_id
+
         # Ensure float32 2D array (1, dim)
         vec_2d = np.ascontiguousarray(vec.reshape(1, self.embedding_dim), dtype=np.float32)
         
@@ -76,10 +84,15 @@ class FaissVectorStore:
             # Normalize if not perfectly unit norm
             vec_2d = vec_2d / max(norm, 1e-12)
 
-        ids = np.array([emb_id], dtype=np.int64)
+        ids = np.array([actual_id], dtype=np.int64)
         self.index.add_with_ids(vec_2d, ids)
-        self.id_to_metadata[int(emb_id)] = metadata or {}
+        self.id_to_metadata[actual_id] = meta
         return True
+
+    def reload(self, path: Optional[str] = None):
+        """Reloads the FAISS index and associated metadata mapping from disk."""
+        target_path = path or self.index_path
+        self.load_index(target_path)
 
     def search(self, query_vector: np.ndarray, top_k: int = 1) -> List[Tuple[float, Dict[str, Any]]]:
         """

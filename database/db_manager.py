@@ -14,9 +14,11 @@ class DatabaseManager:
     - Model and threshold configuration metadata
     """
 
-    def __init__(self, db_path: Optional[str] = None):
+    def __init__(self, db_path: Optional[str] = None, new_db_path: Optional[str] = None):
         self.settings = get_settings()
         self.db_path = db_path or self.settings.db_path
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.new_db_path = new_db_path or os.path.join(base_dir, "database", "new_enrollment.sqlite")
 
         # Ensure directory exists
         db_dir = os.path.dirname(os.path.abspath(self.db_path))
@@ -149,6 +151,45 @@ class DatabaseManager:
                 );
             """)
 
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS classrooms (
+                    classroom_id TEXT PRIMARY KEY,
+                    classroom_name TEXT NOT NULL,
+                    department TEXT NOT NULL,
+                    year TEXT NOT NULL,
+                    section TEXT NOT NULL,
+                    assigned_advisor_id TEXT,
+                    assigned_advisor_name TEXT,
+                    camera_source TEXT DEFAULT 'pc',
+                    camera_url TEXT,
+                    camera_status TEXT DEFAULT 'connected',
+                    esp32_device_id TEXT,
+                    esp32_status TEXT DEFAULT 'disconnected',
+                    ai_pipeline_status TEXT DEFAULT 'running',
+                    faiss_status TEXT DEFAULT 'ready',
+                    attendance_status TEXT DEFAULT 'active',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+
+            # Bootstrap default classroom if table is newly created
+            cursor.execute("SELECT COUNT(*) FROM classrooms;")
+            if cursor.fetchone()[0] == 0:
+                cursor.execute("""
+                    INSERT INTO classrooms (
+                        classroom_id, classroom_name, department, year, section,
+                        assigned_advisor_id, assigned_advisor_name, camera_source,
+                        camera_status, esp32_device_id, esp32_status,
+                        ai_pipeline_status, faiss_status, attendance_status
+                    ) VALUES (
+                        'AIDS-B', 'AIDS-B Smart Classroom', 'AI&DS', '3rd Year', 'B',
+                        'ADV001', 'Prof. Ramesh Kumar', 'pc',
+                        'connected', 'ESP32-AIDS-B', 'disconnected',
+                        'running', 'ready', 'active'
+                    );
+                """)
+
             conn.commit()
 
     def add_student(
@@ -181,35 +222,166 @@ class DatabaseManager:
             conn.commit()
             return True
 
-    def get_student(self, student_id: str) -> Optional[Dict[str, Any]]:
-        """Retrieves a single student profile by ID."""
-        with self.get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM students WHERE student_id = ?;", (student_id,))
-            row = cursor.fetchone()
-            if not row:
-                return None
-            data = dict(row)
-            if not data.get("register_no"):
-                data["register_no"] = data["student_id"]
-            if not data.get("class_name"):
-                data["class_name"] = f"{data.get('department', '')} - {data.get('section', '')}".strip(" -")
-            return data
+    def sync_enrolled_students(self) -> int:
+        """
+        Synchronizes smartclass.sqlite students table with authoritative new_enrollment.sqlite.
+        Guarantees:
+        - Only students currently enrolled in new_enrollment.sqlite exist in smartclass.sqlite
+        - Stale/test student records (e.g. STU_DTEST_*) are purged
+        - Foreign keys for attendance records are cleanly preserved
+        """
+        new_db_path = self.new_db_path
+        if not os.path.exists(new_db_path):
+            return 0
 
-    def get_all_students(self) -> List[Dict[str, Any]]:
-        """Retrieves all registered student records."""
+        synced_count = 0
+        try:
+            with sqlite3.connect(new_db_path) as nconn:
+                nconn.row_factory = sqlite3.Row
+                ncur = nconn.cursor()
+                ncur.execute("SELECT * FROM enrolled_students;")
+                enrolled = [dict(r) for r in ncur.fetchall()]
+
+            valid_ids = [s["student_id"] for s in enrolled]
+            valid_regs = [s["register_number"] for s in enrolled]
+
+            with self.get_connection() as conn:
+                cur = conn.cursor()
+                # Remove stale students not in active enrollment
+                if valid_ids:
+                    all_valid = list(set(valid_ids + valid_regs))
+                    placeholders = ",".join(["?"] * len(all_valid))
+                    cur.execute(f"DELETE FROM students WHERE student_id NOT IN ({placeholders}) AND register_no NOT IN ({placeholders});", all_valid + all_valid)
+                else:
+                    cur.execute("DELETE FROM students;")
+
+                # Upsert active enrolled students
+                for s in enrolled:
+                    sid = s["student_id"]
+                    reg = s["register_number"]
+                    name = s["name"]
+                    dept = s.get("department", "")
+                    sec = s.get("section", "")
+                    cls_name = s.get("class") or f"{dept} - {sec}".strip(" -")
+                    cur.execute("""
+                        INSERT INTO students (student_id, student_name, department, section, status, register_no, class_name, updated_at)
+                        VALUES (?, ?, ?, ?, 'active', ?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(student_id) DO UPDATE SET
+                            student_name = excluded.student_name,
+                            department = excluded.department,
+                            section = excluded.section,
+                            status = excluded.status,
+                            register_no = excluded.register_no,
+                            class_name = excluded.class_name,
+                            updated_at = CURRENT_TIMESTAMP;
+                    """, (sid, name, dept, sec, reg, cls_name))
+                    synced_count += 1
+                conn.commit()
+        except Exception as e:
+            logger.error(f"Failed to sync enrolled students: {e}")
+
+        return synced_count
+
+    def get_student(self, student_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieves a single student profile by ID or Register Number from the authoritative registry.
+        Seamlessly resolves both raw register number and any prefixed aliases.
+        """
+        clean_id = str(student_id).strip()
+        reg_query = clean_id[4:] if clean_id.startswith("STU_") else clean_id
+        stu_query = f"STU_{clean_id}" if not clean_id.startswith("STU_") else clean_id
+
+        new_db_path = self.new_db_path
+        if os.path.exists(new_db_path):
+            try:
+                with sqlite3.connect(new_db_path) as nconn:
+                    nconn.row_factory = sqlite3.Row
+                    ncur = nconn.cursor()
+                    ncur.execute(
+                        "SELECT * FROM enrolled_students WHERE student_id = ? OR register_number = ? OR student_id = ? OR register_number = ? LIMIT 1;",
+                        (clean_id, clean_id, reg_query, stu_query)
+                    )
+                    nrow = ncur.fetchone()
+                    if nrow:
+                        ndata = dict(nrow)
+                        sid = ndata.get("student_id") or ndata.get("register_number")
+                        reg = ndata.get("register_number") or sid
+                        return {
+                            "student_id": sid,
+                            "student_name": ndata["name"],
+                            "register_no": reg,
+                            "department": ndata.get("department", ""),
+                            "section": ndata.get("section", ""),
+                            "class_name": ndata.get("class", ""),
+                            "status": ndata.get("enrollment_status", "active")
+                        }
+            except Exception as e:
+                logger.warning(f"Authoritative student lookup in new_enrollment.sqlite failed: {e}")
+
+        # Fallback to local students table
         with self.get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM students ORDER BY student_id ASC;")
-            results = []
-            for row in cursor.fetchall():
+            cursor.execute(
+                "SELECT * FROM students WHERE student_id = ? OR register_no = ? OR student_id = ? LIMIT 1;",
+                (clean_id, clean_id, reg_query)
+            )
+            row = cursor.fetchone()
+            if row:
                 data = dict(row)
                 if not data.get("register_no"):
                     data["register_no"] = data["student_id"]
                 if not data.get("class_name"):
                     data["class_name"] = f"{data.get('department', '')} - {data.get('section', '')}".strip(" -")
-                results.append(data)
-            return results
+                return data
+
+        return None
+
+    def get_all_students(self) -> List[Dict[str, Any]]:
+        """
+        Retrieves all registered student records strictly from the authoritative new enrollment registry.
+        Never loads un-enrolled legacy records, hardcoded students, or old test data.
+        """
+        new_db_path = self.new_db_path
+        if os.path.exists(new_db_path):
+            try:
+                results = []
+                with sqlite3.connect(new_db_path) as nconn:
+                    nconn.row_factory = sqlite3.Row
+                    ncur = nconn.cursor()
+                    ncur.execute("SELECT * FROM enrolled_students ORDER BY name ASC;")
+                    for nrow in ncur.fetchall():
+                        ndata = dict(nrow)
+                        sid = ndata.get("student_id") or ndata.get("register_number")
+                        reg = ndata.get("register_number") or sid
+                        results.append({
+                            "student_id": sid,
+                            "student_name": ndata.get("name"),
+                            "register_no": reg,
+                            "department": ndata.get("department", ""),
+                            "section": ndata.get("section", ""),
+                            "class_name": ndata.get("class", ""),
+                            "status": ndata.get("enrollment_status", "active")
+                        })
+                return results
+            except Exception as e:
+                logger.error(f"Querying authoritative new_enrollment.sqlite: {e}")
+
+        # Fallback to local students table only if new_enrollment does not exist
+        results = []
+        try:
+            with self.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT * FROM students ORDER BY student_name ASC;")
+                for row in cursor.fetchall():
+                    data = dict(row)
+                    if not data.get("register_no"):
+                        data["register_no"] = data["student_id"]
+                    if not data.get("class_name"):
+                        data["class_name"] = f"{data.get('department', '')} - {data.get('section', '')}".strip(" -")
+                    results.append(data)
+        except Exception as e:
+            logger.debug(f"Querying students table fallback: {e}")
+        return results
 
     def log_enrollment_event(
         self,
@@ -300,18 +472,44 @@ class DatabaseManager:
             return results
 
     def get_student_count(self) -> int:
-        """Returns the total number of enrolled students."""
-        with self.get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM students;")
-            return cursor.fetchone()[0]
+        """Returns the total number of enrolled students strictly from the authoritative new enrollment registry."""
+        new_db_path = self.new_db_path
+        if os.path.exists(new_db_path):
+            try:
+                with sqlite3.connect(new_db_path) as nconn:
+                    ncur = nconn.cursor()
+                    ncur.execute("SELECT COUNT(*) FROM enrolled_students;")
+                    return ncur.fetchone()[0]
+            except Exception as e:
+                logger.error(f"Error reading student count from new_enrollment.sqlite: {e}")
+
+        try:
+            with self.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM students;")
+                return cursor.fetchone()[0]
+        except Exception:
+            return 0
 
     def get_embedding_count(self) -> int:
-        """Returns the total number of stored embeddings."""
-        with self.get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM embeddings;")
-            return cursor.fetchone()[0]
+        """Returns the total number of stored embeddings strictly from the authoritative new enrollment registry."""
+        new_db_path = self.new_db_path
+        if os.path.exists(new_db_path):
+            try:
+                with sqlite3.connect(new_db_path) as nconn:
+                    ncur = nconn.cursor()
+                    ncur.execute("SELECT COUNT(*) FROM enrolled_embeddings;")
+                    return ncur.fetchone()[0]
+            except Exception as e:
+                logger.error(f"Error reading embedding count from new_enrollment.sqlite: {e}")
+
+        try:
+            with self.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM embeddings;")
+                return cursor.fetchone()[0]
+        except Exception:
+            return 0
 
     # =========================================================================
     # Phase 8: Session Management Database Methods
@@ -440,6 +638,26 @@ class DatabaseManager:
         with self.get_connection() as conn:
             cursor = conn.cursor()
 
+            # Ensure student exists in students table to satisfy foreign key constraint
+            cursor.execute("SELECT 1 FROM students WHERE student_id = ?;", (student_id,))
+            if cursor.fetchone() is None:
+                st = self.get_student(student_id)
+                if st:
+                    cls_name = st.get("class_name") or f"{st.get('department', '')} - {st.get('section', '')}".strip(" -")
+                    cursor.execute("""
+                        INSERT INTO students (student_id, student_name, department, section, status, register_no, class_name, updated_at)
+                        VALUES (?, ?, ?, ?, 'active', ?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(student_id) DO UPDATE SET
+                            student_name = excluded.student_name,
+                            department = excluded.department,
+                            section = excluded.section,
+                            status = excluded.status,
+                            register_no = excluded.register_no,
+                            class_name = excluded.class_name,
+                            updated_at = CURRENT_TIMESTAMP;
+                    """, (student_id, st["student_name"], st.get("department", ""), st.get("section", ""), st.get("register_no", student_id), cls_name))
+                    conn.commit()
+
             # Check if record already exists
             cursor.execute(
                 "SELECT attendance_id, status FROM attendance WHERE session_id = ? AND student_id = ?;",
@@ -495,7 +713,17 @@ class DatabaseManager:
                 WHERE a.session_id = ?
                 ORDER BY a.first_seen ASC;
             """, (session_id,))
-            return [dict(row) for row in cursor.fetchall()]
+            rows = [dict(row) for row in cursor.fetchall()]
+
+        # Ensure student_name is always resolved from authoritative student profile
+        for r in rows:
+            if not r.get("student_name"):
+                st = self.get_student(r["student_id"])
+                if st:
+                    r["student_name"] = st["student_name"]
+                else:
+                    r["student_name"] = r["student_id"]
+        return rows
 
     def get_attendance_record(self, session_id: str, student_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves a single attendance record for a student in a session."""
@@ -536,4 +764,92 @@ class DatabaseManager:
             cursor.execute("DELETE FROM students;")
             cursor.execute("DELETE FROM model_metadata;")
             conn.commit()
+
+    # =========================================================================
+    # Classroom Management & Device Mapping Methods
+    # =========================================================================
+
+    def get_all_classrooms(self) -> List[Dict[str, Any]]:
+        """Retrieves all registered classrooms and their mapping configurations."""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM classrooms ORDER BY classroom_id ASC;")
+            return [dict(row) for row in cursor.fetchall()]
+
+    def get_classroom_by_id(self, classroom_id: str) -> Optional[Dict[str, Any]]:
+        """Retrieves a single classroom by its classroom_id."""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM classrooms WHERE classroom_id = ? LIMIT 1;", (classroom_id.strip(),))
+            row = cursor.fetchone()
+            return dict(row) if row else None
+
+    def get_classroom_by_advisor_id(self, advisor_id: str) -> Optional[Dict[str, Any]]:
+        """Retrieves the classroom mapped to a specific advisor."""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM classrooms WHERE assigned_advisor_id = ? LIMIT 1;", (advisor_id.strip(),))
+            row = cursor.fetchone()
+            return dict(row) if row else None
+
+    def upsert_classroom(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Creates or updates a classroom entity and its hardware mappings."""
+        cid = data["classroom_id"].strip()
+        cname = data.get("classroom_name") or f"{cid} Smart Classroom"
+        dept = data.get("department", "AI&DS")
+        year = data.get("year", "3rd Year")
+        sec = data.get("section", "B")
+        adv_id = data.get("assigned_advisor_id")
+        adv_name = data.get("assigned_advisor_name")
+        cam_src = data.get("camera_source", "none")
+        cam_url = data.get("camera_url")
+        cam_status = data.get("camera_status", "connected" if cam_src != "none" else "disconnected")
+        esp_id = data.get("esp32_device_id")
+        esp_status = data.get("esp32_status", "disconnected")
+        ai_stat = data.get("ai_pipeline_status", "running")
+        faiss_stat = data.get("faiss_status", "ready")
+        att_stat = data.get("attendance_status", "active")
+
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO classrooms (
+                    classroom_id, classroom_name, department, year, section,
+                    assigned_advisor_id, assigned_advisor_name, camera_source,
+                    camera_url, camera_status, esp32_device_id, esp32_status,
+                    ai_pipeline_status, faiss_status, attendance_status, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                ON CONFLICT(classroom_id) DO UPDATE SET
+                    classroom_name = excluded.classroom_name,
+                    department = excluded.department,
+                    year = excluded.year,
+                    section = excluded.section,
+                    assigned_advisor_id = excluded.assigned_advisor_id,
+                    assigned_advisor_name = excluded.assigned_advisor_name,
+                    camera_source = excluded.camera_source,
+                    camera_url = excluded.camera_url,
+                    camera_status = excluded.camera_status,
+                    esp32_device_id = excluded.esp32_device_id,
+                    esp32_status = excluded.esp32_status,
+                    ai_pipeline_status = excluded.ai_pipeline_status,
+                    faiss_status = excluded.faiss_status,
+                    attendance_status = excluded.attendance_status,
+                    updated_at = CURRENT_TIMESTAMP;
+            """, (
+                cid, cname, dept, year, sec,
+                adv_id, adv_name, cam_src,
+                cam_url, cam_status, esp_id, esp_status,
+                ai_stat, faiss_stat, att_stat
+            ))
+            conn.commit()
+
+        return self.get_classroom_by_id(cid)
+
+    def delete_classroom(self, classroom_id: str) -> bool:
+        """Deletes a classroom record."""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM classrooms WHERE classroom_id = ?;", (classroom_id.strip(),))
+            conn.commit()
+            return cursor.rowcount > 0
 

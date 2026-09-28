@@ -29,7 +29,8 @@ def temp_db_and_store():
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = os.path.join(tmpdir, "test_smartclass.sqlite")
         index_path = os.path.join(tmpdir, "test_faiss.bin")
-        db = DatabaseManager(db_path=db_path)
+        new_db_path = os.path.join(tmpdir, "test_new_enrollment.sqlite")
+        db = DatabaseManager(db_path=db_path, new_db_path=new_db_path)
         store = FaissVectorStore(embedding_dim=512, index_path=index_path)
         yield db, store, tmpdir
 

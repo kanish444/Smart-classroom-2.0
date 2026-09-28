@@ -105,7 +105,8 @@ def temp_env():
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = os.path.join(tmpdir, "test_enrollment.sqlite")
         idx_path = os.path.join(tmpdir, "test_enrollment.bin")
-        db = DatabaseManager(db_path=db_path)
+        new_db_path = os.path.join(tmpdir, "empty_new.sqlite")
+        db = DatabaseManager(db_path=db_path, new_db_path=new_db_path)
         store = FaissVectorStore(embedding_dim=512, index_path=idx_path)
         embedder = ArcFaceEmbedder()
         service = EnrollmentService(

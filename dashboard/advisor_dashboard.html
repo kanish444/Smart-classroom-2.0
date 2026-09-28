@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartClass Vision AI - Class Advisor Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/role_dashboard.css">
+</head>
+<body>
+
+  <!-- ===================================================================== -->
+  <!-- FIXED SIDEBAR                                                         -->
+  <!-- ===================================================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-badge" title="SmartClass Institutional AI">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Logo" class="sidebar-crest-logo">
+      </div>
+      <div class="brand-text">
+        <h2>SmartClass</h2>
+        <span style="color: var(--secondary);">Class Advisor</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link active" onclick="switchTab('dashboard')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('mystudents')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </span>
+        <span>My Students</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('attendance')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Attendance</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('monitoring')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 7l-7 5 7 5V7z"></path>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+        </span>
+        <span>Live Monitoring</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('sensors')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+          </svg>
+        </span>
+        <span>Sensors</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('alerts')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </span>
+        <span>Alerts</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('reports')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+        </span>
+        <span>Reports</span>
+      </a>
+
+      <a class="nav-link" onclick="switchTab('profile')">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <span>My Profile</span>
+      </a>
+
+      <a class="nav-link" onclick="openChangePasswordModal()">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </span>
+        <span>Change Password</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-snippet">
+        <div class="user-avatar" id="userInitial">A</div>
+        <div class="user-info-text">
+          <div class="uname" id="displayUserName">Class Advisor</div>
+          <div class="urole" id="displayClassScope">Assigned Class</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN APPLICATION WRAPPER                                              -->
+  <!-- ===================================================================== -->
+  <div class="main-wrapper">
+    <header class="top-navbar">
+      <div class="page-title-box">
+        <h1 id="pageTitle">Class Advisor Dashboard</h1>
+        <p id="advisorHeaderSub">Assigned Class Real-Time Student Attendance & Video Oversight</p>
+      </div>
+      <div class="top-actions">
+        <span class="status-chip chip-online">
+          <span class="pulse-dot"></span>
+          <span id="chipClassroomStatus">Classroom Online</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="content-body">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: DASHBOARD OVERVIEW                                         -->
+      <!-- ================================================================= -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <!-- 6 Advisor Cards Grid -->
+        <div class="cards-grid">
+          <div class="metric-card">
+            <div class="card-icon-box icon-blue">👥</div>
+            <div class="card-info">
+              <span class="card-label">Total Students</span>
+              <span class="card-value" id="cardTotalStudents">--</span>
+              <span class="card-sub">Assigned section roster</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-green">✅</div>
+            <div class="card-info">
+              <span class="card-label">Present Today</span>
+              <span class="card-value" id="cardPresentToday">--</span>
+              <span class="card-sub">AI verified in room</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">❌</div>
+            <div class="card-info">
+              <span class="card-label">Absent Today</span>
+              <span class="card-value" id="cardAbsentToday">--</span>
+              <span class="card-sub">Pending verification</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-purple">📈</div>
+            <div class="card-info">
+              <span class="card-label">Attendance %</span>
+              <span class="card-value" id="cardAttendancePct">--%</span>
+              <span class="card-sub">Section percentage</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-amber">📹</div>
+            <div class="card-info">
+              <span class="card-label">Active Camera</span>
+              <span class="card-value" id="cardActiveCamera">PC Camera</span>
+              <span class="card-sub">Classroom node</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">🔔</div>
+            <div class="card-info">
+              <span class="card-label">Active Alerts</span>
+              <span class="card-value" id="cardActiveAlerts">0</span>
+              <span class="card-sub">Operational notifications</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assigned Students Roster Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>My Assigned Students — Live Attendance</h2>
+            <span id="advisorSectionBadge" class="badge badge-ai">Class Scope</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Register Number</th>
+                  <th>Student Name</th>
+                  <th>Department</th>
+                  <th>Section</th>
+                  <th>Status</th>
+                  <th>Attendance %</th>
+                  <th>Last Seen</th>
+                  <th>Recognition State</th>
+                </tr>
+              </thead>
+              <tbody id="myStudentsTableBody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading assigned class students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: MY STUDENTS FULL ROSTER                                    -->
+      <!-- ================================================================= -->
+      <section id="tab-mystudents" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Assigned Class Student Roster</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Register Number</th>
+                  <th>Student Name</th>
+                  <th>Department</th>
+                  <th>Section</th>
+                  <th>Status</th>
+                  <th>Last Seen</th>
+                  <th>Recognition Status</th>
+                </tr>
+              </thead>
+              <tbody id="tabMyStudentsBody">
+                <tr><td colspan="7" style="text-align: center;">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: ATTENDANCE TAB                                             -->
+      <!-- ================================================================= -->
+      <section id="tab-attendance" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Session Attendance Records</h2>
+            <span style="font-size: 0.82rem; color: var(--text-muted);">Filtered strictly to your assigned section</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Register Number</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Attendance %</th>
+                  <th>Recognition Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceRecordsBody">
+                <tr><td colspan="5" style="text-align: center;">Loading attendance...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: LIVE MONITORING TAB                                        -->
+      <!-- ================================================================= -->
+      <section id="tab-monitoring" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Live Classroom Video Monitoring</h2>
+            <span id="cameraClassroomTitle" class="badge badge-ai">Classroom Stream</span>
+          </div>
+          <div id="advisorCameraContainer" style="padding: 1.4rem;">
+            <div style="text-align: center; color: var(--text-muted); padding: 3rem;">
+              Checking classroom setup & camera pipeline status...
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 5: SENSORS (IoT)                                              -->
+      <!-- ================================================================= -->
+      <section id="tab-sensors" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Classroom Environmental Sensors</h2>
+            <span style="font-size:0.82rem; color:var(--text-muted);" id="sensorClassroomBadge">Classroom Scope</span>
+          </div>
+          <div class="cards-grid" style="padding: 1.4rem;">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue">🌡️</div>
+              <div class="card-info">
+                <span class="card-label">Temperature</span>
+                <span class="card-value">27.4 °C</span>
+                <span class="card-sub">Normal</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-teal">💧</div>
+              <div class="card-info">
+                <span class="card-label">Humidity</span>
+                <span class="card-value">55 %</span>
+                <span class="card-sub">Comfortable</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-green">🍃</div>
+              <div class="card-info">
+                <span class="card-label">Air Quality</span>
+                <span class="card-value">42 AQI</span>
+                <span class="card-sub">Good</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple">👥</div>
+              <div class="card-info">
+                <span class="card-label">Room Occupancy</span>
+                <span class="card-value" id="advSensorOcc">-- / 60</span>
+                <span class="card-sub">Vision AI detected</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-amber">💡</div>
+              <div class="card-info">
+                <span class="card-label">Light Level</span>
+                <span class="card-value">320 Lux</span>
+                <span class="card-sub">Sufficient</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-slate">📡</div>
+              <div class="card-info">
+                <span class="card-label">ESP32 Device</span>
+                <span class="card-value" id="advEsp32Name" style="font-size:1.15rem;">ESP32-AIDS-B</span>
+                <span class="status-pill status-pill-connected" style="margin-top: 4px;" id="advEsp32State">● ONLINE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 6: ALERTS                                                     -->
+      <!-- ================================================================= -->
+      <section id="tab-alerts" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Class & Classroom Alerts</h2>
+          </div>
+          <div id="advAlertsContainer" style="padding: 1.4rem; display: flex; flex-direction: column; gap: 10px;">
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading alerts...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 7: REPORTS                                                    -->
+      <!-- ================================================================= -->
+      <section id="tab-reports" class="tab-pane" style="display: none;">
+        <div class="panel">
+          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+            <h2>Class Attendance Reports</h2>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('csv')">📥 Export CSV</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('json')">📥 Export JSON</button>
+            </div>
+          </div>
+          <div style="padding: 1.4rem;">
+            <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.25rem;">
+              <h3 id="repClassTitle" style="margin-bottom:4px; font-size:1.05rem;">3rd Year AI&DS - B</h3>
+              <p style="color:var(--text-muted); font-size:0.84rem;">Assigned Advisor: <strong id="repAdvisorName">Prof. Ramesh Kumar</strong></p>
+              <div style="display:flex; gap:24px; margin-top:14px; flex-wrap:wrap;">
+                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Total Strength</span><strong style="font-size:1.4rem;" id="repStrength">15</strong></div>
+                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Present Today</span><strong style="font-size:1.4rem; color:var(--success);" id="repPresentCount">0</strong></div>
+                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Absent Today</span><strong style="font-size:1.4rem; color:var(--danger);" id="repAbsentCount">15</strong></div>
+                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Overall Attendance Rate</span><strong style="font-size:1.4rem; color:var(--secondary);" id="repOverallRate">0%</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 8: MY PROFILE                                                 -->
+      <!-- ================================================================= -->
+      <section id="tab-profile" class="tab-pane" style="display: none;">
+        <div class="panel" style="max-width: 600px;">
+          <div class="panel-header">
+            <h2>My Profile & Assigned Scope</h2>
+          </div>
+          <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
+            <div><strong>User ID:</strong> <span class="font-mono" id="profUserId">-</span></div>
+            <div><strong>Name:</strong> <span id="profName">-</span></div>
+            <div><strong>Role:</strong> Class Advisor</div>
+            <div><strong>Assigned Department:</strong> <span id="profDept">-</span></div>
+            <div><strong>Assigned Year:</strong> <span id="profYear">-</span></div>
+            <div><strong>Assigned Section:</strong> <span id="profSection">-</span></div>
+            <div><strong>Assigned Classroom:</strong> <span id="profClassroom">-</span></div>
+            <div><strong>Email:</strong> <span id="profEmail">-</span></div>
+            <div><strong>Account Status:</strong> <span class="badge badge-present">ACTIVE</span></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- CHANGE PASSWORD MODAL                                                 -->
+  <!-- ===================================================================== -->
+  <div id="changePasswordModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Change Account Password</h3>
+        <button class="btn-close" onclick="closeModal('changePasswordModal')">&times;</button>
+      </div>
+      <form onsubmit="handleChangePassword(event)">
+        <div class="modal-body">
+          <div id="pwdAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div class="form-group">
+            <label>Current Password *</label>
+            <input type="password" id="curPassword" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>New Password (min 6 characters) *</label>
+            <input type="password" id="newPassword" class="form-control" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password *</label>
+            <input type="password" id="confirmNewPassword" class="form-control" required minlength="6">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('changePasswordModal')">Cancel</button>
+          <button type="submit" id="savePwdBtn" class="btn btn-primary">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION SCRIPTS                                                   -->
+  <!-- ===================================================================== -->
+  <script>
+    let token = localStorage.getItem("smartclass_token");
+    let currentUser = null;
+
+    async function checkAuth() {
+      try {
+        const resp = await fetch("/api/auth/me", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success && data.data.role === "class_advisor") {
+          currentUser = data.data;
+          document.getElementById("displayUserName").innerText = currentUser.name;
+          document.getElementById("displayClassScope").innerText = `${currentUser.year || ''} ${currentUser.section || ''}`.trim() || "Assigned Class";
+          document.getElementById("userInitial").innerText = currentUser.name.charAt(0);
+          loadDashboardData();
+        } else {
+          window.location.href = "/login";
+        }
+      } catch (e) {
+        window.location.href = "/login";
+      }
+    }
+
+    async function loadDashboardData() {
+      try {
+        const sumResp = await fetch("/api/dashboard/role-summary", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const sumData = await sumResp.json();
+        if (sumResp.ok && sumData.success) {
+          const cards = sumData.data.cards;
+          document.getElementById("cardTotalStudents").innerText = cards.total_students || '--';
+          document.getElementById("cardPresentToday").innerText = cards.students_present || '--';
+          document.getElementById("cardAbsentToday").innerText = cards.students_absent || '--';
+          document.getElementById("cardAttendancePct").innerText = `${cards.attendance_rate || 0}%`;
+          document.getElementById("cardActiveCamera").innerText = cards.active_cameras ? "Online" : "Standby";
+          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts || '0';
+        }
+        loadMyStudents();
+      } catch (err) {
+        console.error("Advisor data load error:", err);
+      }
+    }
+
+    async function loadMyStudents() {
+      try {
+        const resp = await fetch("/api/scoped/students", {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          const students = data.data;
+          renderStudentsTable("myStudentsTableBody", students, true);
+          renderStudentsTable("tabMyStudentsBody", students, false);
+          renderAttendanceTable(students);
+        }
+      } catch (e) {
+        console.error("Load students error:", e);
+      }
+    }
+
+    function renderStudentsTable(elementId, students, isDashboard) {
+      const tbody = document.getElementById(elementId);
+      if (!tbody) return;
+      if (!students || students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">No students registered in your assigned section.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = students.map(s => `
+        <tr>
+          <td><strong class="font-mono">${s.register_no}</strong></td>
+          <td>${s.student_name}</td>
+          <td>${s.department}</td>
+          <td><span class="badge" style="background:#EFF6FF; color:#2563EB;">${s.section}</span></td>
+          <td><span class="badge ${s.attendance_status === 'Present' ? 'badge-present' : 'badge-absent'}">${s.attendance_status}</span></td>
+          ${isDashboard ? `<td>${s.attendance_percentage}%</td>` : ''}
+          <td>${s.last_seen}</td>
+          <td><span class="badge badge-ai">${s.recognition_status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderAttendanceTable(students) {
+      const tbody = document.getElementById("attendanceRecordsBody");
+      if (!tbody) return;
+      if (!students || students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No records found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = students.map(s => `
+        <tr>
+          <td><strong class="font-mono">${s.register_no}</strong></td>
+          <td>${s.student_name}</td>
+          <td><span class="badge ${s.attendance_status === 'Present' ? 'badge-present' : 'badge-absent'}">${s.attendance_status}</span></td>
+          <td>${s.attendance_percentage}%</td>
+          <td><span class="badge badge-ai">${s.recognition_status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-pane").forEach(p => p.style.display = "none");
+      document.querySelectorAll(".sidebar-nav .nav-link").forEach(l => l.classList.remove("active"));
+      
+      const targetPane = document.getElementById(`tab-${tabId}`) || document.getElementById("tab-dashboard");
+      targetPane.style.display = "flex";
+
+      const navs = document.querySelectorAll(".sidebar-nav .nav-link");
+      navs.forEach(n => {
+        if (n.innerText.toLowerCase().includes(tabId)) {
+          n.classList.add("active");
+        }
+      });
+
+      if (tabId === 'monitoring') {
+        loadLiveStream();
+      } else if (tabId === 'profile') {
+        loadProfile();
+      } else if (tabId === 'reports') {
+        loadReports();
+      } else if (tabId === 'sensors') {
+        loadSensors();
+      } else if (tabId === 'alerts') {
+        loadAlerts();
+      }
+    }
+
+    function loadLiveStream() {
+      const container = document.getElementById("advisorCameraContainer");
+      if (container) {
+        container.innerHTML = `
+          <div style="background:#0B132B; border-radius:var(--radius-sm); overflow:hidden; border:1px solid #1E293B; text-align:center;">
+            <img src="/api/video/feed?view_mode=normal&t=${Date.now()}" alt="Live Camera" style="max-width:100%; height:auto; max-height:480px; display:block; margin:0 auto;">
+          </div>
+        `;
+      }
+    }
+
+    function loadProfile() {
+      if (!currentUser) return;
+      document.getElementById("profUserId").innerText = currentUser.user_id || "-";
+      document.getElementById("profName").innerText = currentUser.name || "-";
+      document.getElementById("profDept").innerText = currentUser.department || "-";
+      document.getElementById("profYear").innerText = currentUser.year || "-";
+      document.getElementById("profSection").innerText = currentUser.section || "-";
+      document.getElementById("profClassroom").innerText = currentUser.assigned_classroom || "-";
+      document.getElementById("profEmail").innerText = currentUser.email || "-";
+    }
+
+    function loadReports() {
+      if (!currentUser) return;
+      document.getElementById("repAdvisorName").innerText = currentUser.name || "Class Advisor";
+      document.getElementById("repClassTitle").innerText = `${currentUser.year || ''} ${currentUser.department || ''} - ${currentUser.section || ''}`.trim() || "My Assigned Class";
+
+      fetch("/api/dashboard/summary").then(r => r.json()).then(data => {
+        if (data.success && data.data) {
+          const tot = data.data.total_enrolled || 15;
+          const pres = data.data.present_count || 0;
+          const abs = Math.max(0, tot - pres);
+          const rate = tot > 0 ? Math.round((pres / tot) * 100) : 0;
+          document.getElementById("repStrength").innerText = tot;
+          document.getElementById("repPresentCount").innerText = pres;
+          document.getElementById("repAbsentCount").innerText = abs;
+          document.getElementById("repOverallRate").innerText = `${rate}%`;
+        }
+      }).catch(() => {});
+    }
+
+    function loadSensors() {
+      fetch("/api/dashboard/summary").then(r => r.json()).then(data => {
+        if (data.success && data.data) {
+          const occ = document.getElementById("advSensorOcc");
+          if (occ) occ.innerText = `${data.data.active_track_count || 0} / 60`;
+        }
+      }).catch(() => {});
+    }
+
+    function loadAlerts() {
+      const container = document.getElementById("advAlertsContainer");
+      if (!container) return;
+      fetch("/api/scoped/alerts", {
+        headers: token ? { "Authorization": `Bearer ${token}` } : {}
+      }).then(r => r.json()).then(data => {
+        if (data.success && data.data && data.data.length > 0) {
+          container.innerHTML = data.data.map(a => `
+            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid ${a.severity === 'CRITICAL' ? 'var(--danger)' : 'var(--warning)'}; border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--text-main); font-size:0.88rem;">${a.title}</strong>
+                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">${a.message}</p>
+              </div>
+              <span class="badge ${a.severity === 'CRITICAL' ? 'badge-unknown' : 'badge-late'}">${a.severity}</span>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No alerts active for your class.</div>`;
+        }
+      }).catch(() => {});
+    }
+
+    function openChangePasswordModal() {
+      document.getElementById("pwdAlert").style.display = "none";
+      document.getElementById("changePasswordModal").style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    async function handleChangePassword(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById("pwdAlert");
+      alertBox.style.display = "none";
+
+      const cur = document.getElementById("curPassword").value;
+      const n1 = document.getElementById("newPassword").value;
+      const n2 = document.getElementById("confirmNewPassword").value;
+
+      if (n1 !== n2) {
+        alertBox.innerText = "New passwords do not match.";
+        alertBox.style.display = "block";
+        return;
+      }
+
+      try {
+        const resp = await fetch("/api/auth/change-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({ current_password: cur, new_password: n1, confirm_password: n2 })
+        });
+        const data = await resp.json();
+        if (resp.ok && data.success) {
+          closeModal("changePasswordModal");
+          alert("Password updated successfully.");
+        } else {
+          alertBox.innerText = data.error?.message || data.detail || "Password change failed.";
+          alertBox.style.display = "block";
+        }
+      } catch (err) {
+        alertBox.innerText = "Error updating password.";
+        alertBox.style.display = "block";
+      }
+    }
+
+    function exportAdvisorAttendance(format) {
+      window.open(`/api/export/attendance/current/${format}`, '_blank');
+    }
+
+    async function handleLogout() {
+      await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("smartclass_token");
+      localStorage.removeItem("smartclass_user");
+      window.location.href = "/login";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      checkAuth();
+    });
+  </script>
+
+</body>
+</html>

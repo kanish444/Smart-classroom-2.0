@@ -184,11 +184,12 @@ class EnrollStudentRequest(BaseModel):
 
 
 class SelectCameraRequest(BaseModel):
-    source: str = "droidcam"
+    source: str = "pc"
     host: Optional[str] = None
     port: Optional[int] = None
     video_path: Optional[str] = None
     index: Optional[int] = None
+    stream_url: Optional[str] = None
 
 
 class TestCameraRequest(BaseModel):
@@ -196,5 +197,25 @@ class TestCameraRequest(BaseModel):
     host: Optional[str] = "10.140.159.218"
     port: Optional[int] = 4747
     video_path: Optional[str] = "/video"
+    stream_url: Optional[str] = None
+    index: Optional[int] = None
+
+
+# =============================================================================
+# Phase 10: One-By-One Student Face Enrollment Schemas
+# =============================================================================
+
+class OneByOneValidateFrameRequest(BaseModel):
+    image_base64: Optional[str] = None
+
+
+class OneByOneEnrollRequest(BaseModel):
+    register_number: str
+    name: str
+    class_name: str
+    department: str
+    section: str
+    samples: List[str] = Field(default_factory=list, description="5 to 10 base64-encoded face frames")
+
 
 

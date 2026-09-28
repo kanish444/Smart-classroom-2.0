@@ -21,3 +21,9 @@ lap
 fastapi
 uvicorn
 httpx
+
+# Central Server Authentication & MongoDB Dependencies
+pyjwt
+bcrypt
+pymongo
+motor

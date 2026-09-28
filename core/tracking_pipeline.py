@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from loguru import logger
 
-from core.detector import BaseDetector, YOLOv8FaceDetector
+from core.detector import BaseDetector, YOLOv8FaceDetector, get_face_detector, SCRFDDetector
 from core.face_processor import FaceProcessor
 from core.byte_tracker import ByteTracker, STrack
 from core.recognizer import FaceRecognizer
@@ -22,8 +22,9 @@ from config.settings import get_settings
 
 class TrackingPipeline:
     """
-    Phase 7 End-to-End Tracking & Temporal Stabilization Pipeline:
-    Camera Frame -> Detector -> Quality/Alignment -> ByteTrack -> Recognizer (throttled) -> Stabilizer -> TrackedFaces
+    Phase 7 End-to-End Tracking & Temporal Stabilization Pipeline with Small-Face Support:
+    Camera Frame -> Detector (SCRFD ONNX) -> Quality/Alignment -> ByteTrack ->
+    Recognizer (throttled) -> Temporal Stabilizer -> TrackedFaces
     """
 
     def __init__(
@@ -35,7 +36,7 @@ class TrackingPipeline:
         stabilizer: Optional[TemporalStabilizer] = None
     ):
         self.settings = get_settings()
-        self.detector = detector or YOLOv8FaceDetector()
+        self.detector = detector or get_face_detector()
         self.processor = processor or FaceProcessor()
         self.tracker = tracker or ByteTracker()
         self.recognizer = recognizer or FaceRecognizer()
@@ -45,12 +46,30 @@ class TrackingPipeline:
         self.fps_history = []
         self._last_time = time.perf_counter()
 
+        # Telemetry & Performance Metrics (Requirement 12)
+        self.latest_latency_metrics: Dict[str, float] = {
+            "detector_ms": 0.0,
+            "tracking_ms": 0.0,
+            "recognition_ms": 0.0,
+            "total_ms": 0.0
+        }
+        self.latest_state_counts: Dict[str, int] = {
+            "detected": 0,
+            "recognized": 0,
+            "verifying": 0,
+            "unknown": 0,
+            "too_small": 0,
+            "low_quality": 0
+        }
+        self.latest_raw_detections: List[Dict[str, Any]] = []
+
     def reset(self):
         """Reset all tracking and stabilization history."""
         self.frame_count = 0
         self.fps_history.clear()
         self.tracker.reset()
         self.stabilizer.reset()
+        self.latest_raw_detections.clear()
 
     def process_frame(
         self,
@@ -76,18 +95,23 @@ class TrackingPipeline:
         if frame is None or not isinstance(frame, np.ndarray) or frame.size == 0:
             return []
 
-        # 1. Detection
+        # 1. Detection (Full-frame + controlled tiling recovery)
+        t_det_0 = time.perf_counter()
         if detections is None:
             raw_detections = self.detector.detect(frame)
         else:
             raw_detections = detections
+        t_det_1 = time.perf_counter()
+        det_latency_ms = (t_det_1 - t_det_0) * 1000.0
         self.latest_raw_detections = raw_detections
 
-
         # 2. ByteTrack Association & State Management
+        t_track_0 = time.perf_counter()
         stracks: List[STrack] = self.tracker.update_tracks(raw_detections, frame)
+        t_track_1 = time.perf_counter()
+        track_latency_ms = (t_track_1 - t_track_0) * 1000.0
 
-        # 3. Phase 5 Quality Assessment & 5-point Alignment on Tracked Faces
+        # 3. Quality Assessment & 5-point Alignment on Tracked Faces
         tracked_detections = [
             {
                 "bbox": t.xyxy,
@@ -117,8 +141,15 @@ class TrackingPipeline:
                 pass
 
         # 4. Recognition & Temporal Stabilization
+        t_rec_0 = time.perf_counter()
         tracked_faces: List[TrackedFace] = []
         active_track_ids = set()
+
+        cnt_rec = 0
+        cnt_ver = 0
+        cnt_unk = 0
+        cnt_small = 0
+        cnt_lq = 0
 
         for track in stracks:
             active_track_ids.add(track.track_id)
@@ -127,8 +158,9 @@ class TrackingPipeline:
                 qm.quality_status if qm else "RECOGNITION_READY"
             )
 
-            # Check CPU recognition throttling
-            if self.stabilizer.should_recognize(track.track_id, self.frame_count) and track.track_id in ready_map:
+            # Check CPU recognition throttling (force fresh embedding if track was temporarily lost/reassociated)
+            was_reassociated = getattr(track, 'time_since_update', 0) > 1
+            if self.stabilizer.should_recognize(track.track_id, self.frame_count, force_recheck=was_reassociated) and track.track_id in ready_map:
                 rf = ready_map[track.track_id]
                 rec_result = self.recognizer.recognize_face(rf)
             else:
@@ -156,6 +188,44 @@ class TrackingPipeline:
                 timestamp=ts
             )
 
+            # Categorize user-facing display status (Requirements 5, 9, 10, 11)
+            diag_qm = qm.quality_metrics if hasattr(qm, 'quality_metrics') else qm
+            rej_reason = (getattr(diag_qm, "rejection_reason", None) or "").lower() if diag_qm else ""
+
+            if stable_id is not None:
+                disp_status = "RECOGNIZED"
+                cnt_rec += 1
+            elif quality_status == "FACE_TOO_SMALL" or "too small" in rej_reason:
+                disp_status = "FACE TOO SMALL"
+                cnt_small += 1
+            elif quality_status == "LOW_QUALITY":
+                disp_status = "LOW QUALITY"
+                cnt_lq += 1
+            elif stable_status == "VERIFYING":
+                disp_status = "VERIFYING"
+                cnt_ver += 1
+            else:
+                disp_status = "UNKNOWN"
+                cnt_unk += 1
+
+            # Build diagnostic telemetry record (Requirements 12 & 15)
+            diag_qm = qm.quality_metrics if hasattr(qm, 'quality_metrics') else qm
+            face_w = track.xyxy[2] - track.xyxy[0]
+            face_h = track.xyxy[3] - track.xyxy[1]
+            diagnostics = {
+                "face_size": f"{face_w}x{face_h}",
+                "face_area": face_w * face_h,
+                "brightness": getattr(diag_qm, "brightness", 0.0) if diag_qm else 0.0,
+                "sharpness": getattr(diag_qm, "sharpness", 0.0) if diag_qm else 0.0,
+                "contrast": getattr(diag_qm, "contrast", 0.0) if diag_qm else 0.0,
+                "glare_score": getattr(diag_qm, "glare_score", 0.0) if diag_qm else 0.0,
+                "detection_confidence": round(float(track.score), 2),
+                "recognition_similarity": round(float(stable_sim), 2),
+                "track_id": track.track_id,
+                "display_status": disp_status,
+                "rejection_reason": getattr(diag_qm, "rejection_reason", None) if diag_qm else None
+            }
+
             tracked_face = TrackedFace(
                 track_id=track.track_id,
                 bbox=track.xyxy,
@@ -171,12 +241,35 @@ class TrackingPipeline:
                 time_since_update=track.time_since_update,
                 last_seen=track.last_seen,
                 history_len=len(self.stabilizer.track_histories.get(track.track_id, [])),
-                quality_metrics=qm.quality_metrics if hasattr(qm, 'quality_metrics') else qm
+                quality_metrics=diag_qm,
+                display_status=disp_status,
+                diagnostics=diagnostics
             )
             tracked_faces.append(tracked_face)
 
+        t_rec_1 = time.perf_counter()
+        rec_latency_ms = (t_rec_1 - t_rec_0) * 1000.0
+
         # 5. Prune memory for dead tracks
         self.stabilizer.cleanup_tracks(active_track_ids)
+
+        t_total = (time.perf_counter() - t0) * 1000.0
+
+        # Record telemetry
+        self.latest_latency_metrics = {
+            "detector_ms": round(det_latency_ms, 1),
+            "tracking_ms": round(track_latency_ms, 1),
+            "recognition_ms": round(rec_latency_ms, 1),
+            "total_ms": round(t_total, 1)
+        }
+        self.latest_state_counts = {
+            "detected": len(raw_detections),
+            "recognized": cnt_rec,
+            "verifying": cnt_ver,
+            "unknown": cnt_unk,
+            "too_small": cnt_small,
+            "low_quality": cnt_lq
+        }
 
         return tracked_faces
 
@@ -188,51 +281,60 @@ class TrackingPipeline:
     ) -> np.ndarray:
         """
         Draws visual debug HUD overlay on frame:
-        - Bounding box color-coded by status
-        - Identification label card showing Track ID, Stable ID, Similarity, Quality, and Track State
-        - System summary in top-left
+        - GREEN: Recognized student (Name, Reg No, RECOGNIZED)
+        - YELLOW/ORANGE: Verifying, Unknown, Low Quality, Face Too Small
+        - RED: System/processing error
+        - Detailed diagnostic telemetry cards
         """
         vis_frame = frame.copy()
         h, w = vis_frame.shape[:2]
 
-        # Draw Global HUD in top-left
-        hud_bg = (20, 20, 20)
-        cv2.rectangle(vis_frame, (10, 10), (320, 95), hud_bg, -1)
-        cv2.rectangle(vis_frame, (10, 10), (320, 95), (60, 60, 60), 1)
+        # Draw Global HUD in top-left (Requirement 14)
+        hud_bg = (20, 24, 30)
+        cv2.rectangle(vis_frame, (10, 10), (390, 125), hud_bg, -1)
+        cv2.rectangle(vis_frame, (10, 10), (390, 125), (60, 75, 90), 1)
 
-        confirmed_count = sum(1 for tf in tracked_faces if tf.stable_student_id is not None)
-        unknown_count = sum(1 for tf in tracked_faces if tf.stable_student_id is None)
+        counts = self.latest_state_counts
+        lat = self.latest_latency_metrics
+        total_faces = counts.get('detected', 0)
+        rec_faces = counts.get('recognized', 0)
+        unk_faces = counts.get('unknown', 0)
+        unsuitable_faces = counts.get('too_small', 0) + counts.get('low_quality', 0)
 
-        cv2.putText(vis_frame, "SmartClass Vision AI - Phase 7 HUD", (20, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(vis_frame, f"FPS: {fps:.1f} | Frame: {self.frame_count}", (20, 50),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(vis_frame, f"Tracks: {len(tracked_faces)} (Matches: {confirmed_count}, Unknown: {unknown_count})", (20, 70),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (200, 200, 200), 1, cv2.LINE_AA)
-        cv2.putText(vis_frame, "Stabilization: ACTIVE | ByteTrack: ENABLED", (20, 88),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (0, 220, 0), 1, cv2.LINE_AA)
+        cv2.putText(vis_frame, "SmartClass Vision AI - SCRFD Monitor HUD", (20, 28),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.48, (0, 220, 255), 1, cv2.LINE_AA)
+        cv2.putText(vis_frame, f"Cam: {fps:.1f} FPS | Frame: {self.frame_count} | Lat: {lat.get('total_ms', 0):.0f}ms", (20, 48),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(vis_frame, f"SCRFD: {lat.get('detector_ms', 0):.1f}ms | Rec: {lat.get('recognition_ms', 0):.1f}ms | Track: {lat.get('tracking_ms', 0):.1f}ms", (20, 66),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.36, (180, 210, 230), 1, cv2.LINE_AA)
+        cv2.putText(vis_frame, f"TOTAL FACES: {total_faces}  |  RECOGNIZED: {rec_faces}", (20, 88),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.42, (0, 255, 0) if rec_faces > 0 else (220, 220, 220), 1, cv2.LINE_AA)
+        cv2.putText(vis_frame, f"UNKNOWN: {unk_faces}  |  NOT SUITABLE: {unsuitable_faces}", (20, 108),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (0, 200, 255), 1, cv2.LINE_AA)
 
         # Draw Face Cards
         for tf in tracked_faces:
             x1, y1, x2, y2 = tf.bbox
+            disp = tf.display_status or ("RECOGNIZED" if tf.stable_student_id else "UNKNOWN")
 
-            # Choose Color based on status
-            if tf.stable_student_id is not None:
-                # Confirmed Match -> Green
-                box_color = (0, 220, 0)
-            elif tf.quality_status == "LOW_QUALITY":
-                # Low Quality -> Gray/Yellow
-                box_color = (0, 165, 255)
+            # Color coding (Requirement 11)
+            if disp == "RECOGNIZED":
+                box_color = (0, 220, 0)       # Green
+            elif disp == "VERIFYING":
+                box_color = (0, 200, 255)     # Yellow / Gold
+            elif disp == "FACE TOO SMALL":
+                box_color = (0, 165, 255)     # Amber / Orange
+            elif disp == "LOW QUALITY":
+                box_color = (0, 165, 255)     # Amber / Orange
             else:
-                # Unknown -> Orange
-                box_color = (0, 120, 255)
+                box_color = (0, 120, 255)     # Orange
 
             # Draw bounding box
             cv2.rectangle(vis_frame, (x1, y1), (x2, y2), box_color, 2)
 
             # Draw card above or below box
-            card_w = 200
-            card_h = 70
+            card_w = max(200, x2 - x1)
+            card_h = 68
             card_x1 = max(0, min(x1, w - card_w - 5))
             card_y1 = max(0, y1 - card_h - 5) if y1 - card_h - 5 >= 0 else min(h - card_h - 5, y2 + 5)
             card_x2 = card_x1 + card_w
@@ -241,23 +343,40 @@ class TrackingPipeline:
             # Semi-transparent card background
             sub_img = vis_frame[card_y1:card_y2, card_x1:card_x2]
             dark_rect = np.zeros(sub_img.shape, dtype=np.uint8)
-            res = cv2.addWeighted(sub_img, 0.3, dark_rect, 0.7, 1.0)
+            res = cv2.addWeighted(sub_img, 0.25, dark_rect, 0.75, 1.0)
             vis_frame[card_y1:card_y2, card_x1:card_x2] = res
             cv2.rectangle(vis_frame, (card_x1, card_y1), (card_x2, card_y2), box_color, 1)
 
-            # Card texts
-            id_text = f"ID: {tf.stable_student_id or 'UNKNOWN'}"
-            track_text = f"Track: {tf.track_id} [{tf.state}]"
-            sim_text = f"Sim: {tf.current_similarity:.2f} ({tf.current_status})"
-            qual_text = f"Qual: {tf.quality_status}"
+            bw = max(0, x2 - x1)
+            bh = max(0, y2 - y1)
 
-            cv2.putText(vis_frame, track_text, (card_x1 + 6, card_y1 + 16),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
-            cv2.putText(vis_frame, id_text, (card_x1 + 6, card_y1 + 32),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 255) if tf.stable_student_id else (0, 160, 255), 1, cv2.LINE_AA)
-            cv2.putText(vis_frame, sim_text, (card_x1 + 6, card_y1 + 48),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.38, (200, 200, 200), 1, cv2.LINE_AA)
-            cv2.putText(vis_frame, qual_text, (card_x1 + 6, card_y1 + 64),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.36, (180, 180, 180), 1, cv2.LINE_AA)
+            # Card texts (Requirement 14)
+            if disp == "RECOGNIZED":
+                line1 = f"{tf.stable_student_name or tf.stable_student_id}"
+                line2 = f"{tf.stable_student_id} | RECOGNIZED"
+                line3 = f"Sim: {tf.current_similarity:.2f} | Conf: {tf.score:.2f}"
+            elif disp == "VERIFYING":
+                line1 = "VERIFYING..."
+                line2 = f"Track: {tf.track_id}"
+                line3 = f"Conf: {tf.score:.2f}"
+            elif disp == "FACE TOO SMALL":
+                line1 = "UNKNOWN"
+                line2 = "FACE TOO SMALL"
+                line3 = f"Size: {bw}x{bh} px"
+            elif disp == "LOW QUALITY":
+                line1 = "UNKNOWN"
+                line2 = "LOW QUALITY"
+                line3 = f"Size: {bw}x{bh} px"
+            else:
+                line1 = "UNKNOWN"
+                line2 = f"Track: {tf.track_id}"
+                line3 = f"Conf: {tf.score:.2f} | Sim: {tf.current_similarity:.2f}"
+
+            cv2.putText(vis_frame, str(line1)[:22], (card_x1 + 6, card_y1 + 18),
+                        cv2.FONT_HERSHEY_DUPLEX, 0.44, (255, 255, 255) if disp == "RECOGNIZED" else (0, 220, 255), 1, cv2.LINE_AA)
+            cv2.putText(vis_frame, str(line2)[:28], (card_x1 + 6, card_y1 + 38),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.38, (180, 240, 180) if disp == "RECOGNIZED" else (200, 200, 200), 1, cv2.LINE_AA)
+            cv2.putText(vis_frame, str(line3), (card_x1 + 6, card_y1 + 56),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.34, (160, 160, 160), 1, cv2.LINE_AA)
 
         return vis_frame
