@@ -3,9 +3,9 @@ import os
 import time
 import threading
 import numpy as np
-from typing import Tuple, Any, Optional
+from typing import Tuple, Any, Optional, Dict
 from loguru import logger
-from .base_camera import BaseCamera
+from .base_camera import BaseCamera, BooleanCallable
 
 
 class SmartBoardCamera(BaseCamera):
@@ -16,24 +16,32 @@ class SmartBoardCamera(BaseCamera):
     - Bounded single-frame buffer (maxsize=1) with stale frame dropping
     - Zero-latency latest-frame retrieval
     - Explicit resource lifecycle management (connect/release without hardware leaks)
+    - Full status tracking: DISCONNECTED, CONNECTING, CONNECTED, STREAMING, ERROR, STOPPED
+    - Actual vs requested resolution and FPS verification
     - Thread-safe acquisition and clean release
     """
 
-    def __init__(self, camera_index: int = 0, width: int = 1280, height: int = 720):
+    def __init__(self, camera_index: int = 0, width: int = 1280, height: int = 720, fps: int = 30):
         self.camera_index = int(camera_index)
-        self._requested_width = width
-        self._requested_height = height
+        self._requested_width = int(width)
+        self._requested_height = int(height)
+        self._requested_fps = int(fps)
 
         self._actual_width = 0
         self._actual_height = 0
         self._reported_fps = 0.0
+        self._resolution_accepted = False
+        self._fps_accepted = False
+
+        # Status tracking: DISCONNECTED, CONNECTING, CONNECTED, STREAMING, ERROR, STOPPED
+        self._status = "DISCONNECTED"
 
         # True FPS calculation variables
         self._frame_count = 0
         self._start_time = 0.0
 
         self.cap: Optional[cv2.VideoCapture] = None
-        self.is_connected = False
+        self._is_connected = False
         self.last_error_message = ""
 
         # Threaded acquisition lock & low-latency single-frame buffer (maxsize=1)
@@ -44,6 +52,15 @@ class SmartBoardCamera(BaseCamera):
         self._reader_thread: Optional[threading.Thread] = None
 
         self._initialize_camera()
+
+    @property
+    def is_connected(self) -> BooleanCallable:
+        """Returns connection state as BooleanCallable for both property and method access."""
+        return BooleanCallable(1 if self._is_connected else 0)
+
+    @is_connected.setter
+    def is_connected(self, value: bool):
+        self._is_connected = bool(value)
 
     def _cleanup_prior_resources(self):
         """Safely terminates existing capture thread and releases OpenCV handle."""
@@ -66,9 +83,10 @@ class SmartBoardCamera(BaseCamera):
             self._latest_frame = None
 
     def _initialize_camera(self) -> bool:
-        """Opens physical webcam device, sets parameters, grabs test frame, and spawns reader thread."""
+        """Opens physical webcam device, sets parameters, verifies acceptance, grabs test frame, and spawns reader thread."""
         with self._lock:
             self._cleanup_prior_resources()
+            self._status = "CONNECTING"
 
             logger.info(f"SmartBoardCamera: Initializing camera index {self.camera_index}...")
 
@@ -81,19 +99,21 @@ class SmartBoardCamera(BaseCamera):
                 self.cap = None
 
             if self.cap is None or not self.cap.isOpened():
-                logger.warning(f"SmartBoardCamera: Failed with DirectShow. Falling back to default backend...")
+                logger.warning(f"SmartBoardCamera: DirectShow open failed. Falling back to default backend...")
                 try:
                     self.cap = cv2.VideoCapture(self.camera_index)
                 except Exception as e:
                     self.last_error_message = f"Failed to instantiate VideoCapture for index {self.camera_index}: {e}"
                     logger.error(self.last_error_message)
-                    self.is_connected = False
+                    self._is_connected = False
+                    self._status = "ERROR"
                     return False
 
             if not self.cap.isOpened():
                 self.last_error_message = f"Could not open camera device at index {self.camera_index}."
                 logger.error(self.last_error_message)
-                self.is_connected = False
+                self._is_connected = False
+                self._status = "ERROR"
                 return False
 
             # Request buffer size 1 to prevent driver-level buffer bloat
@@ -102,14 +122,18 @@ class SmartBoardCamera(BaseCamera):
             except Exception:
                 pass
 
-            # Try to set requested resolution
+            # Configure requested resolution and FPS
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self._requested_width)
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self._requested_height)
+            try:
+                self.cap.set(cv2.CAP_PROP_FPS, self._requested_fps)
+            except Exception:
+                pass
 
-            # Read back actual properties
-            self._actual_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH) or self._requested_width)
-            self._actual_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or self._requested_height)
-            self._reported_fps = self.cap.get(cv2.CAP_PROP_FPS) or 30.0
+            # Read back properties reported by driver
+            prop_w = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH) or self._requested_width)
+            prop_h = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or self._requested_height)
+            self._reported_fps = float(self.cap.get(cv2.CAP_PROP_FPS) or self._requested_fps)
 
             # Test initial frame grab with settling retries
             ret, frame = False, None
@@ -122,20 +146,36 @@ class SmartBoardCamera(BaseCamera):
             if not ret or not self._validate_frame(frame):
                 self.last_error_message = f"Camera index {self.camera_index} opened but failed to read initial frame."
                 logger.warning(self.last_error_message)
-                self.is_connected = self.cap.isOpened()
-                if not self.is_connected:
+                self._is_connected = self.cap.isOpened()
+                if not self._is_connected:
                     try:
                         self.cap.release()
                     except Exception:
                         pass
                     self.cap = None
+                    self._status = "ERROR"
                     return False
+                self._status = "CONNECTED"
             else:
                 self._actual_height, self._actual_width = frame.shape[:2]
-                self.is_connected = True
+                self._is_connected = True
+                self._status = "CONNECTED"
                 self.last_error_message = ""
                 with self._frame_lock:
                     self._latest_frame = frame
+
+            # Verify whether requested resolution and FPS were accepted by hardware
+            self._resolution_accepted = (
+                self._actual_width == self._requested_width and self._actual_height == self._requested_height
+            )
+            self._fps_accepted = abs(self._reported_fps - self._requested_fps) < 1.0
+
+            logger.info(
+                f"SmartBoardCamera index {self.camera_index} connected: "
+                f"Actual: {self._actual_width}x{self._actual_height} @ ~{self._reported_fps:.1f} FPS "
+                f"(Requested: {self._requested_width}x{self._requested_height} @ {self._requested_fps} FPS, "
+                f"Resolution accepted: {self._resolution_accepted}, FPS accepted: {self._fps_accepted})"
+            )
 
             self._frame_count = 1
             self._start_time = time.time()
@@ -148,11 +188,7 @@ class SmartBoardCamera(BaseCamera):
                 daemon=True
             )
             self._reader_thread.start()
-
-            logger.info(
-                f"SmartBoardCamera connected with low-latency worker. "
-                f"Actual: {self._actual_width}x{self._actual_height} @ ~{self._reported_fps} reported FPS"
-            )
+            self._status = "STREAMING"
             return True
 
     def _capture_worker(self):
@@ -161,6 +197,7 @@ class SmartBoardCamera(BaseCamera):
         Maintains ONLY the latest frame in a single-slot buffer (size=1).
         Discards stale frames when AI processing is busy.
         """
+        self._status = "STREAMING"
         while not self._stop_reader.is_set():
             with self._lock:
                 if not self.cap or not self.cap.isOpened():
@@ -193,7 +230,7 @@ class SmartBoardCamera(BaseCamera):
         """
         Returns the newest video frame with lowest possible latency (from bounded single-frame buffer).
         """
-        if not self.is_connected:
+        if not self._is_connected:
             return False, None
 
         # Prefer newest frame from dedicated capture worker (bounded buffer maxsize=1)
@@ -226,16 +263,27 @@ class SmartBoardCamera(BaseCamera):
 
     def get_true_fps(self) -> float:
         """Calculate the actual measured FPS based on successfully read frames."""
-        if self._frame_count == 0:
+        if self._frame_count <= 1:
             return 0.0
         elapsed = time.time() - self._start_time
         if elapsed <= 0:
             return 0.0
         return round(self._frame_count / elapsed, 2)
 
+    def get_fps(self) -> float:
+        """Returns measured FPS if available, else reported FPS."""
+        measured = self.get_true_fps()
+        if measured > 0:
+            return measured
+        return round(self._reported_fps, 1)
+
+    def get_resolution(self) -> Tuple[int, int]:
+        """Returns actual camera resolution (width, height)."""
+        return (self._actual_width, self._actual_height)
+
     def connect(self) -> bool:
         """Explicit connect method to check or re-establish connection."""
-        if self.is_connected and self.cap and self.cap.isOpened():
+        if self._is_connected and self.cap and self.cap.isOpened():
             return True
         return self._initialize_camera()
 
@@ -244,7 +292,7 @@ class SmartBoardCamera(BaseCamera):
         self.release()
 
     def release(self) -> None:
-        """Stops capture worker thread, releases VideoCapture, and resets state."""
+        """Stops capture worker thread, releases VideoCapture, and resets state to STOPPED."""
         self._stop_reader.set()
         if self._reader_thread and self._reader_thread.is_alive():
             try:
@@ -264,8 +312,9 @@ class SmartBoardCamera(BaseCamera):
             with self._frame_lock:
                 self._latest_frame = None
 
-            self.is_connected = False
-            logger.info(f"SmartBoardCamera index {self.camera_index} released.")
+            self._is_connected = False
+            self._status = "STOPPED"
+            logger.info(f"SmartBoardCamera index {self.camera_index} released cleanly.")
 
     def __del__(self) -> None:
         try:
@@ -280,3 +329,23 @@ class SmartBoardCamera(BaseCamera):
     @property
     def reported_fps(self) -> float:
         return self._reported_fps
+
+    def get_status(self) -> Dict[str, Any]:
+        """Returns full diagnostic and runtime status dictionary."""
+        is_conn = bool(self.is_connected)
+        fps_val = self.get_fps()
+        return {
+            "status": self._status,
+            "camera_index": self.camera_index,
+            "connected": is_conn,
+            "resolution": f"{self._actual_width}x{self._actual_height}",
+            "actual_resolution": f"{self._actual_width}x{self._actual_height}",
+            "requested_resolution": f"{self._requested_width}x{self._requested_height}",
+            "resolution_accepted": self._resolution_accepted,
+            "fps": fps_val,
+            "reported_fps": round(self._reported_fps, 1),
+            "measured_fps": self.get_true_fps(),
+            "fps_accepted": self._fps_accepted,
+            "frames_read": self._frame_count,
+            "last_error": self.last_error_message
+        }

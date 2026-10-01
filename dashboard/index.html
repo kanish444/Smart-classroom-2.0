@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartClass Vision AI - Smart Board Classroom Monitor</title>
-  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+  <title>V.S.B Engineering College • SmartClass Vision AI</title>
+  <link rel="icon" type="image/png" href="/static/images/vsb_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -18,12 +18,13 @@
   <!-- ===================================================================== -->
   <header class="top-bar">
     <div class="brand-group">
-      <div class="brand-logo" title="SmartClass Institutional AI">
-        <img src="/static/img/smartclass_logo.svg" alt="SmartClass Vision AI Crest" class="brand-crest-logo">
+      <div class="brand-logo" title="V.S.B Engineering College • SmartClass Institutional AI" style="background:#ffffff; border-radius:10px; padding:3px; border:1.5px solid rgba(253,197,0,0.6); display:flex; align-items:center; justify-content:center; width:44px; height:44px;">
+        <img src="/static/images/vsb_logo.png" alt="V.S.B Engineering College Crest" class="brand-crest-logo" style="width:38px; height:38px; object-fit:contain;">
       </div>
       <div>
-        <h1 class="brand-title">SmartClass Vision AI</h1>
-        <div class="brand-subtitle">Smart Board Multi-Student Face Identification & Attendance</div>
+        <div style="font-size:0.65rem; font-weight:700; letter-spacing:0.12em; color:#D82927; text-transform:uppercase;">V.S.B Engineering College</div>
+        <h1 class="brand-title" style="margin:0; font-size:1.15rem; line-height:1.2;">SmartClass Vision AI</h1>
+        <div class="brand-subtitle" style="font-size:0.75rem;">Autonomous Classroom Vision & Edge Attendance System</div>
       </div>
     </div>
 
@@ -296,26 +297,26 @@
         <!-- 4 Camera Cards -->
         <div class="camera-cards-grid">
           <div class="cam-card active" data-source="pc" id="card-cam-pc" title="Integrated PC / Laptop Webcam">
-            <div class="cam-card-icon">📷</div>
+            <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
             <div class="cam-card-title">PC CAMERA</div>
             <div class="cam-card-sub">Device 0</div>
           </div>
 
           <div class="cam-card" data-source="droidcam" id="card-cam-droidcam" title="Mobile Phone Camera over Wi-Fi">
-            <div class="cam-card-icon">📱</div>
+            <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
             <div class="cam-card-title">DROIDCAM</div>
             <div class="cam-card-sub">Phone Camera</div>
           </div>
 
           <div class="cam-card" data-source="extension" id="card-cam-extension" title="External USB Camera">
-            <div class="cam-card-icon">🎥</div>
+            <div class="cam-card-icon"><i class="ti ti-video"></i></div>
             <div class="cam-card-title">EXTENSION</div>
             <div class="cam-card-sub">USB Camera</div>
           </div>
 
           <div class="cam-card" data-source="esp32" id="card-cam-esp32" title="ESP32 Wi-Fi Camera Stream">
-            <div class="cam-card-icon">📡</div>
-            <div class="cam-card-title">ESP32 CAM</div>
+            <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
+            <div class="cam-card-title">ESP32 CAMERA</div>
             <div class="cam-card-sub">Wi-Fi Stream</div>
           </div>
         </div>
@@ -443,10 +444,10 @@
 
         <div class="export-actions">
           <button type="button" class="btn-export" id="btn-export-csv" title="Export as CSV">
-            📄 CSV Export
+            <i class="ti ti-file-spreadsheet"></i> CSV Export
           </button>
           <button type="button" class="btn-export" id="btn-export-json" title="Export as JSON">
-            📋 JSON Export
+            <i class="ti ti-file-code"></i> JSON Export
           </button>
         </div>
       </div>
@@ -602,22 +603,22 @@
       <div id="enroll-step-source" style="display: none; padding: 1.25rem;">
         <div class="camera-cards-grid" style="margin-bottom: 14px;">
           <div class="cam-card active" data-source="pc" id="idx-cam-pc">
-            <div class="cam-card-icon">📷</div>
+            <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
             <div class="cam-card-title">PC CAMERA</div>
             <div class="cam-card-sub">Webcam</div>
           </div>
           <div class="cam-card" data-source="droidcam" id="idx-cam-droidcam">
-            <div class="cam-card-icon">📱</div>
+            <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
             <div class="cam-card-title">DROIDCAM</div>
             <div class="cam-card-sub">Phone</div>
           </div>
           <div class="cam-card" data-source="extension" id="idx-cam-extension">
-            <div class="cam-card-icon">🎥</div>
+            <div class="cam-card-icon"><i class="ti ti-video"></i></div>
             <div class="cam-card-title">EXTENSION</div>
             <div class="cam-card-sub">External USB</div>
           </div>
           <div class="cam-card" data-source="esp32" id="idx-cam-esp32">
-            <div class="cam-card-icon">📡</div>
+            <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
             <div class="cam-card-title">ESP32 CAM</div>
             <div class="cam-card-sub">Stream</div>
           </div>
@@ -702,9 +703,9 @@
         </div>
 
         <div style="display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end;">
-          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-capture">📸 CAPTURE SAMPLE</button>
-          <button type="button" class="btn-action btn-cancel" id="btn-enroll-retake" disabled>↺ RETAKE</button>
-          <button type="button" class="btn-action btn-start" id="btn-enroll-save" disabled>💾 SAVE ENROLLMENT</button>
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-capture"><i class="ti ti-camera"></i> CAPTURE SAMPLE</button>
+          <button type="button" class="btn-action btn-cancel" id="btn-enroll-retake" disabled><i class="ti ti-rotate-clockwise"></i> RETAKE</button>
+          <button type="button" class="btn-action btn-start" id="btn-enroll-save" disabled><i class="ti ti-device-floppy"></i> SAVE ENROLLMENT</button>
           <button type="button" class="btn-action btn-cancel" id="btn-enroll-cancel">✕ CLOSE</button>
         </div>
       </div>
@@ -750,16 +751,16 @@
 
       <div class="role-tab-bar">
         <button type="button" class="role-tab-btn active" id="tab-btn-hod" onclick="switchRoleLoginTab('HOD')">
-          🏛️ HOD Access
+          <i class="ti ti-building-bank"></i> HOD Access
         </button>
         <button type="button" class="role-tab-btn" id="tab-btn-adv" onclick="switchRoleLoginTab('ADVISOR')">
-          👥 Advisor Access
+          <i class="ti ti-users"></i> Advisor Access
         </button>
       </div>
 
       <div class="role-modal-body">
         <div class="role-desc-box">
-          <strong id="modal-role-title" style="display:block; margin-bottom:2px;">🏛️ Head of Department (HOD) Portal</strong>
+          <strong id="modal-role-title" style="display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="ti ti-building-bank"></i> Head of Department (HOD) Portal</strong>
           <span id="modal-role-desc">Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.</span>
         </div>
 
@@ -819,7 +820,7 @@
       if (role === 'HOD') {
         tabHod.classList.add('active');
         tabAdv.classList.remove('active');
-        roleTitle.innerText = '🏛️ Head of Department (HOD) Portal';
+        roleTitle.innerHTML = '<i class="ti ti-building-bank"></i> Head of Department (HOD) Portal';
         roleDesc.innerText = 'Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.';
         userIdInput.value = 'HOD001';
         submitBtn.innerText = 'Sign In to HOD Dashboard';
@@ -827,7 +828,7 @@
       } else {
         tabAdv.classList.add('active');
         tabHod.classList.remove('active');
-        roleTitle.innerText = '👥 Class Advisor Portal';
+        roleTitle.innerHTML = '<i class="ti ti-users"></i> Class Advisor Portal';
         roleDesc.innerText = 'Dedicated live camera monitoring and attendance verification for your assigned class & section.';
         userIdInput.value = 'ADV001';
         submitBtn.innerText = 'Sign In to Advisor Dashboard';

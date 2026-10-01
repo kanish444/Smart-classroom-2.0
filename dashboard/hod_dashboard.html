@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartClass Vision AI - HOD Administration Portal</title>
-  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+  <title>V.S.B. Engineering College - SmartClass Vision AI Administration Portal</title>
+  <link rel="icon" type="image/png" href="/static/img/vsb_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,12 +18,13 @@
   <!-- ===================================================================== -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="logo-badge" title="SmartClass Institutional AI">
-        <img src="/static/img/smartclass_logo.svg" alt="SmartClass Logo" class="sidebar-crest-logo">
+      <div class="logo-badge" title="V.S.B. Engineering College Crest">
+        <img src="/static/img/vsb_logo.png" alt="V.S.B. Engineering College Crest" class="sidebar-crest-logo">
       </div>
       <div class="brand-text">
+        <span class="inst-brand-eyebrow">V.S.B. ENGG COLLEGE</span>
         <h2>SmartClass</h2>
-        <span>Vision AI Control</span>
+        <span class="product-brand-sub">Vision AI Control</span>
       </div>
     </div>
 
@@ -107,6 +108,7 @@
   <div class="main-wrapper">
     <header class="top-navbar">
       <div class="page-title-box">
+        <div class="page-eyebrow"><span class="eyebrow-dot"></span> V.S.B ENGINEERING COLLEGE • SMARTCLASS VISION AI</div>
         <h1 id="pageTitle">HOD Executive Dashboard</h1>
         <p id="pageSubtitle">AI Classroom Monitoring & Institutional Administration</p>
       </div>
@@ -128,149 +130,227 @@
       <!-- TAB 1: DASHBOARD OVERVIEW                                         -->
       <!-- ================================================================= -->
       <section id="tab-dashboard" class="tab-pane active">
-        <!-- 8 Metric Cards Grid -->
-        <div class="cards-grid">
-          <div class="metric-card">
-            <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
-            <div class="card-info">
-              <span class="card-label">Total Students</span>
-              <span class="card-value" id="cardTotalStudents">--</span>
-              <span class="card-sub">Enrolled roster</span>
+
+        <!-- SECTION 1: INSTITUTIONAL OVERVIEW -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">INSTITUTIONAL OVERVIEW</h2>
             </div>
+            <p class="section-subtitle">Live institutional and classroom intelligence</p>
           </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
-            <div class="card-info">
-              <span class="card-label">Present</span>
-              <span class="card-value" id="cardStudentsPresent">--</span>
-              <span class="card-sub">Verified in session</span>
+          <!-- 8 Metric Cards Grid -->
+          <div class="cards-grid">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
+              <div class="card-info">
+                <span class="card-label">Total Students</span>
+                <span class="card-value" id="cardTotalStudents">--</span>
+                <span class="card-sub">Enrolled roster</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
-            <div class="card-info">
-              <span class="card-label">Absent</span>
-              <span class="card-value" id="cardStudentsAbsent">--</span>
-              <span class="card-sub">Not yet seen</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
+              <div class="card-info">
+                <span class="card-label">Present</span>
+                <span class="card-value" id="cardStudentsPresent">--</span>
+                <span class="card-sub">Verified in session</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
-            <div class="card-info">
-              <span class="card-label">Attendance %</span>
-              <span class="card-value" id="cardActiveAdvisors">--%</span>
-              <span class="card-sub">Session overall</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
+              <div class="card-info">
+                <span class="card-label">Absent</span>
+                <span class="card-value" id="cardStudentsAbsent">--</span>
+                <span class="card-sub">Not yet seen</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
-            <div class="card-info">
-              <span class="card-label">Active Cameras</span>
-              <span class="card-value" id="cardActiveCameras">1</span>
-              <span class="card-sub">Smart Board Camera</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
+              <div class="card-info">
+                <span class="card-label">Attendance %</span>
+                <span class="card-value" id="cardActiveAdvisors">--%</span>
+                <span class="card-sub">Session overall</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-teal"><i class="ti ti-antenna"></i></div>
-            <div class="card-info">
-              <span class="card-label">Active ESP32</span>
-              <span class="card-value" id="cardActiveEsp32">0</span>
-              <span class="card-sub">IoT Telemetry Node</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
+              <div class="card-info">
+                <span class="card-label">Active Cameras</span>
+                <span class="card-value" id="cardActiveCameras">1</span>
+                <span class="card-sub">Smart Board Camera</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-amber"><i class="ti ti-user-question"></i></div>
-            <div class="card-info">
-              <span class="card-label">Unknown Faces</span>
-              <span class="card-value" id="cardActiveClassrooms">0</span>
-              <span class="card-sub">Unregistered detections</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-teal"><i class="ti ti-antenna"></i></div>
+              <div class="card-info">
+                <span class="card-label">Active ESP32</span>
+                <span class="card-value" id="cardActiveEsp32">0</span>
+                <span class="card-sub">IoT Telemetry Node</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
-            <div class="card-info">
-              <span class="card-label">Active Alerts</span>
-              <span class="card-value" id="cardActiveAlerts">0</span>
-              <span class="card-sub">System health & events</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-amber"><i class="ti ti-user-question"></i></div>
+              <div class="card-info">
+                <span class="card-label">Unknown Faces</span>
+                <span class="card-value" id="cardActiveClassrooms">0</span>
+                <span class="card-sub">Unregistered detections</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
+              <div class="card-info">
+                <span class="card-label">Active Alerts</span>
+                <span class="card-value" id="cardActiveAlerts">0</span>
+                <span class="card-sub">System health & events</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Advisors Quick Overview Panel -->
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Class Advisors Overview</h2>
-            <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()"><i class="ti ti-user-plus"></i> ADD NEW ADVISOR</button>
+        <!-- SECTION 2: CLASS ADVISORS -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">CLASS ADVISORS</h2>
+            </div>
+            <p class="section-subtitle">Assigned faculty and classroom responsibility overview</p>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Advisor ID</th>
-                  <th>Name</th>
-                  <th>Department</th>
-                  <th>Year</th>
-                  <th>Section</th>
-                  <th>Assigned Classroom</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="advisorsTableBody">
-                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading advisors...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
-        <!-- Real-Time System Diagnostics -->
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Real-Time System Diagnostics</h2>
-          </div>
-          <div class="status-grid" id="systemStatusGrid">
-            <div class="status-item">
-              <span class="item-name">FastAPI Core</span>
-              <span class="item-val" style="color: var(--success);" id="diagFastAPI">ONLINE</span>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-heading-group">
+                <h3>Faculty Responsibility Registry</h3>
+                <span class="panel-heading-desc">Real-time advisor allocations and scope</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()"><i class="ti ti-user-plus"></i> ADD NEW ADVISOR</button>
             </div>
-            <div class="status-item">
-              <span class="item-name">MongoDB Database</span>
-              <span class="item-val" id="diagMongoDB">CHECKING...</span>
-            </div>
-            <div class="status-item">
-              <span class="item-name">Camera Stream</span>
-              <span class="item-val" id="diagCamera">CHECKING...</span>
-            </div>
-            <div class="status-item">
-              <span class="item-name">AI Recognition Pipeline</span>
-              <span class="item-val" id="diagAI">CHECKING...</span>
-            </div>
-            <div class="status-item">
-              <span class="item-name">FAISS Vector Store</span>
-              <span class="item-val" id="diagFAISS">READY</span>
-            </div>
-            <div class="status-item">
-              <span class="item-name">ESP32 Ingestion</span>
-              <span class="item-val" id="diagESP32">READY</span>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Advisor ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Section</th>
+                    <th>Assigned Classroom</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="advisorsTableBody">
+                  <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading advisors...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        <!-- Recent Institutional Events Stream -->
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Recent Institutional Events & Activity Stream</h2>
-            <span class="badge badge-ai">Live Stream</span>
+        <!-- SECTION 3: REAL-TIME SYSTEM DIAGNOSTICS -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">REAL-TIME SYSTEM DIAGNOSTICS</h2>
+            </div>
+            <p class="section-subtitle">Live health status of the SmartClass AI infrastructure</p>
           </div>
-          <div id="recentEventsList" style="padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 8px;">
-            <div style="text-align: center; color: var(--text-muted);">Loading activity stream...</div>
+
+          <div class="diagnostics-grid" id="systemStatusGrid">
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-server"></i></span>
+                <span class="diag-name">FASTAPI CORE</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagFastAPI">ONLINE</div>
+              <div class="diag-desc">ASGI High-Throughput Engine</div>
+            </div>
+
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-database"></i></span>
+                <span class="diag-name">MONGODB DATABASE</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagMongoDB">CONNECTED</div>
+              <div class="diag-desc">Identity & Event Persistence</div>
+            </div>
+
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-video"></i></span>
+                <span class="diag-name">CAMERA STREAM</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagCamera">CONNECTED</div>
+              <div class="diag-desc">Smart Board Camera UVC</div>
+            </div>
+
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-brain"></i></span>
+                <span class="diag-name">AI RECOGNITION PIPELINE</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagAI">RUNNING</div>
+              <div class="diag-desc">SCRFD + ArcFace Embeddings</div>
+            </div>
+
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-vector-triangle"></i></span>
+                <span class="diag-name">FAISS VECTOR STORE</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagFAISS">READY</div>
+              <div class="diag-desc">L2 Cosine Search Index</div>
+            </div>
+
+            <div class="diag-card">
+              <div class="diag-card-top">
+                <span class="diag-status-dot dot-operational"></span>
+                <span class="diag-icon-box"><i class="ti ti-antenna"></i></span>
+                <span class="diag-name">ESP32 INGESTION</span>
+              </div>
+              <div class="diag-status-badge badge-operational" id="diagESP32">READY</div>
+              <div class="diag-desc">IoT Telemetry Protocol</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: INSTITUTIONAL ACTIVITY STREAM -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">INSTITUTIONAL ACTIVITY STREAM</h2>
+            </div>
+            <p class="section-subtitle">Real-time chronological events across classrooms and sensors</p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-heading-group">
+                <h3>Recent Activity & Operational Events</h3>
+                <span class="panel-heading-desc">Telemetry and recognition timeline</span>
+              </div>
+              <span class="badge badge-ai"><i class="ti ti-broadcast"></i> Live Stream</span>
+            </div>
+            <div id="recentEventsList" style="padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 8px;">
+              <div style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading activity stream...</div>
+            </div>
           </div>
         </div>
       </section>
@@ -280,6 +360,17 @@
       <!-- ================================================================= -->
       <section id="tab-monitoring" class="tab-pane" style="display: none;">
         
+        <!-- SECTION: SMARTCLASS AI LIVE MONITORING -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMARTCLASS AI LIVE MONITORING</h2>
+            </div>
+            <p class="section-subtitle">Real-time computer vision inference, face identification, and multi-target tracking</p>
+          </div>
+        </div>
+
         <!-- Camera Source Selection Panel -->
         <div class="camera-source-section">
           <div class="camera-section-header">
@@ -510,12 +601,73 @@
           </div>
         </div>
 
+        <!-- SECTION: AI SYSTEM STATUS -->
+        <div class="institutional-section" style="margin-top: 0.5rem;">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">AI SYSTEM STATUS</h2>
+            </div>
+            <p class="section-subtitle">Core deep learning inference pipeline and vector retrieval engine</p>
+          </div>
+
+          <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue"><i class="ti ti-scan"></i></div>
+              <div class="card-info">
+                <span class="card-label">SCRFD</span>
+                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
+                <span class="card-sub">Face Detection 10G-KPS</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple"><i class="ti ti-brain"></i></div>
+              <div class="card-info">
+                <span class="card-label">ArcFace</span>
+                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
+                <span class="card-sub">512-D Feature Embeddings</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-indigo"><i class="ti ti-binary-tree"></i></div>
+              <div class="card-info">
+                <span class="card-label">FAISS</span>
+                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">READY</span>
+                <span class="card-sub">L2 Cosine Vector Store</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-teal"><i class="ti ti-activity"></i></div>
+              <div class="card-info">
+                <span class="card-label">ByteTrack</span>
+                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
+                <span class="card-sub">Spatial-Temporal Kalman</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ================================================================= -->
       <!-- TAB 3: ADVISORS FULL MANAGEMENT                                   -->
       <!-- ================================================================= -->
       <section id="tab-advisors" class="tab-pane" style="display: none;">
+        
+        <!-- SECTION: CLASS ADVISORS -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">CLASS ADVISORS</h2>
+            </div>
+            <p class="section-subtitle">Faculty and classroom responsibility overview</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <h2>Manage Class Advisors</h2>
@@ -545,9 +697,22 @@
       </section>
 
       <!-- ================================================================= -->
+      <!-- ================================================================= -->
       <!-- TAB 4: STUDENTS LIST                                              -->
       <!-- ================================================================= -->
       <section id="tab-students" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: STUDENT MANAGEMENT -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">STUDENT MANAGEMENT</h2>
+            </div>
+            <p class="section-subtitle">Authoritative Institutional Student Roster & Gallery Enrolment</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
             <div>
@@ -603,6 +768,18 @@
       <!-- TAB 5: CLASSROOM SETUP & MANAGEMENT                               -->
       <!-- ================================================================= -->
       <section id="tab-classrooms" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: CLASSROOM SETUP & DEVICE MAPPING -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">CLASSROOM SETUP & DEVICE MAPPING</h2>
+            </div>
+            <p class="section-subtitle">Physical classrooms, camera bindings, and assigned advisors</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
             <div>
@@ -671,6 +848,18 @@
       <!-- TAB 6: ATTENDANCE                                                 -->
       <!-- ================================================================= -->
       <section id="tab-attendance" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: SMART ATTENDANCE -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMART ATTENDANCE</h2>
+            </div>
+            <p class="section-subtitle">Real-time classroom session attendance verification & presence telemetry</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
             <div>
@@ -747,6 +936,18 @@
       <!-- TAB 7: SENSORS (IoT & ESP32)                                      -->
       <!-- ================================================================= -->
       <section id="tab-sensors" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: SMART CLASSROOM IOT -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMART CLASSROOM IOT</h2>
+            </div>
+            <p class="section-subtitle">ESP32 environmental and occupancy sensor network</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <div>
@@ -826,6 +1027,18 @@
       <!-- TAB 8: ALERTS                                                     -->
       <!-- ================================================================= -->
       <section id="tab-alerts" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: SMARTCLASS ALERT CENTER -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMARTCLASS ALERT CENTER</h2>
+            </div>
+            <p class="section-subtitle">Critical, Warning, and Informational System Events</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <h2>System & Operational Alert Center</h2>
@@ -867,6 +1080,18 @@
       <!-- TAB 9: REPORTS                                                    -->
       <!-- ================================================================= -->
       <section id="tab-reports" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: INSTITUTIONAL REPORTS -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">INSTITUTIONAL REPORTS</h2>
+            </div>
+            <p class="section-subtitle">Comprehensive attendance records, analytics, and data exports</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
             <h2>Institutional Reports & Analytics</h2>
@@ -909,6 +1134,18 @@
       <!-- TAB 10: SYSTEM STATUS                                             -->
       <!-- ================================================================= -->
       <section id="tab-system" class="tab-pane" style="display: none;">
+
+        <!-- SECTION: SMARTCLASS INFRASTRUCTURE -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMARTCLASS INFRASTRUCTURE</h2>
+            </div>
+            <p class="section-subtitle">Live health status of FastAPI, MongoDB, Camera, SCRFD, ArcFace, FAISS, ByteTrack, ESP32</p>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <h2>Technical System Architecture & Service Health</h2>
@@ -1023,6 +1260,21 @@
           </div>
         </div>
       </section>
+
+      <!-- Institutional Footer -->
+      <footer class="institutional-footer" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:3.5rem; padding:1.5rem 0 2rem; border-top:1px solid var(--border);">
+        <div class="footer-left" style="display:flex; align-items:center; gap:12px;">
+          <img src="/static/images/vsb_logo.png" alt="VSB Emblem" class="footer-crest-mini" style="width:34px; height:34px; object-fit:contain; background:#ffffff; padding:2px; border-radius:6px; border:1.5px solid rgba(253,197,0,0.6); flex-shrink:0;" />
+          <div class="footer-inst-copy" style="display:flex; flex-direction:column; gap:2px;">
+            <strong style="font-size:0.80rem; color:var(--vsb-primary); font-weight:700; letter-spacing:0.04em;">V.S.B ENGINEERING COLLEGE</strong>
+            <span style="font-size:0.72rem; color:var(--text-muted);">Autonomous Institution • Accredited by NAAC with 'A' Grade • Approved by AICTE, New Delhi</span>
+          </div>
+        </div>
+        <div class="footer-right" style="font-size:0.76rem; color:var(--text-muted); display:flex; align-items:center; gap:12px;">
+          <span class="footer-badge">Institutional Node</span>
+          <span>SmartClass Vision AI Platform v2.4 • Edge Neural Engine</span>
+        </div>
+      </footer>
 
     </main>
   </div>
@@ -1248,8 +1500,8 @@
     <div class="modal-enrollment-card">
       <div class="enroll-modal-header">
         <div class="enroll-badge-title">
-          <span class="enroll-step-badge">ENROLLMENT</span>
-          <h3>Student Face Registration</h3>
+          <span class="enroll-step-badge">V.S.B. ENGINEERING COLLEGE</span>
+          <h3>STUDENT FACE ENROLLMENT • SMARTCLASS VISION AI</h3>
         </div>
         <button class="btn-close" onclick="closeEnrollmentModal()">&times;</button>
       </div>
@@ -1494,6 +1746,23 @@
       }
     }
 
+    function updateDiagCard(id, val) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerText = val;
+      const card = el.closest('.diag-card');
+      if (card) {
+        const dot = card.querySelector('.diag-status-dot');
+        const valLower = String(val).toLowerCase();
+        const isErr = valLower.includes('offline') || valLower.includes('error') || valLower.includes('disconnected') || valLower.includes('fail');
+        const isWarn = valLower.includes('checking') || valLower.includes('warning') || valLower.includes('waiting');
+        el.className = 'diag-status-badge ' + (isErr ? 'badge-error' : (isWarn ? 'badge-warning' : 'badge-operational'));
+        if (dot) {
+          dot.className = 'diag-status-dot ' + (isErr ? 'dot-error' : (isWarn ? 'dot-warning' : 'dot-operational'));
+        }
+      }
+    }
+
     async function loadDashboardData() {
       try {
         const sumResp = await fetch("/api/dashboard/role-summary", {
@@ -1502,22 +1771,34 @@
         const sumData = await sumResp.json();
         if (sumResp.ok && sumData.success) {
           const cards = sumData.data.cards;
-          document.getElementById("cardTotalStudents").innerText = cards.total_students || '--';
-          document.getElementById("cardStudentsPresent").innerText = cards.students_present || '--';
-          document.getElementById("cardStudentsAbsent").innerText = cards.students_absent || '--';
-          document.getElementById("cardActiveAdvisors").innerText = cards.active_advisors || '--';
-          document.getElementById("cardActiveCameras").innerText = cards.active_cameras || '1';
-          document.getElementById("cardActiveEsp32").innerText = cards.active_esp32_devices || '0';
-          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts || '0';
+          document.getElementById("cardTotalStudents").innerText = cards.total_students !== undefined ? cards.total_students : '--';
+          document.getElementById("cardStudentsPresent").innerText = cards.students_present !== undefined ? cards.students_present : '--';
+          document.getElementById("cardStudentsAbsent").innerText = cards.students_absent !== undefined ? cards.students_absent : '--';
+          
+          let attPct = '--%';
+          if (cards.total_students && cards.total_students > 0) {
+            const pct = Math.round(((cards.students_present || 0) / cards.total_students) * 100);
+            attPct = `${pct}%`;
+          } else if (cards.total_students === 0) {
+            attPct = '0%';
+          }
+          if (document.getElementById("cardActiveAdvisors")) {
+            document.getElementById("cardActiveAdvisors").innerText = attPct;
+          }
+          
+          document.getElementById("cardActiveCameras").innerText = cards.active_cameras !== undefined ? cards.active_cameras : '1';
+          document.getElementById("cardActiveEsp32").innerText = cards.active_esp32_devices !== undefined ? cards.active_esp32_devices : '0';
+          document.getElementById("cardActiveClassrooms").innerText = cards.unknown_faces !== undefined ? cards.unknown_faces : '0';
+          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts !== undefined ? cards.active_alerts : '0';
 
           const sys = sumData.data.system_status;
           if (sys) {
-            document.getElementById("diagFastAPI").innerText = sys.fastapi || 'ONLINE';
-            document.getElementById("diagMongoDB").innerText = sys.mongodb || 'ONLINE';
-            document.getElementById("diagCamera").innerText = sys.camera || 'ONLINE';
-            document.getElementById("diagAI").innerText = sys.ai_pipeline || 'ONLINE';
-            document.getElementById("diagFAISS").innerText = sys.faiss || 'READY';
-            document.getElementById("diagESP32").innerText = sys.esp32 || 'READY';
+            updateDiagCard("diagFastAPI", sys.fastapi || 'ONLINE');
+            updateDiagCard("diagMongoDB", sys.mongodb || 'ONLINE');
+            updateDiagCard("diagCamera", sys.camera || 'ONLINE');
+            updateDiagCard("diagAI", sys.ai_pipeline || 'ONLINE');
+            updateDiagCard("diagFAISS", sys.faiss || 'READY');
+            updateDiagCard("diagESP32", sys.esp32 || 'READY');
           }
         }
 
@@ -2664,7 +2945,7 @@
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
-          saveBtn.textContent = '💾 SAVE ENROLLMENT';
+          saveBtn.innerHTML = '<i class="ti ti-device-floppy"></i> SAVE ENROLLMENT';
         }
       }
     }

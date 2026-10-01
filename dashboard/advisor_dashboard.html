@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartClass Vision AI - Class Advisor Portal</title>
-  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+  <title>V.S.B. Engineering College - SmartClass Vision AI Class Advisor Portal</title>
+  <link rel="icon" type="image/png" href="/static/img/vsb_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,12 +18,13 @@
   <!-- ===================================================================== -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="logo-badge" title="SmartClass Institutional AI">
-        <img src="/static/img/smartclass_logo.svg" alt="SmartClass Logo" class="sidebar-crest-logo">
+      <div class="logo-badge" title="V.S.B. Engineering College Crest">
+        <img src="/static/img/vsb_logo.png" alt="V.S.B. Engineering College Crest" class="sidebar-crest-logo">
       </div>
       <div class="brand-text">
-        <h2>SMARTCLASS</h2>
-        <span style="color: var(--color-ai, #06B6D4); font-size: 0.68rem; letter-spacing: 0.08em; font-weight: 700;">VISION AI CONTROL</span>
+        <span class="inst-brand-eyebrow">V.S.B. ENGG COLLEGE</span>
+        <h2>SmartClass</h2>
+        <span class="product-brand-sub">Vision AI Control</span>
       </div>
     </div>
 
@@ -95,6 +96,7 @@
   <div class="main-wrapper">
     <header class="top-navbar">
       <div class="page-title-box">
+        <div class="page-eyebrow"><span class="eyebrow-dot"></span> V.S.B ENGINEERING COLLEGE • SMARTCLASS VISION AI</div>
         <h1 id="pageTitle">Class Advisor Dashboard</h1>
         <p id="advisorHeaderSub">Assigned Class Real-Time Student Attendance & Video Oversight</p>
       </div>
@@ -112,87 +114,112 @@
       <!-- TAB 1: DASHBOARD OVERVIEW                                         -->
       <!-- ================================================================= -->
       <section id="tab-dashboard" class="tab-pane active">
-        <!-- 6 Advisor Cards Grid -->
-        <div class="cards-grid">
-          <div class="metric-card">
-            <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
-            <div class="card-info">
-              <span class="card-label">Total Students</span>
-              <span class="card-value" id="cardTotalStudents">--</span>
-              <span class="card-sub">Assigned section roster</span>
+
+        <!-- SECTION 1: INSTITUTIONAL OVERVIEW -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">INSTITUTIONAL OVERVIEW</h2>
             </div>
+            <p class="section-subtitle">Section attendance and live classroom intelligence</p>
           </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
-            <div class="card-info">
-              <span class="card-label">Present Today</span>
-              <span class="card-value" id="cardPresentToday">--</span>
-              <span class="card-sub">AI verified in room</span>
+          <!-- 6 Advisor Cards Grid -->
+          <div class="cards-grid">
+            <div class="metric-card">
+              <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
+              <div class="card-info">
+                <span class="card-label">Total Students</span>
+                <span class="card-value" id="cardTotalStudents">--</span>
+                <span class="card-sub">Assigned section roster</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
-            <div class="card-info">
-              <span class="card-label">Absent Today</span>
-              <span class="card-value" id="cardAbsentToday">--</span>
-              <span class="card-sub">Pending verification</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
+              <div class="card-info">
+                <span class="card-label">Present Today</span>
+                <span class="card-value" id="cardPresentToday">--</span>
+                <span class="card-sub">AI verified in room</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
-            <div class="card-info">
-              <span class="card-label">Attendance %</span>
-              <span class="card-value" id="cardAttendancePct">--%</span>
-              <span class="card-sub">Section percentage</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
+              <div class="card-info">
+                <span class="card-label">Absent Today</span>
+                <span class="card-value" id="cardAbsentToday">--</span>
+                <span class="card-sub">Pending verification</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
-            <div class="card-info">
-              <span class="card-label">Active Camera</span>
-              <span class="card-value" id="cardActiveCamera">PC Camera</span>
-              <span class="card-sub">Classroom node</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
+              <div class="card-info">
+                <span class="card-label">Attendance %</span>
+                <span class="card-value" id="cardAttendancePct">--%</span>
+                <span class="card-sub">Section percentage</span>
+              </div>
             </div>
-          </div>
 
-          <div class="metric-card">
-            <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
-            <div class="card-info">
-              <span class="card-label">Active Alerts</span>
-              <span class="card-value" id="cardActiveAlerts">0</span>
-              <span class="card-sub">Operational notifications</span>
+            <div class="metric-card">
+              <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
+              <div class="card-info">
+                <span class="card-label">Active Camera</span>
+                <span class="card-value" id="cardActiveCamera">PC Camera</span>
+                <span class="card-sub">Classroom node</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
+              <div class="card-info">
+                <span class="card-label">Active Alerts</span>
+                <span class="card-value" id="cardActiveAlerts">0</span>
+                <span class="card-sub">Operational notifications</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Assigned Students Roster Table -->
-        <div class="panel">
-          <div class="panel-header">
-            <h2>My Assigned Students — Live Attendance</h2>
-            <span id="advisorSectionBadge" class="badge badge-ai">Class Scope</span>
+        <!-- SECTION 2: ASSIGNED STUDENTS ROSTER -->
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">ASSIGNED CLASS ATTENDANCE</h2>
+            </div>
+            <p class="section-subtitle">Real-time verification and presence tracking for assigned students</p>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Register Number</th>
-                  <th>Student Name</th>
-                  <th>Department</th>
-                  <th>Section</th>
-                  <th>Status</th>
-                  <th>Attendance %</th>
-                  <th>Last Seen</th>
-                  <th>Recognition State</th>
-                </tr>
-              </thead>
-              <tbody id="myStudentsTableBody">
-                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading assigned class students...</td></tr>
-              </tbody>
-            </table>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-heading-group">
+                <h3>My Assigned Students — Live Attendance</h3>
+                <span class="panel-heading-desc">Real-time student status within assigned class scope</span>
+              </div>
+              <span id="advisorSectionBadge" class="badge badge-ai">Class Scope</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Register Number</th>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Section</th>
+                    <th>Status</th>
+                    <th>Attendance %</th>
+                    <th>Last Seen</th>
+                    <th>Recognition State</th>
+                  </tr>
+                </thead>
+                <tbody id="myStudentsTableBody">
+                  <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading assigned class students...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -201,27 +228,37 @@
       <!-- TAB 2: MY STUDENTS FULL ROSTER                                    -->
       <!-- ================================================================= -->
       <section id="tab-mystudents" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Assigned Class Student Roster</h2>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">STUDENT MANAGEMENT</h2>
+            </div>
+            <p class="section-subtitle">Assigned section roster and biometric recognition profiles</p>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Register Number</th>
-                  <th>Student Name</th>
-                  <th>Department</th>
-                  <th>Section</th>
-                  <th>Status</th>
-                  <th>Last Seen</th>
-                  <th>Recognition Status</th>
-                </tr>
-              </thead>
-              <tbody id="tabMyStudentsBody">
-                <tr><td colspan="7" style="text-align: center;">Loading students...</td></tr>
-              </tbody>
-            </table>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Assigned Class Student Roster</h2>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Register Number</th>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Section</th>
+                    <th>Status</th>
+                    <th>Last Seen</th>
+                    <th>Recognition Status</th>
+                  </tr>
+                </thead>
+                <tbody id="tabMyStudentsBody">
+                  <tr><td colspan="7" style="text-align: center;">Loading students...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -230,26 +267,36 @@
       <!-- TAB 3: ATTENDANCE TAB                                             -->
       <!-- ================================================================= -->
       <section id="tab-attendance" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Session Attendance Records</h2>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">Filtered strictly to your assigned section</span>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMART ATTENDANCE</h2>
+            </div>
+            <p class="section-subtitle">Real-time attendance logs filtered strictly to your assigned section</p>
           </div>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Register Number</th>
-                  <th>Student Name</th>
-                  <th>Status</th>
-                  <th>Attendance %</th>
-                  <th>Recognition Status</th>
-                </tr>
-              </thead>
-              <tbody id="attendanceRecordsBody">
-                <tr><td colspan="5" style="text-align: center;">Loading attendance...</td></tr>
-              </tbody>
-            </table>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Session Attendance Records</h2>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Filtered strictly to your assigned section</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Register Number</th>
+                    <th>Student Name</th>
+                    <th>Status</th>
+                    <th>Attendance %</th>
+                    <th>Recognition Status</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceRecordsBody">
+                  <tr><td colspan="5" style="text-align: center;">Loading attendance...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -258,14 +305,24 @@
       <!-- TAB 4: LIVE MONITORING TAB                                        -->
       <!-- ================================================================= -->
       <section id="tab-monitoring" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Live Classroom Video Monitoring</h2>
-            <span id="cameraClassroomTitle" class="badge badge-ai">Classroom Stream</span>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMARTCLASS AI LIVE MONITORING</h2>
+            </div>
+            <p class="section-subtitle">Edge camera feed with real-time face detection and recognition overlays</p>
           </div>
-          <div id="advisorCameraContainer" style="padding: 1.4rem;">
-            <div style="text-align: center; color: var(--text-muted); padding: 3rem;">
-              Checking classroom setup & camera pipeline status...
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Live Classroom Video Monitoring</h2>
+              <span id="cameraClassroomTitle" class="badge badge-ai">Classroom Stream</span>
+            </div>
+            <div id="advisorCameraContainer" style="padding: 1.4rem;">
+              <div style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                Checking classroom setup & camera pipeline status...
+              </div>
             </div>
           </div>
         </div>
@@ -275,63 +332,73 @@
       <!-- TAB 5: SENSORS (IoT)                                              -->
       <!-- ================================================================= -->
       <section id="tab-sensors" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Classroom Environmental Sensors</h2>
-            <span style="font-size:0.82rem; color:var(--text-muted);" id="sensorClassroomBadge">Classroom Scope</span>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMART CLASSROOM IOT</h2>
+            </div>
+            <p class="section-subtitle">Environmental telemetry and ambient intelligence from classroom microcontrollers</p>
           </div>
-          <div class="cards-grid" style="padding: 1.4rem;">
-            <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-temperature"></i></div>
-              <div class="card-info">
-                <span class="card-label">Temperature</span>
-                <span class="card-value">27.4 °C</span>
-                <span class="card-sub">Normal</span>
-              </div>
-            </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-teal"><i class="ti ti-droplet"></i></div>
-              <div class="card-info">
-                <span class="card-label">Humidity</span>
-                <span class="card-value">55 %</span>
-                <span class="card-sub">Comfortable</span>
-              </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Classroom Environmental Sensors</h2>
+              <span style="font-size:0.82rem; color:var(--text-muted);" id="sensorClassroomBadge">Classroom Scope</span>
             </div>
-
-            <div class="metric-card">
-              <div class="card-icon-box icon-green"><i class="ti ti-wind"></i></div>
-              <div class="card-info">
-                <span class="card-label">Air Quality</span>
-                <span class="card-value">42 AQI</span>
-                <span class="card-sub">Good</span>
+            <div class="cards-grid" style="padding: 1.4rem;">
+              <div class="metric-card">
+                <div class="card-icon-box icon-blue"><i class="ti ti-temperature"></i></div>
+                <div class="card-info">
+                  <span class="card-label">Temperature</span>
+                  <span class="card-value">27.4 °C</span>
+                  <span class="card-sub">Normal</span>
+                </div>
               </div>
-            </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-users"></i></div>
-              <div class="card-info">
-                <span class="card-label">Room Occupancy</span>
-                <span class="card-value" id="advSensorOcc">-- / 60</span>
-                <span class="card-sub">Vision AI detected</span>
+              <div class="metric-card">
+                <div class="card-icon-box icon-teal"><i class="ti ti-droplet"></i></div>
+                <div class="card-info">
+                  <span class="card-label">Humidity</span>
+                  <span class="card-value">55 %</span>
+                  <span class="card-sub">Comfortable</span>
+                </div>
               </div>
-            </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-amber"><i class="ti ti-bulb"></i></div>
-              <div class="card-info">
-                <span class="card-label">Light Level</span>
-                <span class="card-value">320 Lux</span>
-                <span class="card-sub">Sufficient</span>
+              <div class="metric-card">
+                <div class="card-icon-box icon-green"><i class="ti ti-wind"></i></div>
+                <div class="card-info">
+                  <span class="card-label">Air Quality</span>
+                  <span class="card-value">42 AQI</span>
+                  <span class="card-sub">Good</span>
+                </div>
               </div>
-            </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-slate"><i class="ti ti-antenna"></i></div>
-              <div class="card-info">
-                <span class="card-label">ESP32 Device</span>
-                <span class="card-value" id="advEsp32Name" style="font-size:1.15rem;">ESP32-AIDS-B</span>
-                <span class="status-pill status-pill-connected" style="margin-top: 4px;" id="advEsp32State">● ONLINE</span>
+              <div class="metric-card">
+                <div class="card-icon-box icon-purple"><i class="ti ti-users"></i></div>
+                <div class="card-info">
+                  <span class="card-label">Room Occupancy</span>
+                  <span class="card-value" id="advSensorOcc">-- / 60</span>
+                  <span class="card-sub">Vision AI detected</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-icon-box icon-amber"><i class="ti ti-bulb"></i></div>
+                <div class="card-info">
+                  <span class="card-label">Light Level</span>
+                  <span class="card-value">320 Lux</span>
+                  <span class="card-sub">Sufficient</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="card-icon-box icon-slate"><i class="ti ti-antenna"></i></div>
+                <div class="card-info">
+                  <span class="card-label">ESP32 Device</span>
+                  <span class="card-value" id="advEsp32Name" style="font-size:1.15rem;">ESP32-AIDS-B</span>
+                  <span class="status-pill status-pill-connected" style="margin-top: 4px;" id="advEsp32State">● ONLINE</span>
+                </div>
               </div>
             </div>
           </div>
@@ -342,12 +409,22 @@
       <!-- TAB 6: ALERTS                                                     -->
       <!-- ================================================================= -->
       <section id="tab-alerts" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Class & Classroom Alerts</h2>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">SMARTCLASS ALERT CENTER</h2>
+            </div>
+            <p class="section-subtitle">Operational notifications, attendance deviations, and classroom alerts</p>
           </div>
-          <div id="advAlertsContainer" style="padding: 1.4rem; display: flex; flex-direction: column; gap: 10px;">
-            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading alerts...</div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Class & Classroom Alerts</h2>
+            </div>
+            <div id="advAlertsContainer" style="padding: 1.4rem; display: flex; flex-direction: column; gap: 10px;">
+              <div style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading alerts...</div>
+            </div>
           </div>
         </div>
       </section>
@@ -356,23 +433,33 @@
       <!-- TAB 7: REPORTS                                                    -->
       <!-- ================================================================= -->
       <section id="tab-reports" class="tab-pane" style="display: none;">
-        <div class="panel">
-          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
-            <h2>Class Attendance Reports</h2>
-            <div style="display:flex; gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('csv')"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('json')"><i class="ti ti-code"></i> Export JSON</button>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">INSTITUTIONAL REPORTS</h2>
             </div>
+            <p class="section-subtitle">Periodic classroom attendance audits and analytical export data</p>
           </div>
-          <div style="padding: 1.4rem;">
-            <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.25rem;">
-              <h3 id="repClassTitle" style="margin-bottom:4px; font-size:1.05rem;">3rd Year AI&DS - B</h3>
-              <p style="color:var(--text-muted); font-size:0.84rem;">Assigned Advisor: <strong id="repAdvisorName">Prof. Ramesh Kumar</strong></p>
-              <div style="display:flex; gap:24px; margin-top:14px; flex-wrap:wrap;">
-                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Total Strength</span><strong style="font-size:1.4rem;" id="repStrength">15</strong></div>
-                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Present Today</span><strong style="font-size:1.4rem; color:var(--success);" id="repPresentCount">0</strong></div>
-                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Absent Today</span><strong style="font-size:1.4rem; color:var(--danger);" id="repAbsentCount">15</strong></div>
-                <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Overall Attendance Rate</span><strong style="font-size:1.4rem; color:var(--secondary);" id="repOverallRate">0%</strong></div>
+
+          <div class="panel">
+            <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+              <h2>Class Attendance Reports</h2>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('csv')"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
+                <button class="btn btn-outline btn-sm" onclick="exportAdvisorAttendance('json')"><i class="ti ti-code"></i> Export JSON</button>
+              </div>
+            </div>
+            <div style="padding: 1.4rem;">
+              <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.25rem;">
+                <h3 id="repClassTitle" style="margin-bottom:4px; font-size:1.05rem;">3rd Year AI&DS - B</h3>
+                <p style="color:var(--text-muted); font-size:0.84rem;">Assigned Advisor: <strong id="repAdvisorName">Prof. Ramesh Kumar</strong></p>
+                <div style="display:flex; gap:24px; margin-top:14px; flex-wrap:wrap;">
+                  <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Total Strength</span><strong style="font-size:1.4rem;" id="repStrength">15</strong></div>
+                  <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Present Today</span><strong style="font-size:1.4rem; color:var(--success);" id="repPresentCount">0</strong></div>
+                  <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Absent Today</span><strong style="font-size:1.4rem; color:var(--danger);" id="repAbsentCount">15</strong></div>
+                  <div><span style="font-size:0.72rem; color:var(--text-muted); display:block;">Overall Attendance Rate</span><strong style="font-size:1.4rem; color:var(--secondary);" id="repOverallRate">0%</strong></div>
+                </div>
               </div>
             </div>
           </div>
@@ -383,23 +470,47 @@
       <!-- TAB 8: MY PROFILE                                                 -->
       <!-- ================================================================= -->
       <section id="tab-profile" class="tab-pane" style="display: none;">
-        <div class="panel" style="max-width: 600px;">
-          <div class="panel-header">
-            <h2>My Profile & Assigned Scope</h2>
+        <div class="institutional-section">
+          <div class="section-title-block">
+            <div class="section-heading-row">
+              <div class="section-indicator-bar"></div>
+              <h2 class="section-main-title">ADVISOR PROFILE</h2>
+            </div>
+            <p class="section-subtitle">Faculty credentials, assigned department scope, and account security</p>
           </div>
-          <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
-            <div><strong>User ID:</strong> <span class="font-mono" id="profUserId">-</span></div>
-            <div><strong>Name:</strong> <span id="profName">-</span></div>
-            <div><strong>Role:</strong> Class Advisor</div>
-            <div><strong>Assigned Department:</strong> <span id="profDept">-</span></div>
-            <div><strong>Assigned Year:</strong> <span id="profYear">-</span></div>
-            <div><strong>Assigned Section:</strong> <span id="profSection">-</span></div>
-            <div><strong>Assigned Classroom:</strong> <span id="profClassroom">-</span></div>
-            <div><strong>Email:</strong> <span id="profEmail">-</span></div>
-            <div><strong>Account Status:</strong> <span class="badge badge-present">ACTIVE</span></div>
+
+          <div class="panel" style="max-width: 600px;">
+            <div class="panel-header">
+              <h2>My Profile & Assigned Scope</h2>
+            </div>
+            <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
+              <div><strong>User ID:</strong> <span class="font-mono" id="profUserId">-</span></div>
+              <div><strong>Name:</strong> <span id="profName">-</span></div>
+              <div><strong>Role:</strong> Class Advisor</div>
+              <div><strong>Assigned Department:</strong> <span id="profDept">-</span></div>
+              <div><strong>Assigned Year:</strong> <span id="profYear">-</span></div>
+              <div><strong>Assigned Section:</strong> <span id="profSection">-</span></div>
+              <div><strong>Assigned Classroom:</strong> <span id="profClassroom">-</span></div>
+              <div><strong>Email:</strong> <span id="profEmail">-</span></div>
+              <div><strong>Account Status:</strong> <span class="badge badge-present">ACTIVE</span></div>
+            </div>
           </div>
         </div>
       </section>
+
+      <!-- INSTITUTIONAL FOOTER -->
+      <footer class="institutional-footer" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:3.5rem; padding:1.5rem 0 2rem; border-top:1px solid var(--border);">
+        <div class="footer-left" style="display:flex; align-items:center; gap:12px;">
+          <img src="/static/images/vsb_logo.png" alt="VSB Emblem" class="footer-crest-mini" style="width:34px; height:34px; object-fit:contain; background:#ffffff; padding:2px; border-radius:6px; border:1.5px solid rgba(253,197,0,0.6); flex-shrink:0;" />
+          <div class="footer-inst-copy" style="display:flex; flex-direction:column; gap:2px;">
+            <strong style="font-size:0.80rem; color:var(--vsb-primary); font-weight:700; letter-spacing:0.04em;">V.S.B ENGINEERING COLLEGE</strong>
+            <span style="font-size:0.72rem; color:var(--text-muted);">Autonomous Institution • Accredited by NAAC with 'A' Grade • Approved by AICTE, New Delhi</span>
+          </div>
+        </div>
+        <div class="footer-right" style="font-size:0.76rem; color:var(--text-muted);">
+          <span>SmartClass Vision AI Platform v2.4 • Edge Neural Engine</span>
+        </div>
+      </footer>
 
     </main>
   </div>
@@ -410,7 +521,10 @@
   <div id="changePasswordModal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Change Account Password</h3>
+        <div>
+          <span style="font-size:0.65rem; font-weight:700; letter-spacing:0.1em; color:var(--vsb-primary-azure); display:block; text-transform:uppercase;">V.S.B. Engineering College • Security</span>
+          <h3 style="margin:2px 0 0 0;">Change Account Password</h3>
+        </div>
         <button class="btn-close" onclick="closeModal('changePasswordModal')">&times;</button>
       </div>
       <form onsubmit="handleChangePassword(event)">

@@ -543,17 +543,21 @@ def export_attendance_json(
 # 7. Real-Time Video & SSE Streaming
 # =============================================================================
 
+@router.get("/camera/stream")
 @router.get("/video/feed")
-def get_video_feed(
+def get_camera_stream(
     view_mode: str = Query("normal", pattern="^(normal|debug|raw|detector)$"),
     limit: Optional[int] = Query(None, ge=1, description="Optional frame limit for testing or single-shot"),
     state: AppState = Depends(get_app_state)
 ):
     """
     MJPEG live video stream:
+    - GET /api/camera/stream: Official server camera stream endpoint
+    - GET /api/video/feed: Backward-compatible stream endpoint
+    Serves frames processed by SCRFD -> Face Quality -> ArcFace -> FAISS -> ByteTrack pipeline.
     - view_mode=normal: Clean Smart Board cards (Student Name, Reg No, UNKNOWN).
     - view_mode=debug: Developer HUD (Track ID, bbox, similarity, quality, FPS, latency).
-    - view_mode=raw: Pure YOLOv8 face detector boxes & keypoints before tracking/recognition.
+    - view_mode=raw: Pure face detector boxes & keypoints before tracking/recognition.
     """
     def frame_generator():
         count = 0
@@ -1035,7 +1039,7 @@ def test_camera_connection(
 def get_camera_status(state: AppState = Depends(get_app_state)):
     """Returns real-time status of physical camera hardware, active source, and worker thread."""
     cam_status = {}
-    active_source = "unknown"
+    active_source = "pc"
     if state.camera_manager:
         try:
             cam_status = state.camera_manager.get_status()
@@ -1043,15 +1047,34 @@ def get_camera_status(state: AppState = Depends(get_app_state)):
         except Exception:
             pass
 
+    is_worker_running = state._camera_thread is not None and state._camera_thread.is_alive()
+    if not state.camera_online and not is_worker_running:
+        status_str = "STOPPED"
+    elif state.camera_manager:
+        status_str = cam_status.get("status", "STREAMING" if state.camera_online else "DISCONNECTED")
+    elif state.camera_online:
+        status_str = "STREAMING"
+    else:
+        status_str = "DISCONNECTED"
+
+    res = cam_status.get("actual_resolution") or cam_status.get("resolution") or ("1280x720" if state.camera_online else "0x0")
+    fps_val = round(state.latest_fps, 1) if state.camera_online else 0.0
+
     return ApiResponse.ok({
+        "status": status_str,
         "camera_online": state.camera_online,
-        "worker_running": state._camera_thread is not None and state._camera_thread.is_alive(),
+        "worker_running": is_worker_running,
         "active_source": active_source,
-        "fps": round(state.latest_fps, 1),
-        "camera_fps": round(state.latest_fps, 1),
-        "ai_inference_fps": round(getattr(state, "ai_inference_fps", 0.0), 1),
-        "ai_latency_ms": round(getattr(state, "ai_latency_ms", 0.0), 1),
-        "detected_faces_count": getattr(state, "detected_faces_count", 0),
+        "resolution": res,
+        "actual_resolution": res,
+        "fps": fps_val,
+        "camera_fps": fps_val,
+        "ai_inference_fps": round(getattr(state, "ai_inference_fps", 0.0), 1) if state.camera_online else 0.0,
+        "ai_latency_ms": round(getattr(state, "ai_latency_ms", 0.0), 1) if state.camera_online else 0.0,
+        "detected_faces_count": getattr(state, "detected_faces_count", 0) if state.camera_online else 0,
+        "recognized_count": getattr(state, "recognized_faces_count", sum(1 for t in state.latest_tracks if t.stable_student_id)) if state.camera_online else 0,
+        "unknown_count": getattr(state, "unknown_faces_count", state.latest_unknown_count) if state.camera_online else 0,
+        "low_quality_count": getattr(state, "low_quality_faces_count", 0) if state.camera_online else 0,
         "details": cam_status
     })
 
@@ -1061,6 +1084,7 @@ def start_camera_feed(state: AppState = Depends(get_app_state)):
     """Starts or restarts the background camera capture and face identification pipeline."""
     state.start_camera_worker()
     return ApiResponse.ok({
+        "status": "STREAMING" if state.camera_online else "CONNECTING",
         "message": "Camera background worker started",
         "camera_online": state.camera_online
     })
@@ -1071,6 +1095,7 @@ def stop_camera_feed(state: AppState = Depends(get_app_state)):
     """Stops the camera capture worker and releases physical camera hardware."""
     state.stop_camera_worker()
     return ApiResponse.ok({
+        "status": "STOPPED",
         "message": "Camera worker stopped and hardware released",
         "camera_online": False
     })

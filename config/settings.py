@@ -29,6 +29,12 @@ class CameraRetrySettings(BaseModel):
     max_attempts: int = Field(default_factory=lambda: int(os.getenv("CAMERA_RETRY_MAX", "5")))
     delay_seconds: float = Field(default_factory=lambda: float(os.getenv("CAMERA_RETRY_DELAY", "2.0")))
 
+class PCCameraSettings(BaseModel):
+    device_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_PC_INDEX", os.getenv("CAMERA_INDEX", "0"))))
+    width: int = Field(default_factory=lambda: int(os.getenv("CAMERA_PC_WIDTH", os.getenv("CAMERA_WIDTH", "1280"))))
+    height: int = Field(default_factory=lambda: int(os.getenv("CAMERA_PC_HEIGHT", os.getenv("CAMERA_HEIGHT", "720"))))
+    fps: int = Field(default_factory=lambda: int(os.getenv("CAMERA_PC_FPS", os.getenv("CAMERA_FPS", "30"))))
+
 class CameraSettings(BaseModel):
     source: str = Field(default_factory=lambda: os.getenv("CAMERA_SOURCE", "pc"))
     index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_INDEX", "0")))
@@ -38,6 +44,8 @@ class CameraSettings(BaseModel):
     extension_index: int = Field(default_factory=lambda: int(os.getenv("CAMERA_EXTENSION_INDEX", "1")))
     width: int = Field(default_factory=lambda: int(os.getenv("CAMERA_WIDTH", "1280")))
     height: int = Field(default_factory=lambda: int(os.getenv("CAMERA_HEIGHT", "720")))
+    fps: int = Field(default_factory=lambda: int(os.getenv("CAMERA_FPS", "30")))
+    pc: PCCameraSettings = Field(default_factory=PCCameraSettings)
     droidcam: DroidCamSettings = Field(default_factory=DroidCamSettings)
     esp32: ESP32CamSettings = Field(default_factory=ESP32CamSettings)
     retry: CameraRetrySettings = Field(default_factory=CameraRetrySettings)
@@ -133,7 +141,45 @@ class AppSettings(BaseModel):
     dashboard: DashboardSettings = Field(default_factory=DashboardSettings)
 
 def get_settings() -> AppSettings:
-    """Returns the centralized application settings."""
-    return AppSettings()
+    """Returns the centralized application settings, incorporating optional camera.yaml if present."""
+    settings = AppSettings()
+    config_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_paths = [
+        os.path.join(config_dir, "camera.yaml"),
+        os.path.join(config_dir, "camera_config.yaml"),
+    ]
+    for yp in yaml_paths:
+        if os.path.exists(yp):
+            try:
+                import yaml
+                with open(yp, "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+                if data and isinstance(data, dict):
+                    cam_data = data.get("camera", {})
+                    if "source" in cam_data:
+                        settings.camera.source = str(cam_data["source"])
+                    if "pc" in cam_data and isinstance(cam_data["pc"], dict):
+                        pc_conf = cam_data["pc"]
+                        if "device_index" in pc_conf:
+                            dev_idx = int(pc_conf["device_index"])
+                            settings.camera.pc.device_index = dev_idx
+                            settings.camera.laptop_index = dev_idx
+                            settings.camera.index = dev_idx
+                        if "width" in pc_conf:
+                            w = int(pc_conf["width"])
+                            settings.camera.pc.width = w
+                            settings.camera.width = w
+                        if "height" in pc_conf:
+                            h = int(pc_conf["height"])
+                            settings.camera.pc.height = h
+                            settings.camera.height = h
+                        if "fps" in pc_conf:
+                            fps = int(pc_conf["fps"])
+                            settings.camera.pc.fps = fps
+                            settings.camera.fps = fps
+            except Exception:
+                pass
+            break
+    return settings
 
 
