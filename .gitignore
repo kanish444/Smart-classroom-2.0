@@ -49,7 +49,16 @@ stress_test_result.jpg
 live_camera_source_section.png
 live_dashboard_camera_running.png
 redesigned_*.png
+hod_students_view.png
+students_page_screenshot.png
+
+# Build & Tooling binaries
+release/
+tools/*.exe
+*.exe
+scratch/
 
 # IDE
 .vscode/
 .idea/
+

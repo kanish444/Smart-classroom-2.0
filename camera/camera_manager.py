@@ -1,10 +1,10 @@
 import time
 import threading
-from typing import Tuple, Any, Optional, Dict, List
+from typing import Tuple, Any, Optional, Dict
 from loguru import logger
 import os
 import cv2
-from .base_camera import BaseCamera, BooleanCallable
+from .base_camera import BaseCamera
 from .smartboard_camera import SmartBoardCamera
 from .droidcam_camera import DroidCamCamera
 from .esp32_camera import ESP32Camera
@@ -27,6 +27,7 @@ class CameraManager:
         with self._lock:
             self._initialize_source()
 
+
     def _initialize_source(self):
         """Instantiates the concrete camera backend based on current_source."""
         if self.camera:
@@ -46,27 +47,18 @@ class CameraManager:
                 width=self.settings.camera.width,
                 height=self.settings.camera.height
             )
-        elif self.current_source in ["pc", "laptop", "webcam"]:
-            pc_cfg = getattr(self.settings.camera, "pc", None)
-            dev_idx = getattr(pc_cfg, "device_index", self.settings.camera.laptop_index) if pc_cfg else self.settings.camera.laptop_index
-            w = getattr(pc_cfg, "width", self.settings.camera.width) if pc_cfg else self.settings.camera.width
-            h = getattr(pc_cfg, "height", self.settings.camera.height) if pc_cfg else self.settings.camera.height
-            fps = getattr(pc_cfg, "fps", getattr(self.settings.camera, "fps", 30)) if pc_cfg else getattr(self.settings.camera, "fps", 30)
-
+        elif self.current_source in ["pc", "laptop"]:
             self.camera = SmartBoardCamera(
-                camera_index=dev_idx,
-                width=w,
-                height=h,
-                fps=fps
+                camera_index=self.settings.camera.laptop_index,
+                width=self.settings.camera.width,
+                height=self.settings.camera.height
             )
         elif self.current_source in ["extension", "external"]:
             ext_idx = getattr(self.settings.camera, "extension_index", self.settings.camera.external_index)
-            fps = getattr(self.settings.camera, "fps", 30)
             self.camera = SmartBoardCamera(
                 camera_index=ext_idx,
                 width=self.settings.camera.width,
-                height=self.settings.camera.height,
-                fps=fps
+                height=self.settings.camera.height
             )
         elif self.current_source == "esp32":
             self.camera = ESP32Camera(
@@ -75,24 +67,20 @@ class CameraManager:
                 height=self.settings.camera.height
             )
         elif self.current_source == "smart_board":
-            fps = getattr(self.settings.camera, "fps", 30)
             self.camera = SmartBoardCamera(
                 camera_index=self.settings.camera.smart_board_index,
                 width=self.settings.camera.width,
-                height=self.settings.camera.height,
-                fps=fps
+                height=self.settings.camera.height
             )
         else:
             logger.warning(
                 f"Unknown camera source '{self.current_source}'. "
                 f"Falling back to camera index {self.settings.camera.index}."
             )
-            fps = getattr(self.settings.camera, "fps", 30)
             self.camera = SmartBoardCamera(
                 camera_index=self.settings.camera.index,
                 width=self.settings.camera.width,
-                height=self.settings.camera.height,
-                fps=fps
+                height=self.settings.camera.height
             )
 
     def switch_source(self, source_type: str, **kwargs) -> Tuple[bool, str]:
@@ -106,7 +94,7 @@ class CameraManager:
         5. Update status.
         """
         source_type = source_type.lower()
-        valid_sources = ["pc", "laptop", "webcam", "droidcam", "extension", "external", "esp32", "smart_board"]
+        valid_sources = ["pc", "laptop", "droidcam", "extension", "external", "esp32", "smart_board"]
         if source_type not in valid_sources:
             return False, f"Invalid camera source '{source_type}'. Valid options: {valid_sources}"
 
@@ -130,16 +118,12 @@ class CameraManager:
                     self.settings.camera.droidcam.port = int(kwargs["port"])
                 if "video_path" in kwargs and kwargs["video_path"]:
                     self.settings.camera.droidcam.video_path = str(kwargs["video_path"]).strip()
-            elif source_type in ["pc", "laptop", "webcam"] and "index" in kwargs and kwargs["index"] is not None:
-                new_idx = int(kwargs["index"])
-                self.settings.camera.laptop_index = new_idx
-                if hasattr(self.settings.camera, "pc"):
-                    self.settings.camera.pc.device_index = new_idx
+            elif source_type in ["pc", "laptop"] and "index" in kwargs and kwargs["index"] is not None:
+                self.settings.camera.laptop_index = int(kwargs["index"])
             elif source_type in ["extension", "external"] and "index" in kwargs and kwargs["index"] is not None:
-                ext_idx = int(kwargs["index"])
-                self.settings.camera.external_index = ext_idx
+                self.settings.camera.external_index = int(kwargs["index"])
                 if hasattr(self.settings.camera, "extension_index"):
-                    self.settings.camera.extension_index = ext_idx
+                    self.settings.camera.extension_index = int(kwargs["index"])
             elif source_type == "esp32" and "stream_url" in kwargs and kwargs["stream_url"]:
                 self.settings.camera.esp32.stream_url = str(kwargs["stream_url"]).strip()
             elif source_type == "smart_board" and "index" in kwargs and kwargs["index"] is not None:
@@ -152,8 +136,9 @@ class CameraManager:
             self._initialize_source()
 
             # 4. Verify a frame / connection
-            is_conn = bool(getattr(self.camera, "is_connected", False))
+            is_conn = getattr(self.camera, "is_connected", False)
             if is_conn:
+                # Attempt to grab a frame verification
                 try:
                     test_success, test_frame = self.camera.get_frame()
                     if test_success and test_frame is not None:
@@ -223,30 +208,11 @@ class CameraManager:
         return self.get_frame(max_retries=max_retries)
 
     @property
-    def is_connected(self) -> BooleanCallable:
-        """Returns connection state of current camera source as BooleanCallable."""
+    def is_connected(self) -> bool:
+        """Returns connection state of current camera source."""
         if not self.camera:
-            return BooleanCallable(0)
-        is_conn = bool(getattr(self.camera, "is_connected", False))
-        return BooleanCallable(1 if is_conn else 0)
-
-    def get_resolution(self) -> Tuple[int, int]:
-        """Returns camera resolution (width, height)."""
-        with self._lock:
-            if not self.camera:
-                return (0, 0)
-            if hasattr(self.camera, "get_resolution"):
-                return self.camera.get_resolution()
-            return getattr(self.camera, "resolution", (0, 0))
-
-    def get_fps(self) -> float:
-        """Returns current FPS."""
-        with self._lock:
-            if not self.camera:
-                return 0.0
-            if hasattr(self.camera, "get_fps"):
-                return self.camera.get_fps()
-            return getattr(self.camera, "reported_fps", 0.0)
+            return False
+        return getattr(self.camera, "is_connected", False)
 
     def connect(self) -> bool:
         """Connects or verifies connection to camera source."""
@@ -255,8 +221,8 @@ class CameraManager:
             if not self.camera:
                 self._initialize_source()
             if hasattr(self.camera, "connect"):
-                return bool(self.camera.connect())
-            return bool(getattr(self.camera, "is_connected", False))
+                return self.camera.connect()
+            return getattr(self.camera, "is_connected", False)
 
     def start_camera(self):
         """Explicitly starts capture, resets stopped state, and initializes camera source."""
@@ -267,7 +233,7 @@ class CameraManager:
             logger.info(f"CameraManager: Camera started for source '{self.current_source}'.")
 
     def disconnect(self):
-        """Disconnects camera source cleanly."""
+        """Disconnects camera source."""
         self.release()
 
     def stop_camera(self):
@@ -299,88 +265,78 @@ class CameraManager:
         except Exception:
             pass
 
-    def get_status(self) -> Dict[str, Any]:
-        """Returns diagnostic status of the active camera conforming to required states."""
+    def get_status(self) -> dict:
+        """Returns diagnostic status of the active camera."""
         with self._lock:
-            if self._is_stopped:
-                return {
-                    "source_type": self.current_source,
-                    "status": "STOPPED",
-                    "connected": False,
-                    "resolution": "0x0",
-                    "fps": 0.0
-                }
-
             if not self.camera:
                 return {
                     "source_type": self.current_source,
-                    "status": "DISCONNECTED",
-                    "connected": False,
-                    "resolution": "0x0",
-                    "fps": 0.0
+                    "status": "NOT_INITIALIZED",
+                    "connected": False
                 }
 
-            if hasattr(self.camera, "get_status"):
-                stat = self.camera.get_status()
-                stat["source_type"] = self.current_source
-                return stat
-
-            is_conn = bool(getattr(self.camera, "is_connected", False))
+            is_conn = getattr(self.camera, "is_connected", False)
             status_str = "CONNECTED" if is_conn else "DISCONNECTED"
 
             if isinstance(self.camera, DroidCamCamera):
                 diag = self.camera.get_diagnostic_dict()
                 diag["status"] = status_str
-                diag["source_type"] = self.current_source
                 return diag
 
             if isinstance(self.camera, ESP32Camera):
                 diag = self.camera.get_diagnostic_dict()
                 diag["status"] = status_str
-                diag["source_type"] = self.current_source
                 return diag
 
-            w, h = getattr(self.camera, "resolution", (0, 0))
+            if isinstance(self.camera, SmartBoardCamera):
+                return {
+                    "source_type": self.current_source,
+                    "camera_index": self.camera.camera_index,
+                    "status": status_str,
+                    "connected": is_conn,
+                    "resolution": f"{self.camera._actual_width}x{self.camera._actual_height}",
+                    "reported_fps": self.camera.reported_fps,
+                    "measured_fps": self.camera.get_true_fps(),
+                    "frames_read": self.camera._frame_count
+                }
+
             return {
                 "source_type": self.current_source,
                 "status": status_str,
-                "connected": is_conn,
-                "resolution": f"{w}x{h}",
-                "fps": getattr(self.camera, "reported_fps", 0.0)
+                "connected": is_conn
             }
 
     @staticmethod
-    def enumerate_cameras(max_to_test: int = 3) -> List[Dict[str, Any]]:
+    def enumerate_cameras(max_to_test: int = 4) -> list:
         """
-        Scan of available local OpenCV camera indices.
-        Returns list of device dicts: [{"index": 0, "name": "Integrated Camera"}, ...]
+        Fast scan of available local OpenCV camera indices.
+        Returns list of device dicts: [{"index": 0, "name": "Camera 0 (Integrated)"}, ...]
         """
         devices = []
-        try:
-            cv2.utils.logging.setLogLevel(cv2.utils.logging.LOG_LEVEL_SILENT)
-        except Exception:
-            pass
-
         for idx in range(max_to_test):
+            backend = cv2.CAP_MSMF if os.name == 'nt' else cv2.CAP_ANY
             try:
-                cap = cv2.VideoCapture(idx)
+                cap = cv2.VideoCapture(idx, backend)
                 if cap.isOpened():
                     ret, _ = cap.read()
                     cap.release()
-                    label = "Integrated Camera" if idx == 0 else f"USB Camera (Index {idx})"
+                    label = f"Camera {idx}"
+                    if idx == 0:
+                        label += " (Default / Integrated)"
+                    else:
+                        label += " (External USB)"
                     devices.append({"index": idx, "name": label})
                 else:
-                    try:
-                        cap.release()
-                    except Exception:
-                        pass
-                    break
+                    cap.release()
             except Exception:
-                break
+                pass
 
         if not devices:
+            # Default fallback entries
             devices = [
-                {"index": 0, "name": "Integrated Camera"},
-                {"index": 1, "name": "USB Camera (Index 1)"}
+                {"index": 0, "name": "Camera 0 (Default / PC Webcam)"},
+                {"index": 1, "name": "Camera 1 (Extension USB Camera)"},
+                {"index": 2, "name": "Camera 2"}
             ]
         return devices
+

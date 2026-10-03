@@ -27,7 +27,7 @@ def test_01_dashboard_loads(client):
 
 def test_02_camera_source_buttons_appear(client):
     """2. Camera source buttons appear on tracking dashboard."""
-    response = client.get("/smartboard")
+    response = client.get("/")
     assert response.status_code == 200
     text = response.text
     assert "CAMERA SOURCE" in text

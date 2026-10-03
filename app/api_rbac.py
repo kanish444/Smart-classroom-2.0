@@ -1,8 +1,9 @@
 import os
 import datetime
 from typing import Optional, List, Dict, Any
-from fastapi import APIRouter, Depends, HTTPException, status, Query, Path, Response
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Path, Response, Request
 from pydantic import BaseModel
+from config.settings import get_settings
 
 from app.models.user import (
     UserModel,
@@ -38,6 +39,7 @@ router = APIRouter(prefix="/api", tags=["RBAC Authentication & Dashboards"])
 def login(
     payload: LoginRequest,
     response: Response,
+    request: Request = None,
     user_service = Depends(get_user_service)
 ):
     """
@@ -86,6 +88,15 @@ def login(
         assigned_classroom=user.assigned_classroom
     )
 
+    # Determine secure cookie flag:
+    # 1. Respect settings (ENVIRONMENT=production or COOKIE_SECURE=true)
+    # 2. Or detect incoming HTTPS or TLS-terminated reverse-proxy / tunnel request
+    settings = get_settings()
+    is_secure = settings.dashboard.cookie_secure
+    if request is not None:
+        if request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https":
+            is_secure = True
+
     # Set cookie for browser navigation
     response.set_cookie(
         key="access_token",
@@ -93,7 +104,7 @@ def login(
         httponly=True,
         max_age=43200,  # 12 hours
         samesite="lax",
-        secure=False
+        secure=is_secure
     )
 
     profile = UserPublicProfile(
@@ -119,9 +130,13 @@ def login(
 
 
 @router.post("/auth/logout", response_model=ApiResponse[Dict[str, Any]])
-def logout(response: Response):
+def logout(response: Response, request: Request = None):
     """Logs out by clearing access_token cookie."""
-    response.delete_cookie(key="access_token")
+    settings = get_settings()
+    is_secure = settings.dashboard.cookie_secure
+    if request is not None and (request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https"):
+        is_secure = True
+    response.delete_cookie(key="access_token", httponly=True, samesite="lax", secure=is_secure)
     return ApiResponse.ok({"message": "Successfully logged out.", "redirect_url": "/login"})
 
 

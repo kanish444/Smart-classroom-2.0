@@ -1524,7 +1524,7 @@
     } finally {
       if (btnEnrollSave) {
         btnEnrollSave.disabled = capturedSamples.length < 5;
-        btnEnrollSave.innerHTML = '<i class="ti ti-device-floppy"></i> SAVE ENROLLMENT';
+        btnEnrollSave.textContent = '💾 SAVE ENROLLMENT';
       }
     }
   }

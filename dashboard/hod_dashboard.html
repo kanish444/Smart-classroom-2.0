@@ -3,90 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V.S.B. Engineering College - SmartClass Vision AI Administration Portal</title>
-  <link rel="icon" type="image/png" href="/static/img/vsb_logo.png">
+  <title>SmartClass Vision AI - HOD Administration Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/role_dashboard.css">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="apple-touch-icon" href="/static/img/icon-192.png">
 </head>
 <body>
 
   <!-- ===================================================================== -->
-  <!-- FIXED MIDNIGHT SIDEBAR                                                -->
+  <!-- FIXED SIDEBAR                                                         -->
   <!-- ===================================================================== -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="logo-badge" title="V.S.B. Engineering College Crest">
-        <img src="/static/img/vsb_logo.png" alt="V.S.B. Engineering College Crest" class="sidebar-crest-logo">
+      <div class="logo-badge" title="SmartClass Institutional AI">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Logo" class="sidebar-crest-logo">
       </div>
       <div class="brand-text">
-        <span class="inst-brand-eyebrow">V.S.B. ENGG COLLEGE</span>
         <h2>SmartClass</h2>
-        <span class="product-brand-sub">Vision AI Control</span>
+        <span>Vision AI Control</span>
       </div>
     </div>
 
-    <!-- Navigation with Unified Tabler Outline Icons -->
+    <!-- Navigation with Modern Line Icons -->
     <nav class="sidebar-nav">
       <a class="nav-link active" onclick="switchTab('dashboard')">
-        <span class="nav-icon"><i class="ti ti-layout-dashboard"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
         <span>Dashboard</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('classrooms')">
-        <span class="nav-icon"><i class="ti ti-building"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18"></path>
+            <path d="M5 21V7l7-4 7 4v14"></path>
+            <path d="M9 10h1"></path>
+            <path d="M9 14h1"></path>
+            <path d="M14 10h1"></path>
+            <path d="M14 14h1"></path>
+          </svg>
+        </span>
         <span>Classrooms</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('monitoring')">
-        <span class="nav-icon"><i class="ti ti-video"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 7l-7 5 7 5V7z"></path>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+        </span>
         <span>Live Monitoring</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('attendance')">
-        <span class="nav-icon"><i class="ti ti-clipboard-check"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
         <span>Attendance</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('students')">
-        <span class="nav-icon"><i class="ti ti-users"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </span>
         <span>Students</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('advisors')">
-        <span class="nav-icon"><i class="ti ti-users-group"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
         <span>Advisors</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('sensors')">
-        <span class="nav-icon"><i class="ti ti-activity"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+          </svg>
+        </span>
         <span>Sensors</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('alerts')">
-        <span class="nav-icon"><i class="ti ti-bell"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </span>
         <span>Alerts</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('reports')">
-        <span class="nav-icon"><i class="ti ti-file-analytics"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </span>
         <span>Reports</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('system')">
-        <span class="nav-icon"><i class="ti ti-server-cog"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </span>
         <span>System Status</span>
       </a>
 
       <a class="nav-link" onclick="switchTab('settings')">
-        <span class="nav-icon"><i class="ti ti-settings"></i></span>
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+        </span>
         <span>Settings</span>
       </a>
     </nav>
 
-    <!-- Sidebar Bottom Institutional User Card -->
+    <!-- Sidebar Bottom User Card -->
     <div class="sidebar-footer">
       <div class="user-snippet">
         <div class="user-avatar" id="userInitial">H</div>
@@ -96,8 +167,12 @@
         </div>
       </div>
       <button class="btn-logout" onclick="handleLogout()">
-        <i class="ti ti-logout"></i>
-        <span>Logout</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
       </button>
     </div>
   </aside>
@@ -108,14 +183,15 @@
   <div class="main-wrapper">
     <header class="top-navbar">
       <div class="page-title-box">
-        <div class="page-eyebrow"><span class="eyebrow-dot"></span> V.S.B ENGINEERING COLLEGE • SMARTCLASS VISION AI</div>
         <h1 id="pageTitle">HOD Executive Dashboard</h1>
         <p id="pageSubtitle">AI Classroom Monitoring & Institutional Administration</p>
       </div>
       <div class="top-actions">
+        <button type="button" class="btn btn-outline" id="btnInstallApp" title="Install SmartClass Desktop / Mobile App">
+          <span>⬇️ Install SmartClass</span>
+        </button>
         <button type="button" class="btn btn-primary" onclick="openEnrollmentModal()">
-          <i class="ti ti-plus"></i>
-          <span>ADD NEW DATA</span>
+          <span>+ ADD NEW DATA</span>
         </button>
         <span class="status-chip chip-online">
           <span class="pulse-dot"></span>
@@ -130,227 +206,149 @@
       <!-- TAB 1: DASHBOARD OVERVIEW                                         -->
       <!-- ================================================================= -->
       <section id="tab-dashboard" class="tab-pane active">
-
-        <!-- SECTION 1: INSTITUTIONAL OVERVIEW -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">INSTITUTIONAL OVERVIEW</h2>
+        <!-- 8 Metric Cards Grid -->
+        <div class="cards-grid">
+          <div class="metric-card">
+            <div class="card-icon-box icon-blue">👥</div>
+            <div class="card-info">
+              <span class="card-label">Total Students</span>
+              <span class="card-value" id="cardTotalStudents">--</span>
+              <span class="card-sub">Enrolled roster</span>
             </div>
-            <p class="section-subtitle">Live institutional and classroom intelligence</p>
           </div>
 
-          <!-- 8 Metric Cards Grid -->
-          <div class="cards-grid">
-            <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
-              <div class="card-info">
-                <span class="card-label">Total Students</span>
-                <span class="card-value" id="cardTotalStudents">--</span>
-                <span class="card-sub">Enrolled roster</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-green">✅</div>
+            <div class="card-info">
+              <span class="card-label">Present</span>
+              <span class="card-value" id="cardStudentsPresent">--</span>
+              <span class="card-sub">Verified in session</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
-              <div class="card-info">
-                <span class="card-label">Present</span>
-                <span class="card-value" id="cardStudentsPresent">--</span>
-                <span class="card-sub">Verified in session</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">❌</div>
+            <div class="card-info">
+              <span class="card-label">Absent</span>
+              <span class="card-value" id="cardStudentsAbsent">--</span>
+              <span class="card-sub">Not yet seen</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
-              <div class="card-info">
-                <span class="card-label">Absent</span>
-                <span class="card-value" id="cardStudentsAbsent">--</span>
-                <span class="card-sub">Not yet seen</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-purple">📈</div>
+            <div class="card-info">
+              <span class="card-label">Attendance %</span>
+              <span class="card-value" id="cardActiveAdvisors">--%</span>
+              <span class="card-sub">Session overall</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
-              <div class="card-info">
-                <span class="card-label">Attendance %</span>
-                <span class="card-value" id="cardActiveAdvisors">--%</span>
-                <span class="card-sub">Session overall</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-amber">📹</div>
+            <div class="card-info">
+              <span class="card-label">Active Cameras</span>
+              <span class="card-value" id="cardActiveCameras">1</span>
+              <span class="card-sub">Smart Board Camera</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
-              <div class="card-info">
-                <span class="card-label">Active Cameras</span>
-                <span class="card-value" id="cardActiveCameras">1</span>
-                <span class="card-sub">Smart Board Camera</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-blue">📡</div>
+            <div class="card-info">
+              <span class="card-label">Active ESP32</span>
+              <span class="card-value" id="cardActiveEsp32">0</span>
+              <span class="card-sub">IoT Telemetry Node</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-teal"><i class="ti ti-antenna"></i></div>
-              <div class="card-info">
-                <span class="card-label">Active ESP32</span>
-                <span class="card-value" id="cardActiveEsp32">0</span>
-                <span class="card-sub">IoT Telemetry Node</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-slate">❓</div>
+            <div class="card-info">
+              <span class="card-label">Unknown Faces</span>
+              <span class="card-value" id="cardActiveClassrooms">0</span>
+              <span class="card-sub">Unregistered detections</span>
             </div>
+          </div>
 
-            <div class="metric-card">
-              <div class="card-icon-box icon-amber"><i class="ti ti-user-question"></i></div>
-              <div class="card-info">
-                <span class="card-label">Unknown Faces</span>
-                <span class="card-value" id="cardActiveClassrooms">0</span>
-                <span class="card-sub">Unregistered detections</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="card-icon-box icon-red"><i class="ti ti-bell-ringing"></i></div>
-              <div class="card-info">
-                <span class="card-label">Active Alerts</span>
-                <span class="card-value" id="cardActiveAlerts">0</span>
-                <span class="card-sub">System health & events</span>
-              </div>
+          <div class="metric-card">
+            <div class="card-icon-box icon-red">🔔</div>
+            <div class="card-info">
+              <span class="card-label">Active Alerts</span>
+              <span class="card-value" id="cardActiveAlerts">0</span>
+              <span class="card-sub">System health & events</span>
             </div>
           </div>
         </div>
 
-        <!-- SECTION 2: CLASS ADVISORS -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">CLASS ADVISORS</h2>
-            </div>
-            <p class="section-subtitle">Assigned faculty and classroom responsibility overview</p>
+        <!-- Advisors Quick Overview Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Class Advisors Overview</h2>
+            <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()">+ ADD NEW ADVISOR</button>
           </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Advisor ID</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Year</th>
+                  <th>Section</th>
+                  <th>Assigned Classroom</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="advisorsTableBody">
+                <tr><td colspan="8" class="table-cell-empty">Loading advisors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-heading-group">
-                <h3>Faculty Responsibility Registry</h3>
-                <span class="panel-heading-desc">Real-time advisor allocations and scope</span>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="openAddAdvisorModal()"><i class="ti ti-user-plus"></i> ADD NEW ADVISOR</button>
+        <!-- Real-Time System Diagnostics -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Real-Time System Diagnostics</h2>
+          </div>
+          <div class="status-grid" id="systemStatusGrid">
+            <div class="status-item">
+              <span class="item-name">FastAPI Core</span>
+              <span class="item-val text-success" id="diagFastAPI">ONLINE</span>
             </div>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Advisor ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Year</th>
-                    <th>Section</th>
-                    <th>Assigned Classroom</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="advisorsTableBody">
-                  <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading advisors...</td></tr>
-                </tbody>
-              </table>
+            <div class="status-item">
+              <span class="item-name">MongoDB Database</span>
+              <span class="item-val" id="diagMongoDB">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">Camera Stream</span>
+              <span class="item-val" id="diagCamera">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">AI Recognition Pipeline</span>
+              <span class="item-val" id="diagAI">CHECKING...</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">FAISS Vector Store</span>
+              <span class="item-val" id="diagFAISS">READY</span>
+            </div>
+            <div class="status-item">
+              <span class="item-name">ESP32 Ingestion</span>
+              <span class="item-val" id="diagESP32">READY</span>
             </div>
           </div>
         </div>
 
-        <!-- SECTION 3: REAL-TIME SYSTEM DIAGNOSTICS -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">REAL-TIME SYSTEM DIAGNOSTICS</h2>
-            </div>
-            <p class="section-subtitle">Live health status of the SmartClass AI infrastructure</p>
+        <!-- Recent Institutional Events Stream -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Recent Institutional Events & Activity Stream</h2>
+            <span class="badge badge-ai">Live Stream</span>
           </div>
-
-          <div class="diagnostics-grid" id="systemStatusGrid">
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-server"></i></span>
-                <span class="diag-name">FASTAPI CORE</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagFastAPI">ONLINE</div>
-              <div class="diag-desc">ASGI High-Throughput Engine</div>
-            </div>
-
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-database"></i></span>
-                <span class="diag-name">MONGODB DATABASE</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagMongoDB">CONNECTED</div>
-              <div class="diag-desc">Identity & Event Persistence</div>
-            </div>
-
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-video"></i></span>
-                <span class="diag-name">CAMERA STREAM</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagCamera">CONNECTED</div>
-              <div class="diag-desc">Smart Board Camera UVC</div>
-            </div>
-
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-brain"></i></span>
-                <span class="diag-name">AI RECOGNITION PIPELINE</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagAI">RUNNING</div>
-              <div class="diag-desc">SCRFD + ArcFace Embeddings</div>
-            </div>
-
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-vector-triangle"></i></span>
-                <span class="diag-name">FAISS VECTOR STORE</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagFAISS">READY</div>
-              <div class="diag-desc">L2 Cosine Search Index</div>
-            </div>
-
-            <div class="diag-card">
-              <div class="diag-card-top">
-                <span class="diag-status-dot dot-operational"></span>
-                <span class="diag-icon-box"><i class="ti ti-antenna"></i></span>
-                <span class="diag-name">ESP32 INGESTION</span>
-              </div>
-              <div class="diag-status-badge badge-operational" id="diagESP32">READY</div>
-              <div class="diag-desc">IoT Telemetry Protocol</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 4: INSTITUTIONAL ACTIVITY STREAM -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">INSTITUTIONAL ACTIVITY STREAM</h2>
-            </div>
-            <p class="section-subtitle">Real-time chronological events across classrooms and sensors</p>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-heading-group">
-                <h3>Recent Activity & Operational Events</h3>
-                <span class="panel-heading-desc">Telemetry and recognition timeline</span>
-              </div>
-              <span class="badge badge-ai"><i class="ti ti-broadcast"></i> Live Stream</span>
-            </div>
-            <div id="recentEventsList" style="padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 8px;">
-              <div style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading activity stream...</div>
-            </div>
+          <div id="recentEventsList" class="events-list-container">
+            <div class="table-cell-empty">Loading activity stream...</div>
           </div>
         </div>
       </section>
@@ -358,29 +356,18 @@
       <!-- ================================================================= -->
       <!-- TAB 2: LIVE MONITORING (LARGE PROFESSIONAL MONITORING LAYOUT)      -->
       <!-- ================================================================= -->
-      <section id="tab-monitoring" class="tab-pane" style="display: none;">
+      <section id="tab-monitoring" class="tab-pane">
         
-        <!-- SECTION: SMARTCLASS AI LIVE MONITORING -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">SMARTCLASS AI LIVE MONITORING</h2>
-            </div>
-            <p class="section-subtitle">Real-time computer vision inference, face identification, and multi-target tracking</p>
-          </div>
-        </div>
-
         <!-- Camera Source Selection Panel -->
         <div class="camera-source-section">
           <div class="camera-section-header">
             <span class="camera-section-title">CAMERA SOURCE SELECTION</span>
             <div class="camera-ctrl-actions">
               <button type="button" class="btn-camera-ctrl btn-stop-cam" id="btn-stop-camera" title="Stop camera stream">
-                <i class="ti ti-player-stop"></i> STOP CAMERA
+                <span class="ctrl-icon">⏹</span> STOP CAMERA
               </button>
-              <button type="button" class="btn-camera-ctrl btn-start-cam" id="btn-start-camera" title="Start camera stream" style="display: none;">
-                <i class="ti ti-player-play"></i> START CAMERA
+              <button type="button" class="btn-camera-ctrl btn-start-cam" id="btn-start-camera" title="Start camera stream">
+                <span class="ctrl-icon">▶</span> START CAMERA
               </button>
             </div>
           </div>
@@ -388,25 +375,25 @@
           <!-- 4 Camera Selectable Cards -->
           <div class="camera-cards-grid">
             <div class="cam-card active" data-source="pc" id="card-cam-pc">
-              <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
+              <div class="cam-card-icon">📷</div>
               <div class="cam-card-title">PC CAMERA</div>
               <div class="cam-card-sub">Integrated Webcam (Device 0)</div>
             </div>
 
             <div class="cam-card" data-source="droidcam" id="card-cam-droidcam">
-              <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
+              <div class="cam-card-icon">📱</div>
               <div class="cam-card-title">DROIDCAM</div>
               <div class="cam-card-sub">Phone Camera via Wi-Fi</div>
             </div>
 
             <div class="cam-card" data-source="extension" id="card-cam-extension">
-              <div class="cam-card-icon"><i class="ti ti-video"></i></div>
+              <div class="cam-card-icon">🎥</div>
               <div class="cam-card-title">EXTENSION CAMERA</div>
               <div class="cam-card-sub">External USB Camera</div>
             </div>
 
             <div class="cam-card" data-source="esp32" id="card-cam-esp32">
-              <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
+              <div class="cam-card-icon">📡</div>
               <div class="cam-card-title">ESP32 WI-FI CAMERA</div>
               <div class="cam-card-sub">ESP32 Stream</div>
             </div>
@@ -415,40 +402,40 @@
           <!-- Camera Hardware Config Row -->
           <div class="cam-config-panel" id="panel-cam-pc">
             <div class="config-row">
-              <span style="font-size: 0.85rem; color: var(--text-secondary);">Source: <strong>Device 0</strong> (Integrated Laptop / PC Webcam)</span>
+              <span class="cam-source-hint">Source: <strong>Device 0</strong> (Integrated Laptop / PC Webcam)</span>
               <div class="config-btns-row">
                 <button type="button" class="btn-cam-action btn-apply" id="btn-connect-pc">CONNECT CAMERA</button>
               </div>
             </div>
           </div>
 
-          <div class="cam-config-panel" id="panel-cam-droidcam" style="display: none;">
+          <div class="cam-config-panel" id="panel-cam-droidcam">
             <div class="config-row config-inputs-row">
               <div class="input-field-group">
                 <label for="input-droidcam-host" class="input-lbl">Host IP</label>
-                <input type="text" id="input-droidcam-host" class="form-control font-mono" value="10.140.159.218">
+                <input type="text" id="input-droidcam-host" class="form-control font-mono" value="10.140.159.218" placeholder="10.140.159.218" title="Host IP">
               </div>
               <div class="input-field-group">
                 <label for="input-droidcam-port" class="input-lbl">Port</label>
-                <input type="number" id="input-droidcam-port" class="form-control font-mono" value="4747">
+                <input type="number" id="input-droidcam-port" class="form-control font-mono" value="4747" placeholder="4747" title="Port">
               </div>
               <div class="input-field-group">
                 <label for="input-droidcam-videourl" class="input-lbl">Video URL</label>
-                <input type="text" id="input-droidcam-videourl" class="form-control font-mono" value="http://10.140.159.218:4747/video" readonly>
+                <input type="text" id="input-droidcam-videourl" class="form-control font-mono" value="http://10.140.159.218:4747/video" placeholder="http://10.140.159.218:4747/video" title="Video URL" readonly>
               </div>
             </div>
-            <div class="config-row config-btns-row" style="margin-top: 8px;">
+            <div class="config-row config-btns-row mt-sm">
               <button type="button" class="btn-cam-action" id="btn-test-droidcam">TEST CONNECTION</button>
               <button type="button" class="btn-cam-action btn-apply" id="btn-connect-droidcam">CONNECT CAMERA</button>
-              <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+              <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" rel="noopener noreferrer" class="btn-cam-action">Remote ↗</a>
             </div>
           </div>
 
-          <div class="cam-config-panel" id="panel-cam-extension" style="display: none;">
+          <div class="cam-config-panel" id="panel-cam-extension">
             <div class="config-row">
-              <div class="input-field-group" style="min-width: 200px;">
+              <div class="input-field-group min-w-200">
                 <label for="select-extension-device" class="input-lbl">Camera Device</label>
-                <select id="select-extension-device" class="form-control">
+                <select id="select-extension-device" class="form-control" title="Camera Device">
                   <option value="0">Camera 0</option>
                   <option value="1" selected>Camera 1</option>
                   <option value="2">Camera 2</option>
@@ -461,14 +448,14 @@
             </div>
           </div>
 
-          <div class="cam-config-panel" id="panel-cam-esp32" style="display: none;">
+          <div class="cam-config-panel" id="panel-cam-esp32">
             <div class="config-row config-inputs-row">
-              <div class="input-field-group" style="grid-column: span 3;">
+              <div class="input-field-group col-span-3">
                 <label for="input-esp32-url" class="input-lbl">ESP32 Stream URL</label>
-                <input type="text" id="input-esp32-url" class="form-control font-mono" value="http://192.168.1.100:81/stream">
+                <input type="text" id="input-esp32-url" class="form-control font-mono" value="http://192.168.1.100:81/stream" placeholder="http://192.168.1.100:81/stream" title="ESP32 Stream URL">
               </div>
             </div>
-            <div class="config-row config-btns-row" style="margin-top: 8px;">
+            <div class="config-row config-btns-row mt-sm">
               <button type="button" class="btn-cam-action" id="btn-test-esp32">TEST CONNECTION</button>
               <button type="button" class="btn-cam-action btn-apply" id="btn-connect-esp32">CONNECT CAMERA</button>
             </div>
@@ -484,7 +471,7 @@
               <span class="status-label">Status:</span>
               <span class="status-pill status-pill-connected" id="active-cam-status-pill">● CONNECTED</span>
             </div>
-            <div class="cam-status-info" style="margin-left: auto;">
+            <div class="cam-status-info ml-auto">
               <span class="status-label">Resolution:</span>
               <span class="status-value font-mono" id="active-cam-res">1280x720</span>
             </div>
@@ -495,9 +482,9 @@
           </div>
 
           <!-- Troubleshooting Notice Strip -->
-          <div class="camera-troubleshoot-box" id="cam-troubleshoot-box" style="display: none;">
+          <div class="camera-troubleshoot-box" id="cam-troubleshoot-box">
             <div class="troubleshoot-header">
-              <span class="troubleshoot-icon"><i class="ti ti-alert-triangle"></i></span>
+              <span class="troubleshoot-icon">⚠️</span>
               <strong id="troubleshoot-title">Camera Connection Advisory</strong>
             </div>
             <ul class="troubleshoot-list" id="troubleshoot-list">
@@ -527,26 +514,26 @@
               >
             </div>
 
-            <div style="padding: 1rem 1.25rem; display: flex; gap: 8px; justify-content: space-between; align-items: center; background: #FFFFFF;">
-              <div style="display: flex; gap: 8px;">
+            <div class="stream-footer-bar">
+              <div class="flex-gap-sm">
                 <button type="button" class="btn btn-primary btn-sm" onclick="switchCamera('pc', {index: 0}, this)">
-                  <i class="ti ti-player-play"></i> Start Session
+                  ▶ Start Session
                 </button>
                 <button type="button" class="btn btn-outline btn-sm" onclick="stopCamera()">
-                  <i class="ti ti-player-stop"></i> Stop Session
+                  ⏹ Stop Session
                 </button>
               </div>
               <button type="button" class="btn btn-secondary btn-sm" onclick="switchTab('settings')">
-                <i class="ti ti-settings"></i> Camera Settings
+                ⚙️ Camera Settings
               </button>
             </div>
           </div>
 
           <!-- RIGHT: LIVE MONITORING STATISTICS -->
           <div class="monitoring-stats-card">
-            <div style="border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-              <span style="font-size: 0.70rem; font-weight: 800; text-transform: uppercase; color: var(--secondary); letter-spacing: 0.05em;">AI VISION TELEMETRY</span>
-              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">LIVE CLASSROOM</h3>
+            <div class="stats-card-header">
+              <span class="telemetry-subhead">AI VISION TELEMETRY</span>
+              <h3 class="telemetry-title">LIVE CLASSROOM</h3>
             </div>
 
             <div class="stat-metric-row">
@@ -581,71 +568,22 @@
 
             <div class="stat-metric-row">
               <span class="stat-metric-label">Recognized</span>
-              <span class="stat-metric-value" style="color: var(--success);" id="statsRecognized">14</span>
+              <span class="stat-metric-value text-success" id="statsRecognized">14</span>
             </div>
 
             <div class="stat-metric-row">
               <span class="stat-metric-label">Unknown</span>
-              <span class="stat-metric-value" style="color: var(--danger);" id="statsUnknown">2</span>
+              <span class="stat-metric-value text-danger" id="statsUnknown">2</span>
             </div>
 
             <div class="stat-metric-row">
               <span class="stat-metric-label">Low Quality</span>
-              <span class="stat-metric-value" style="color: var(--warning);" id="statsLowQuality">2</span>
+              <span class="stat-metric-value text-warning" id="statsLowQuality">2</span>
             </div>
 
-            <div style="background: var(--bg-muted); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 6px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.45;">
-              <strong style="color: var(--text-main); display: block; margin-bottom: 2px;">AI Pipeline Specs:</strong>
+            <div class="pipeline-spec-box">
+              <strong class="pipeline-spec-title">AI Pipeline Specs:</strong>
               SCRFD Face Detection · ArcFace 512-D Embeddings · FAISS IndexFlatIP · ByteTrack Spatial-Temporal Stabilizer
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION: AI SYSTEM STATUS -->
-        <div class="institutional-section" style="margin-top: 0.5rem;">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">AI SYSTEM STATUS</h2>
-            </div>
-            <p class="section-subtitle">Core deep learning inference pipeline and vector retrieval engine</p>
-          </div>
-
-          <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-            <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-scan"></i></div>
-              <div class="card-info">
-                <span class="card-label">SCRFD</span>
-                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
-                <span class="card-sub">Face Detection 10G-KPS</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-brain"></i></div>
-              <div class="card-info">
-                <span class="card-label">ArcFace</span>
-                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
-                <span class="card-sub">512-D Feature Embeddings</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="card-icon-box icon-indigo"><i class="ti ti-binary-tree"></i></div>
-              <div class="card-info">
-                <span class="card-label">FAISS</span>
-                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">READY</span>
-                <span class="card-sub">L2 Cosine Vector Store</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="card-icon-box icon-teal"><i class="ti ti-activity"></i></div>
-              <div class="card-info">
-                <span class="card-label">ByteTrack</span>
-                <span class="card-value" style="font-size: 1.15rem; color: var(--success);">RUNNING</span>
-                <span class="card-sub">Spatial-Temporal Kalman</span>
-              </div>
             </div>
           </div>
         </div>
@@ -655,19 +593,7 @@
       <!-- ================================================================= -->
       <!-- TAB 3: ADVISORS FULL MANAGEMENT                                   -->
       <!-- ================================================================= -->
-      <section id="tab-advisors" class="tab-pane" style="display: none;">
-        
-        <!-- SECTION: CLASS ADVISORS -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">CLASS ADVISORS</h2>
-            </div>
-            <p class="section-subtitle">Faculty and classroom responsibility overview</p>
-          </div>
-        </div>
-
+      <section id="tab-advisors" class="tab-pane">
         <div class="panel">
           <div class="panel-header">
             <h2>Manage Class Advisors</h2>
@@ -689,7 +615,7 @@
                 </tr>
               </thead>
               <tbody id="fullAdvisorsTableBody">
-                <tr><td colspan="9" style="text-align: center;">Loading advisors...</td></tr>
+                <tr><td colspan="9" class="table-cell-empty">Loading advisors...</td></tr>
               </tbody>
             </table>
           </div>
@@ -697,46 +623,33 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- ================================================================= -->
       <!-- TAB 4: STUDENTS LIST                                              -->
       <!-- ================================================================= -->
-      <section id="tab-students" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: STUDENT MANAGEMENT -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">STUDENT MANAGEMENT</h2>
-            </div>
-            <p class="section-subtitle">Authoritative Institutional Student Roster & Gallery Enrolment</p>
-          </div>
-        </div>
-
+      <section id="tab-students" class="tab-pane">
         <div class="panel">
-          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+          <div class="panel-header panel-header-wrap">
             <div>
               <h2>Students</h2>
-              <span style="font-size: 0.82rem; color: var(--text-muted);">Authoritative Institutional Student Roster</span>
+              <span class="panel-header-sub">Authoritative Institutional Student Roster</span>
             </div>
             <button class="btn btn-primary" onclick="openEnrollmentModal()">+ ADD NEW DATA</button>
           </div>
 
           <!-- Student Filter Bar -->
-          <div style="padding: 0.85rem 1.4rem; background: #F8FAFC; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 220px;">
-              <input type="text" class="form-control" placeholder="Search by name or register number...">
+          <div class="student-filter-bar">
+            <div class="flex-grow-min-220">
+              <input type="text" class="form-control" placeholder="Search by name or register number..." title="Search by name or register number">
             </div>
-            <div style="display: flex; gap: 8px;">
-              <select class="form-control" style="width: 140px;">
+            <div class="flex-gap-sm">
+              <select class="form-control sel-w-140" title="Filter by Class">
                 <option value="">All Classes</option>
                 <option value="3rd Year" selected>3rd Year</option>
               </select>
-              <select class="form-control" style="width: 140px;">
+              <select class="form-control sel-w-140" title="Filter by Department">
                 <option value="">All Depts</option>
                 <option value="AI&DS" selected>AI&DS</option>
               </select>
-              <select class="form-control" style="width: 110px;">
+              <select class="form-control sel-w-110" title="Filter by Section">
                 <option value="">All Secs</option>
                 <option value="B" selected>Section B</option>
               </select>
@@ -757,7 +670,7 @@
                 </tr>
               </thead>
               <tbody id="studentsTableBody">
-                <tr><td colspan="7" style="text-align: center;">Loading students...</td></tr>
+                <tr><td colspan="7" class="table-cell-empty">Loading students...</td></tr>
               </tbody>
             </table>
           </div>
@@ -767,53 +680,41 @@
       <!-- ================================================================= -->
       <!-- TAB 5: CLASSROOM SETUP & MANAGEMENT                               -->
       <!-- ================================================================= -->
-      <section id="tab-classrooms" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: CLASSROOM SETUP & DEVICE MAPPING -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">CLASSROOM SETUP & DEVICE MAPPING</h2>
-            </div>
-            <p class="section-subtitle">Physical classrooms, camera bindings, and assigned advisors</p>
-          </div>
-        </div>
-
+      <section id="tab-classrooms" class="tab-pane">
         <div class="panel">
-          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+          <div class="panel-header panel-header-wrap">
             <div>
               <h2>Classroom Setup & Device Mapping</h2>
-              <span style="font-size: 0.82rem; color: var(--text-muted);">Configure physical classrooms, camera bindings, and assigned advisors</span>
+              <span class="panel-header-sub">Configure physical classrooms, camera bindings, and assigned advisors</span>
             </div>
             <button class="btn btn-primary" onclick="openAddClassroomModal()">+ ADD CLASSROOM</button>
           </div>
 
           <!-- 4 Summary Cards -->
-          <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
+          <div class="cards-grid cards-grid-condensed">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-building-community"></i></div>
+              <div class="card-icon-box icon-blue">🏛️</div>
               <div class="card-info">
                 <span class="card-label">Total Classrooms</span>
                 <span class="card-value" id="clsTotalCount">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-green"><i class="ti ti-camera"></i></div>
+              <div class="card-icon-box icon-green">📹</div>
               <div class="card-info">
                 <span class="card-label">Cameras Mapped</span>
                 <span class="card-value" id="clsCamerasMapped">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-users-group"></i></div>
+              <div class="card-icon-box icon-purple">👥</div>
               <div class="card-info">
                 <span class="card-label">Advisors Assigned</span>
                 <span class="card-value" id="clsAdvisorsAssigned">1</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-amber"><i class="ti ti-antenna"></i></div>
+              <div class="card-icon-box icon-amber">📡</div>
               <div class="card-info">
                 <span class="card-label">ESP32 Devices</span>
                 <span class="card-value" id="clsEsp32Count">1</span>
@@ -821,7 +722,7 @@
             </div>
           </div>
 
-          <div class="table-responsive" style="padding: 0 1.4rem 1.4rem;">
+          <div class="table-responsive table-responsive-padded">
             <table class="data-table">
               <thead>
                 <tr>
@@ -837,7 +738,7 @@
                 </tr>
               </thead>
               <tbody id="classroomsTableBody">
-                <tr><td colspan="9" style="text-align: center;">Loading classrooms...</td></tr>
+                <tr><td colspan="9" class="table-cell-empty">Loading classrooms...</td></tr>
               </tbody>
             </table>
           </div>
@@ -847,63 +748,51 @@
       <!-- ================================================================= -->
       <!-- TAB 6: ATTENDANCE                                                 -->
       <!-- ================================================================= -->
-      <section id="tab-attendance" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: SMART ATTENDANCE -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">SMART ATTENDANCE</h2>
-            </div>
-            <p class="section-subtitle">Real-time classroom session attendance verification & presence telemetry</p>
-          </div>
-        </div>
-
+      <section id="tab-attendance" class="tab-pane">
         <div class="panel">
-          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+          <div class="panel-header panel-header-wrap">
             <div>
               <h2>Institutional Attendance Records</h2>
-              <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time classroom session attendance verification</span>
+              <span class="panel-header-sub">Real-time classroom session attendance verification</span>
             </div>
-            <div style="display:flex; gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')"><i class="ti ti-file-spreadsheet"></i> Export CSV</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('json')"><i class="ti ti-code"></i> Export JSON</button>
+            <div class="flex-gap-sm">
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">📥 Export CSV</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('json')">📥 Export JSON</button>
             </div>
           </div>
 
           <!-- Top 5 Attendance Metric Cards -->
-          <div class="cards-grid" style="padding: 1.25rem 1.4rem 0.5rem;">
+          <div class="cards-grid cards-grid-condensed">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-users"></i></div>
+              <div class="card-icon-box icon-blue">👥</div>
               <div class="card-info">
                 <span class="card-label">Total Students</span>
                 <span class="card-value">15</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-green"><i class="ti ti-user-check"></i></div>
+              <div class="card-icon-box icon-green">✅</div>
               <div class="card-info">
                 <span class="card-label">Present</span>
                 <span class="card-value">0</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-red"><i class="ti ti-user-x"></i></div>
+              <div class="card-icon-box icon-red">❌</div>
               <div class="card-info">
                 <span class="card-label">Absent</span>
                 <span class="card-value">15</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-amber"><i class="ti ti-clock"></i></div>
+              <div class="card-icon-box icon-amber">⏰</div>
               <div class="card-info">
                 <span class="card-label">Late</span>
                 <span class="card-value">0</span>
               </div>
             </div>
             <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-chart-pie"></i></div>
+              <div class="card-icon-box icon-purple">📈</div>
               <div class="card-info">
                 <span class="card-label">Attendance %</span>
                 <span class="card-value">0%</span>
@@ -911,7 +800,7 @@
             </div>
           </div>
 
-          <div class="table-responsive" style="padding: 0 1.4rem 1.4rem;">
+          <div class="table-responsive table-responsive-padded">
             <table class="data-table">
               <thead>
                 <tr>
@@ -925,7 +814,7 @@
                 </tr>
               </thead>
               <tbody id="hodAttendanceTableBody">
-                <tr><td colspan="7" style="text-align: center;">Loading attendance records...</td></tr>
+                <tr><td colspan="7" class="table-cell-empty">Loading attendance records...</td></tr>
               </tbody>
             </table>
           </div>
@@ -935,30 +824,18 @@
       <!-- ================================================================= -->
       <!-- TAB 7: SENSORS (IoT & ESP32)                                      -->
       <!-- ================================================================= -->
-      <section id="tab-sensors" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: SMART CLASSROOM IOT -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">SMART CLASSROOM IOT</h2>
-            </div>
-            <p class="section-subtitle">ESP32 environmental and occupancy sensor network</p>
-          </div>
-        </div>
-
+      <section id="tab-sensors" class="tab-pane">
         <div class="panel">
           <div class="panel-header">
             <div>
               <h2>Classroom IoT & Environmental Sensors</h2>
-              <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time ESP32 classroom telemetry</span>
+              <span class="panel-header-sub">Real-time ESP32 classroom telemetry</span>
             </div>
           </div>
           <!-- 7 Modern IoT Cards -->
-          <div class="cards-grid" style="padding: 1.4rem;">
+          <div class="cards-grid panel-body-padded">
             <div class="metric-card">
-              <div class="card-icon-box icon-blue"><i class="ti ti-temperature"></i></div>
+              <div class="card-icon-box icon-blue">🌡️</div>
               <div class="card-info">
                 <span class="card-label">Temperature</span>
                 <span class="card-value" id="sensorTemp">27.4 °C</span>
@@ -967,7 +844,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-teal"><i class="ti ti-droplet"></i></div>
+              <div class="card-icon-box icon-teal">💧</div>
               <div class="card-info">
                 <span class="card-label">Humidity</span>
                 <span class="card-value" id="sensorHum">55 %</span>
@@ -976,7 +853,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-green"><i class="ti ti-wind"></i></div>
+              <div class="card-icon-box icon-green">🍃</div>
               <div class="card-info">
                 <span class="card-label">Air Quality</span>
                 <span class="card-value" id="sensorAqi">42 AQI</span>
@@ -985,7 +862,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-purple"><i class="ti ti-users"></i></div>
+              <div class="card-icon-box icon-purple">👥</div>
               <div class="card-info">
                 <span class="card-label">Occupancy</span>
                 <span class="card-value" id="sensorOcc">-- / 60</span>
@@ -994,7 +871,7 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-amber"><i class="ti ti-bulb"></i></div>
+              <div class="card-icon-box icon-amber">💡</div>
               <div class="card-info">
                 <span class="card-label">Light Level</span>
                 <span class="card-value" id="sensorLight">320 Lux</span>
@@ -1003,20 +880,20 @@
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-indigo"><i class="ti ti-propeller"></i></div>
+              <div class="card-icon-box icon-indigo">🌀</div>
               <div class="card-info">
                 <span class="card-label">Fan / Ventilation</span>
-                <span class="card-value" style="font-size: 1.25rem;">Active</span>
+                <span class="card-value font-val-lg">Active</span>
                 <span class="card-sub">Auto Mode</span>
               </div>
             </div>
 
             <div class="metric-card">
-              <div class="card-icon-box icon-slate"><i class="ti ti-antenna"></i></div>
+              <div class="card-icon-box icon-slate">📡</div>
               <div class="card-info">
                 <span class="card-label">Device Status</span>
-                <span class="card-value" style="font-size: 1.15rem;">ESP32-AIDS-B</span>
-                <span class="status-pill status-pill-connected" style="margin-top: 4px;">● ONLINE</span>
+                <span class="card-value font-val-md">ESP32-AIDS-B</span>
+                <span class="status-pill status-pill-connected mt-xs">● ONLINE</span>
               </div>
             </div>
           </div>
@@ -1026,49 +903,37 @@
       <!-- ================================================================= -->
       <!-- TAB 8: ALERTS                                                     -->
       <!-- ================================================================= -->
-      <section id="tab-alerts" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: SMARTCLASS ALERT CENTER -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">SMARTCLASS ALERT CENTER</h2>
-            </div>
-            <p class="section-subtitle">Critical, Warning, and Informational System Events</p>
-          </div>
-        </div>
-
+      <section id="tab-alerts" class="tab-pane">
         <div class="panel">
           <div class="panel-header">
             <h2>System & Operational Alert Center</h2>
             <span class="badge badge-ai">3 Categories</span>
           </div>
-          <div id="alertsListContainer" style="padding: 1.4rem; display: flex; flex-direction: column; gap: 10px;">
+          <div id="alertsListContainer" class="alerts-flex-container">
             <!-- Example Alerts Styled with Modern Categorization -->
-            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--danger); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+            <div class="alert-item-card alert-card-danger">
               <div>
-                <strong style="color:var(--text-main); font-size:0.88rem;">Camera Disconnected Check</strong>
-                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Extension camera connection probe timed out on device 1.</p>
-                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 2 mins ago</span>
+                <strong class="alert-item-title">Camera Disconnected Check</strong>
+                <p class="alert-item-text">Extension camera connection probe timed out on device 1.</p>
+                <span class="alert-item-meta">Classroom: AIDS-B · 2 mins ago</span>
               </div>
               <span class="badge badge-unknown">Critical</span>
             </div>
 
-            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--warning); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+            <div class="alert-item-card alert-card-warning">
               <div>
-                <strong style="color:var(--text-main); font-size:0.88rem;">Unknown Face Detected</strong>
-                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Face track #18 did not match enrolled gallery threshold (0.65).</p>
-                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 5 mins ago</span>
+                <strong class="alert-item-title">Unknown Face Detected</strong>
+                <p class="alert-item-text">Face track #18 did not match enrolled gallery threshold (0.65).</p>
+                <span class="alert-item-meta">Classroom: AIDS-B · 5 mins ago</span>
               </div>
               <span class="badge badge-late">Warning</span>
             </div>
 
-            <div style="background:#FFFFFF; border:1px solid var(--border); border-left:4px solid var(--secondary); border-radius:var(--radius-sm); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;">
+            <div class="alert-item-card alert-card-secondary">
               <div>
-                <strong style="color:var(--text-main); font-size:0.88rem;">ESP32 Telemetry Synchronized</strong>
-                <p style="color:var(--text-muted); font-size:0.80rem; margin-top:2px;">Environmental metrics packet received from ESP32-AIDS-B.</p>
-                <span style="font-size:0.72rem; color:var(--text-light);">Classroom: AIDS-B · 12 mins ago</span>
+                <strong class="alert-item-title">ESP32 Telemetry Synchronized</strong>
+                <p class="alert-item-text">Environmental metrics packet received from ESP32-AIDS-B.</p>
+                <span class="alert-item-meta">Classroom: AIDS-B · 12 mins ago</span>
               </div>
               <span class="badge badge-ai">Information</span>
             </div>
@@ -1079,50 +944,38 @@
       <!-- ================================================================= -->
       <!-- TAB 9: REPORTS                                                    -->
       <!-- ================================================================= -->
-      <section id="tab-reports" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: INSTITUTIONAL REPORTS -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">INSTITUTIONAL REPORTS</h2>
-            </div>
-            <p class="section-subtitle">Comprehensive attendance records, analytics, and data exports</p>
-          </div>
-        </div>
-
+      <section id="tab-reports" class="tab-pane">
         <div class="panel">
-          <div class="panel-header" style="flex-wrap: wrap; gap: 10px;">
+          <div class="panel-header panel-header-wrap">
             <h2>Institutional Reports & Analytics</h2>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('pdf')"><i class="ti ti-file-text"></i> Export PDF</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('xlsx')"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
-              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')"><i class="ti ti-download"></i> Download CSV</button>
+            <div class="flex-gap-sm">
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('pdf')">Export PDF</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('xlsx')">Export Excel</button>
+              <button class="btn btn-outline btn-sm" onclick="exportAttendanceReport('csv')">Download CSV</button>
             </div>
           </div>
-          <div style="padding: 1.4rem;">
-            <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.25rem; margin-bottom:1.5rem; display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="panel-body-padded">
+            <div class="report-filter-bar">
               <div>
-                <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:4px;">Class / Section</label>
-                <select id="reportClassFilter" class="form-control" style="width:200px;">
+                <label for="reportClassFilter" class="report-filter-label">Class / Section</label>
+                <select id="reportClassFilter" class="form-control sel-w-200" title="Class / Section">
                   <option value="ALL">All Classes</option>
                   <option value="3rd Year AI&DS - B" selected>3rd Year AI&DS - B</option>
                 </select>
               </div>
-              <button class="btn btn-primary" onclick="generateReport()"><i class="ti ti-chart-bar"></i> Generate Summary Report</button>
+              <button class="btn btn-primary" onclick="generateReport()">Generate Summary Report</button>
             </div>
 
             <div id="reportResultContainer">
-              <div style="background:#FFFFFF; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1.5rem;">
-                <h3 style="margin-bottom:6px; font-size: 1.05rem;">Attendance Summary</h3>
-                <p style="color:var(--text-muted); font-size:0.84rem;">Date: Today | Class: 3rd Year AI&DS - B | Subject: Machine Learning</p>
-                <div style="display:flex; gap:24px; margin-top:16px; flex-wrap:wrap;">
-                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Total Students</span><strong style="font-size:1.4rem;" id="repTotal">15</strong></div>
-                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Present</span><strong style="font-size:1.4rem; color:var(--success);" id="repPresent">0</strong></div>
-                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Absent</span><strong style="font-size:1.4rem; color:var(--danger);" id="repAbsent">15</strong></div>
-                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Late</span><strong style="font-size:1.4rem; color:var(--warning);">0</strong></div>
-                  <div><span style="font-size:0.74rem; color:var(--text-muted); display:block;">Attendance %</span><strong style="font-size:1.4rem; color:var(--secondary);" id="repRate">0%</strong></div>
+              <div class="report-card-summary">
+                <h3 class="report-class-title">Attendance Summary</h3>
+                <p class="report-advisor-sub">Date: Today | Class: 3rd Year AI&DS - B | Subject: Machine Learning</p>
+                <div class="report-metrics-row">
+                  <div><span class="report-metric-sublabel">Total Students</span><strong class="report-metric-val" id="repTotal">15</strong></div>
+                  <div><span class="report-metric-sublabel">Present</span><strong class="report-metric-val val-success" id="repPresent">0</strong></div>
+                  <div><span class="report-metric-sublabel">Absent</span><strong class="report-metric-val val-danger" id="repAbsent">15</strong></div>
+                  <div><span class="report-metric-sublabel">Late</span><strong class="report-metric-val val-warning">0</strong></div>
+                  <div><span class="report-metric-sublabel">Attendance %</span><strong class="report-metric-val val-secondary" id="repRate">0%</strong></div>
                 </div>
               </div>
             </div>
@@ -1133,93 +986,73 @@
       <!-- ================================================================= -->
       <!-- TAB 10: SYSTEM STATUS                                             -->
       <!-- ================================================================= -->
-      <section id="tab-system" class="tab-pane" style="display: none;">
-
-        <!-- SECTION: SMARTCLASS INFRASTRUCTURE -->
-        <div class="institutional-section">
-          <div class="section-title-block">
-            <div class="section-heading-row">
-              <div class="section-indicator-bar"></div>
-              <h2 class="section-main-title">SMARTCLASS INFRASTRUCTURE</h2>
-            </div>
-            <p class="section-subtitle">Live health status of FastAPI, MongoDB, Camera, SCRFD, ArcFace, FAISS, ByteTrack, ESP32</p>
-          </div>
-        </div>
-
+      <section id="tab-system" class="tab-pane">
         <div class="panel">
           <div class="panel-header">
             <h2>Technical System Architecture & Service Health</h2>
           </div>
-          <div style="padding: 1.4rem;">
+          <div class="panel-body-padded">
             <div class="cards-grid" id="systemHealthCards">
               <div class="metric-card">
-                <div class="card-icon-box icon-cyan"><i class="ti ti-camera"></i></div>
                 <div class="card-info">
                   <span class="card-label">Camera</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
+                  <span class="card-value font-val-md text-success">● CONNECTED</span>
                   <span class="card-sub">Smart Board Camera (Index 0)</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-blue"><i class="ti ti-scan"></i></div>
                 <div class="card-info">
                   <span class="card-label">SCRFD</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-value font-val-md text-success">● RUNNING</span>
                   <span class="card-sub">PyTorch Core Face Detector</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-purple"><i class="ti ti-brain"></i></div>
                 <div class="card-info">
                   <span class="card-label">ArcFace</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-value font-val-md text-success">● RUNNING</span>
                   <span class="card-sub">w600k_mbf.onnx (512-D)</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-indigo"><i class="ti ti-binary-tree"></i></div>
                 <div class="card-info">
                   <span class="card-label">FAISS</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
+                  <span class="card-value font-val-md text-success">● READY</span>
                   <span class="card-sub">IndexFlatIP Normalized Store</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-teal"><i class="ti ti-activity"></i></div>
                 <div class="card-info">
                   <span class="card-label">ByteTrack</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-value font-val-md text-success">● RUNNING</span>
                   <span class="card-sub">Kalman Temporal Stabilizer</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-green"><i class="ti ti-database"></i></div>
                 <div class="card-info">
                   <span class="card-label">MongoDB</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● CONNECTED</span>
+                  <span class="card-value font-val-md text-success">● CONNECTED</span>
                   <span class="card-sub">smartclass database</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-blue"><i class="ti ti-server"></i></div>
                 <div class="card-info">
                   <span class="card-label">FastAPI</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● RUNNING</span>
+                  <span class="card-value font-val-md text-success">● RUNNING</span>
                   <span class="card-sub">Port 8008 Uvicorn Engine</span>
                 </div>
               </div>
 
               <div class="metric-card">
-                <div class="card-icon-box icon-slate"><i class="ti ti-microchip"></i></div>
                 <div class="card-info">
                   <span class="card-label">ESP32</span>
-                  <span class="card-value" style="font-size:1.1rem; color:var(--success);">● READY</span>
+                  <span class="card-value font-val-md text-success">● READY</span>
                   <span class="card-sub">HTTP Ingestion Active</span>
                 </div>
               </div>
@@ -1231,50 +1064,35 @@
       <!-- ================================================================= -->
       <!-- TAB 11: SETTINGS                                                  -->
       <!-- ================================================================= -->
-      <section id="tab-settings" class="tab-pane" style="display: none;">
-        <div class="panel" style="max-width: 750px;">
+      <section id="tab-settings" class="tab-pane">
+        <div class="panel panel-max-750">
           <div class="panel-header">
             <h2>System Configuration & Model Thresholds</h2>
           </div>
-          <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div class="settings-form-body">
             <div class="form-group">
-              <label>Face Detection Confidence Threshold</label>
-              <input type="text" class="form-control" value="0.35" readonly>
+              <label for="cfgConfThresh">Face Detection Confidence Threshold</label>
+              <input type="text" id="cfgConfThresh" class="form-control" value="0.35" placeholder="0.35" title="Face Detection Confidence Threshold" readonly>
             </div>
             <div class="form-group">
-              <label>ArcFace Embedding Similarity Threshold</label>
-              <input type="text" class="form-control" value="0.65" readonly>
+              <label for="cfgSimThresh">ArcFace Embedding Similarity Threshold</label>
+              <input type="text" id="cfgSimThresh" class="form-control" value="0.65" placeholder="0.65" title="ArcFace Embedding Similarity Threshold" readonly>
             </div>
             <div class="form-group">
-              <label>Tracking Target Frame Rate</label>
-              <input type="text" class="form-control" value="30 FPS" readonly>
+              <label for="cfgFps">Tracking Target Frame Rate</label>
+              <input type="text" id="cfgFps" class="form-control" value="30 FPS" placeholder="30 FPS" title="Tracking Target Frame Rate" readonly>
             </div>
             <div class="form-group">
-              <label>Default Session Duration</label>
-              <input type="text" class="form-control" value="45 minutes" readonly>
+              <label for="cfgDuration">Default Session Duration</label>
+              <input type="text" id="cfgDuration" class="form-control" value="45 minutes" placeholder="45 minutes" title="Default Session Duration" readonly>
             </div>
             <div class="form-group">
-              <label>Institutional Timezone</label>
-              <input type="text" class="form-control" value="Asia/Kolkata (IST)" readonly>
+              <label for="cfgTimezone">Institutional Timezone</label>
+              <input type="text" id="cfgTimezone" class="form-control" value="Asia/Kolkata (IST)" placeholder="Asia/Kolkata (IST)" title="Institutional Timezone" readonly>
             </div>
           </div>
         </div>
       </section>
-
-      <!-- Institutional Footer -->
-      <footer class="institutional-footer" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:3.5rem; padding:1.5rem 0 2rem; border-top:1px solid var(--border);">
-        <div class="footer-left" style="display:flex; align-items:center; gap:12px;">
-          <img src="/static/images/vsb_logo.png" alt="VSB Emblem" class="footer-crest-mini" style="width:34px; height:34px; object-fit:contain; background:#ffffff; padding:2px; border-radius:6px; border:1.5px solid rgba(253,197,0,0.6); flex-shrink:0;" />
-          <div class="footer-inst-copy" style="display:flex; flex-direction:column; gap:2px;">
-            <strong style="font-size:0.80rem; color:var(--vsb-primary); font-weight:700; letter-spacing:0.04em;">V.S.B ENGINEERING COLLEGE</strong>
-            <span style="font-size:0.72rem; color:var(--text-muted);">Autonomous Institution • Accredited by NAAC with 'A' Grade • Approved by AICTE, New Delhi</span>
-          </div>
-        </div>
-        <div class="footer-right" style="font-size:0.76rem; color:var(--text-muted); display:flex; align-items:center; gap:12px;">
-          <span class="footer-badge">Institutional Node</span>
-          <span>SmartClass Vision AI Platform v2.4 • Edge Neural Engine</span>
-        </div>
-      </footer>
 
     </main>
   </div>
@@ -1292,50 +1110,50 @@
       </div>
       <form onsubmit="handleCreateAdvisor(event)">
         <div class="modal-body">
-          <div id="modalAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div id="modalAlert" class="alert-box alert-error"></div>
           <div class="form-row">
             <div class="form-group">
-              <label>Advisor User ID *</label>
-              <input type="text" id="advUserId" class="form-control" placeholder="e.g. ADV001" required>
+              <label for="advUserId">Advisor User ID *</label>
+              <input type="text" id="advUserId" class="form-control" placeholder="e.g. ADV001" title="Advisor User ID" required>
             </div>
             <div class="form-group">
-              <label>Advisor Full Name *</label>
-              <input type="text" id="advName" class="form-control" placeholder="e.g. Dr. K. Rajesh" required>
+              <label for="advName">Advisor Full Name *</label>
+              <input type="text" id="advName" class="form-control" placeholder="e.g. Dr. K. Rajesh" title="Advisor Full Name" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Password *</label>
-              <input type="password" id="advPassword" class="form-control" placeholder="Min 6 characters" required>
+              <label for="advPassword">Password *</label>
+              <input type="password" id="advPassword" class="form-control" placeholder="Min 6 characters" title="Password" required>
             </div>
             <div class="form-group">
-              <label>Confirm Password *</label>
-              <input type="password" id="advConfirmPassword" class="form-control" placeholder="Repeat password" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Department *</label>
-              <input type="text" id="advDept" class="form-control" value="AI&DS" required>
-            </div>
-            <div class="form-group">
-              <label>Year *</label>
-              <input type="text" id="advYear" class="form-control" value="3rd Year" required>
+              <label for="advConfirmPassword">Confirm Password *</label>
+              <input type="password" id="advConfirmPassword" class="form-control" placeholder="Repeat password" title="Confirm Password" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Section *</label>
-              <input type="text" id="advSection" class="form-control" value="B" required>
+              <label for="advDept">Department *</label>
+              <input type="text" id="advDept" class="form-control" value="AI&DS" placeholder="Department" title="Department" required>
             </div>
             <div class="form-group">
-              <label>Assigned Classroom</label>
-              <input type="text" id="advClassroom" class="form-control" value="AIDS-B">
+              <label for="advYear">Year *</label>
+              <input type="text" id="advYear" class="form-control" value="3rd Year" placeholder="Year" title="Year" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="advSection">Section *</label>
+              <input type="text" id="advSection" class="form-control" value="B" placeholder="Section" title="Section" required>
+            </div>
+            <div class="form-group">
+              <label for="advClassroom">Assigned Classroom</label>
+              <input type="text" id="advClassroom" class="form-control" value="AIDS-B" placeholder="Assigned Classroom" title="Assigned Classroom">
             </div>
           </div>
           <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="advEmail" class="form-control" placeholder="advisor@college.edu">
+            <label for="advEmail">Email Address</label>
+            <input type="email" id="advEmail" class="form-control" placeholder="advisor@college.edu" title="Email Address">
           </div>
         </div>
         <div class="modal-footer">
@@ -1355,41 +1173,41 @@
       </div>
       <form onsubmit="handleCreateClassroom(event)">
         <div class="modal-body">
-          <div id="addClassroomAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div id="addClassroomAlert" class="alert-box alert-error"></div>
           <div class="form-row">
             <div class="form-group">
-              <label>Classroom ID *</label>
-              <input type="text" id="newClassroomId" class="form-control" placeholder="e.g. AIDS-B" required>
+              <label for="newClassroomId">Classroom ID *</label>
+              <input type="text" id="newClassroomId" class="form-control" placeholder="e.g. AIDS-B" title="Classroom ID" required>
             </div>
             <div class="form-group">
-              <label>Classroom Name *</label>
-              <input type="text" id="newClassroomName" class="form-control" placeholder="e.g. AIDS-B Smart Classroom" required>
+              <label for="newClassroomName">Classroom Name *</label>
+              <input type="text" id="newClassroomName" class="form-control" placeholder="e.g. AIDS-B Smart Classroom" title="Classroom Name" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Department *</label>
-              <input type="text" id="newClassroomDept" class="form-control" value="AI&DS" required>
+              <label for="newClassroomDept">Department *</label>
+              <input type="text" id="newClassroomDept" class="form-control" value="AI&DS" placeholder="Department" title="Department" required>
             </div>
             <div class="form-group">
-              <label>Year *</label>
-              <input type="text" id="newClassroomYear" class="form-control" value="3rd Year" required>
+              <label for="newClassroomYear">Year *</label>
+              <input type="text" id="newClassroomYear" class="form-control" value="3rd Year" placeholder="Year" title="Year" required>
             </div>
             <div class="form-group">
-              <label>Section *</label>
-              <input type="text" id="newClassroomSec" class="form-control" value="B" required>
+              <label for="newClassroomSec">Section *</label>
+              <input type="text" id="newClassroomSec" class="form-control" value="B" placeholder="Section" title="Section" required>
             </div>
           </div>
           <div class="form-group">
-            <label>Assign Class Advisor</label>
-            <select id="newClassroomAdvisor" class="form-control">
+            <label for="newClassroomAdvisor">Assign Class Advisor</label>
+            <select id="newClassroomAdvisor" class="form-control" title="Assign Class Advisor">
               <option value="">-- Select Advisor --</option>
             </select>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Camera Source *</label>
-              <select id="newClassroomCamSource" class="form-control" onchange="toggleNewCamUrlField()">
+              <label for="newClassroomCamSource">Camera Source *</label>
+              <select id="newClassroomCamSource" class="form-control" title="Camera Source" onchange="toggleNewCamUrlField()">
                 <option value="pc" selected>PC / USB Camera (Index 0)</option>
                 <option value="droidcam">DroidCam (Mobile Wireless)</option>
                 <option value="extension">Extension Camera (Index 1/2)</option>
@@ -1398,13 +1216,13 @@
               </select>
             </div>
             <div class="form-group">
-              <label>ESP32 Device ID</label>
-              <input type="text" id="newClassroomEsp32" class="form-control" value="ESP32-AIDS-B">
+              <label for="newClassroomEsp32">ESP32 Device ID</label>
+              <input type="text" id="newClassroomEsp32" class="form-control" value="ESP32-AIDS-B" placeholder="ESP32 Device ID" title="ESP32 Device ID">
             </div>
           </div>
-          <div class="form-group" id="newCamUrlGroup" style="display:none;">
-            <label>Camera Stream URL / IP</label>
-            <input type="text" id="newClassroomCamUrl" class="form-control" placeholder="http://10.140.159.218:4747/video">
+          <div class="form-group" id="newCamUrlGroup">
+            <label for="newClassroomCamUrl">Camera Stream URL / IP</label>
+            <input type="text" id="newClassroomCamUrl" class="form-control" placeholder="http://10.140.159.218:4747/video" title="Camera Stream URL / IP">
           </div>
         </div>
         <div class="modal-footer">
@@ -1425,35 +1243,35 @@
       <form onsubmit="handleUpdateClassroom(event)">
         <input type="hidden" id="editClassroomId">
         <div class="modal-body">
-          <div id="editClassroomAlert" class="alert-box alert-error" style="display:none;"></div>
+          <div id="editClassroomAlert" class="alert-box alert-error"></div>
           <div class="form-group">
-            <label>Classroom Name *</label>
-            <input type="text" id="editClassroomName" class="form-control" required>
+            <label for="editClassroomName">Classroom Name *</label>
+            <input type="text" id="editClassroomName" class="form-control" placeholder="Classroom Name" title="Classroom Name" required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Department</label>
-              <input type="text" id="editClassroomDept" class="form-control" required>
+              <label for="editClassroomDept">Department</label>
+              <input type="text" id="editClassroomDept" class="form-control" placeholder="Department" title="Department" required>
             </div>
             <div class="form-group">
-              <label>Year</label>
-              <input type="text" id="editClassroomYear" class="form-control" required>
+              <label for="editClassroomYear">Year</label>
+              <input type="text" id="editClassroomYear" class="form-control" placeholder="Year" title="Year" required>
             </div>
             <div class="form-group">
-              <label>Section</label>
-              <input type="text" id="editClassroomSec" class="form-control" required>
+              <label for="editClassroomSec">Section</label>
+              <input type="text" id="editClassroomSec" class="form-control" placeholder="Section" title="Section" required>
             </div>
           </div>
           <div class="form-group">
-            <label>Assign Class Advisor</label>
-            <select id="editClassroomAdvisor" class="form-control">
+            <label for="editClassroomAdvisor">Assign Class Advisor</label>
+            <select id="editClassroomAdvisor" class="form-control" title="Assign Class Advisor">
               <option value="">-- Select Advisor --</option>
             </select>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Camera Source</label>
-              <select id="editClassroomCamSource" class="form-control" onchange="toggleEditCamUrlField()">
+              <label for="editClassroomCamSource">Camera Source</label>
+              <select id="editClassroomCamSource" class="form-control" title="Camera Source" onchange="toggleEditCamUrlField()">
                 <option value="pc">PC / USB Camera (Index 0)</option>
                 <option value="droidcam">DroidCam (Mobile Wireless)</option>
                 <option value="extension">Extension Camera (Index 1/2)</option>
@@ -1462,8 +1280,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Camera Status</label>
-              <select id="editClassroomCamStatus" class="form-control">
+              <label for="editClassroomCamStatus">Camera Status</label>
+              <select id="editClassroomCamStatus" class="form-control" title="Camera Status">
                 <option value="connected">Connected (Online)</option>
                 <option value="disconnected">Disconnected (Offline)</option>
               </select>
@@ -1471,20 +1289,20 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>ESP32 Device ID</label>
-              <input type="text" id="editClassroomEsp32" class="form-control">
+              <label for="editClassroomEsp32">ESP32 Device ID</label>
+              <input type="text" id="editClassroomEsp32" class="form-control" placeholder="ESP32 Device ID" title="ESP32 Device ID">
             </div>
             <div class="form-group">
-              <label>ESP32 Status</label>
-              <select id="editClassroomEspStatus" class="form-control">
+              <label for="editClassroomEspStatus">ESP32 Status</label>
+              <select id="editClassroomEspStatus" class="form-control" title="ESP32 Status">
                 <option value="connected">Connected</option>
                 <option value="disconnected">Disconnected</option>
               </select>
             </div>
           </div>
-          <div class="form-group" id="editCamUrlGroup" style="display:none;">
-            <label>Camera Stream URL / IP</label>
-            <input type="text" id="editClassroomCamUrl" class="form-control">
+          <div class="form-group" id="editCamUrlGroup">
+            <label for="editClassroomCamUrl">Camera Stream URL / IP</label>
+            <input type="text" id="editClassroomCamUrl" class="form-control" placeholder="http://10.140.159.218:4747/video" title="Camera Stream URL / IP">
           </div>
         </div>
         <div class="modal-footer">
@@ -1500,8 +1318,8 @@
     <div class="modal-enrollment-card">
       <div class="enroll-modal-header">
         <div class="enroll-badge-title">
-          <span class="enroll-step-badge">V.S.B. ENGINEERING COLLEGE</span>
-          <h3>STUDENT FACE ENROLLMENT • SMARTCLASS VISION AI</h3>
+          <span class="enroll-step-badge">ENROLLMENT</span>
+          <h3>Student Face Registration</h3>
         </div>
         <button class="btn-close" onclick="closeEnrollmentModal()">&times;</button>
       </div>
@@ -1533,15 +1351,15 @@
           <div class="enroll-form-grid">
             <div class="enroll-field">
               <label for="enrollRegNo">Register Number *</label>
-              <input type="text" id="enrollRegNo" class="font-mono" placeholder="e.g. 922524243069" required autocomplete="off">
+              <input type="text" id="enrollRegNo" class="font-mono" placeholder="e.g. 922524243069" title="Register Number" required autocomplete="off">
             </div>
             <div class="enroll-field">
               <label for="enrollName">Student Name *</label>
-              <input type="text" id="enrollName" placeholder="e.g. KANISH M" required autocomplete="off">
+              <input type="text" id="enrollName" placeholder="e.g. KANISH M" title="Student Name" required autocomplete="off">
             </div>
             <div class="enroll-field">
               <label for="enrollYear">Class / Year *</label>
-              <select id="enrollYear">
+              <select id="enrollYear" title="Class / Year">
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
                 <option value="3rd Year" selected>3rd Year</option>
@@ -1550,11 +1368,11 @@
             </div>
             <div class="enroll-field">
               <label for="enrollDept">Department *</label>
-              <input type="text" id="enrollDept" value="AI&DS" required autocomplete="off">
+              <input type="text" id="enrollDept" value="AI&DS" placeholder="Department" title="Department" required autocomplete="off">
             </div>
             <div class="enroll-field">
               <label for="enrollSec">Section *</label>
-              <input type="text" id="enrollSec" value="B" required autocomplete="off">
+              <input type="text" id="enrollSec" value="B" placeholder="Section" title="Section" required autocomplete="off">
             </div>
           </div>
         </div>
@@ -1565,27 +1383,27 @@
       </div>
 
       <!-- STEP 2: CAMERA SOURCE -->
-      <div class="enroll-step-pane" id="enroll-step-pane-2" style="display: none;">
+      <div class="enroll-step-pane" id="enroll-step-pane-2">
         <div class="enroll-form-card">
           <div class="enroll-section-title">Select Enrollment Camera Source</div>
           <div class="enroll-source-grid">
             <div class="enroll-source-card active" id="enroll-src-pc" onclick="selectEnrollSource('pc')">
-              <div class="enroll-source-icon"><i class="ti ti-device-desktop"></i></div>
+              <div class="enroll-source-icon">📷</div>
               <div class="enroll-source-name">PC CAMERA</div>
               <div class="enroll-source-desc">Integrated Webcam (Device 0)</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-droidcam" onclick="selectEnrollSource('droidcam')">
-              <div class="enroll-source-icon"><i class="ti ti-device-mobile"></i></div>
+              <div class="enroll-source-icon">📱</div>
               <div class="enroll-source-name">DROIDCAM</div>
               <div class="enroll-source-desc">Mobile Phone over Wi-Fi</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-extension" onclick="selectEnrollSource('extension')">
-              <div class="enroll-source-icon"><i class="ti ti-video"></i></div>
+              <div class="enroll-source-icon">🎥</div>
               <div class="enroll-source-name">EXTENSION CAMERA</div>
               <div class="enroll-source-desc">External USB Camera</div>
             </div>
             <div class="enroll-source-card" id="enroll-src-esp32" onclick="selectEnrollSource('esp32')">
-              <div class="enroll-source-icon"><i class="ti ti-antenna"></i></div>
+              <div class="enroll-source-icon">📡</div>
               <div class="enroll-source-name">ESP32 CAMERA</div>
               <div class="enroll-source-desc">ESP32 Wi-Fi Stream</div>
             </div>
@@ -1598,37 +1416,37 @@
       </div>
 
       <!-- STEP 3: CAMERA CONNECTION -->
-      <div class="enroll-step-pane" id="enroll-step-pane-3" style="display: none;">
+      <div class="enroll-step-pane" id="enroll-step-pane-3">
         <div class="enroll-form-card">
           <div class="enroll-section-title">Configure Camera Hardware Connection</div>
           
           <div id="enroll-cfg-pc" class="cam-config-panel">
-            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            <p class="cam-source-hint">
               Device Index: <strong>0</strong> (Integrated Laptop / PC Webcam)
             </p>
           </div>
 
-          <div id="enroll-cfg-droidcam" class="cam-config-panel" style="display: none;">
-            <div class="enroll-form-grid" style="margin-bottom: 10px;">
+          <div id="enroll-cfg-droidcam" class="cam-config-panel">
+            <div class="enroll-form-grid mb-10">
               <div class="enroll-field">
-                <label>IP Address</label>
-                <input type="text" id="enroll-dc-ip" class="form-control font-mono" value="10.140.159.218">
+                <label for="enroll-dc-ip">IP Address</label>
+                <input type="text" id="enroll-dc-ip" class="form-control font-mono" value="10.140.159.218" placeholder="10.140.159.218" title="IP Address">
               </div>
               <div class="enroll-field">
-                <label>Port</label>
-                <input type="number" id="enroll-dc-port" class="form-control font-mono" value="4747">
+                <label for="enroll-dc-port">Port</label>
+                <input type="number" id="enroll-dc-port" class="form-control font-mono" value="4747" placeholder="4747" title="Port">
               </div>
-              <div class="enroll-field" style="grid-column: span 2;">
-                <label>Video Stream URL</label>
-                <input type="text" id="enroll-dc-url" class="form-control font-mono" value="http://10.140.159.218:4747/video" readonly>
+              <div class="enroll-field col-span-2">
+                <label for="enroll-dc-url">Video Stream URL</label>
+                <input type="text" id="enroll-dc-url" class="form-control font-mono" value="http://10.140.159.218:4747/video" placeholder="http://10.140.159.218:4747/video" title="Video Stream URL" readonly>
               </div>
             </div>
           </div>
 
-          <div id="enroll-cfg-extension" class="cam-config-panel" style="display: none;">
-            <div class="enroll-field" style="max-width: 320px; margin-bottom: 10px;">
-              <label>External Camera Device</label>
-              <select id="enroll-ext-device" class="form-control">
+          <div id="enroll-cfg-extension" class="cam-config-panel">
+            <div class="enroll-field max-w-320 mb-10">
+              <label for="enroll-ext-device">External Camera Device</label>
+              <select id="enroll-ext-device" class="form-control" title="External Camera Device">
                 <option value="0">Camera Index 0</option>
                 <option value="1" selected>Camera Index 1 (External)</option>
                 <option value="2">Camera Index 2</option>
@@ -1636,18 +1454,18 @@
             </div>
           </div>
 
-          <div id="enroll-cfg-esp32" class="cam-config-panel" style="display: none;">
-            <div class="enroll-field" style="margin-bottom: 10px;">
-              <label>ESP32 Stream URL</label>
-              <input type="text" id="enroll-esp-url" class="form-control font-mono" value="http://192.168.1.100:81/stream">
+          <div id="enroll-cfg-esp32" class="cam-config-panel">
+            <div class="enroll-field mb-10">
+              <label for="enroll-esp-url">ESP32 Stream URL</label>
+              <input type="text" id="enroll-esp-url" class="form-control font-mono" value="http://192.168.1.100:81/stream" placeholder="http://192.168.1.100:81/stream" title="ESP32 Stream URL">
             </div>
           </div>
 
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px;">
+          <div class="cam-action-buttons-row">
             <button type="button" class="btn btn-outline btn-sm" id="btn-enroll-test" onclick="testEnrollCameraConnection()">TEST CONNECTION</button>
             <button type="button" class="btn btn-primary btn-sm" id="btn-enroll-connect" onclick="connectEnrollCameraSource()">CONNECT CAMERA</button>
             <button type="button" class="btn btn-danger btn-sm" id="btn-enroll-stop" onclick="stopEnrollCameraSource()">STOP CAMERA</button>
-            <span class="status-pill status-pill-connected" id="enroll-cam-pill" style="margin-left: auto;">● READY</span>
+            <span class="status-pill status-pill-connected ml-auto" id="enroll-cam-pill">● READY</span>
           </div>
         </div>
 
@@ -1658,8 +1476,8 @@
       </div>
 
       <!-- STEP 4: LIVE ENROLLMENT -->
-      <div class="enroll-step-pane" id="enroll-step-pane-4" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-muted); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 0.84rem; margin-bottom: 10px;">
+      <div class="enroll-step-pane" id="enroll-step-pane-4">
+        <div class="enroll-live-meta-bar">
           <div>Student: <strong id="lblEnrollStudent">--</strong> (<span class="font-mono" id="lblEnrollReg">--</span>)</div>
           <div>Camera: <strong id="lblEnrollCamSource">PC Camera</strong> &nbsp;|&nbsp; <span class="status-pill status-pill-connected" id="lblEnrollCamStatus">● CONNECTED</span></div>
         </div>
@@ -1672,19 +1490,19 @@
             <img id="enrollLiveFeedImg" class="enroll-feed-img" src="/api/video/feed?view_mode=normal" alt="Live Camera Preview">
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="flex-col-gap-10">
             <div class="samples-card">
               <div class="samples-card-header">
                 <h4>Face Samples</h4>
                 <span class="samples-badge" id="lblSampleCount">0 / 10 Captured</span>
               </div>
               <div class="samples-grid-10" id="enrollThumbsGrid"></div>
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-primary" id="btnEnrollCapture" onclick="captureEnrollSample()" style="flex: 1;">
-                  <i class="ti ti-camera"></i> CAPTURE SAMPLE
+              <div class="flex-gap-sm">
+                <button type="button" class="btn btn-primary flex-1" id="btnEnrollCapture" onclick="captureEnrollSample()">
+                  📸 CAPTURE SAMPLE
                 </button>
                 <button type="button" class="btn btn-outline" id="btnEnrollRetake" onclick="retakeEnrollSample()" disabled>
-                  <i class="ti ti-rotate-clockwise"></i> RETAKE
+                  ↺ RETAKE
                 </button>
               </div>
             </div>
@@ -1711,8 +1529,8 @@
 
         <div class="enroll-footer-actions">
           <button type="button" class="btn btn-outline" onclick="setEnrollStep(3)">← Back to Connection</button>
-          <button type="button" class="btn btn-primary" id="btnSaveEnrollment" onclick="saveEnrollment()" disabled style="font-weight: 700; background: var(--success); border-color: var(--success);">
-            <i class="ti ti-device-floppy"></i> SAVE ENROLLMENT
+          <button type="button" class="btn btn-primary btn-save-enrollment" id="btnSaveEnrollment" onclick="saveEnrollment()" disabled>
+            💾 SAVE ENROLLMENT
           </button>
         </div>
       </div>
@@ -1746,23 +1564,6 @@
       }
     }
 
-    function updateDiagCard(id, val) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.innerText = val;
-      const card = el.closest('.diag-card');
-      if (card) {
-        const dot = card.querySelector('.diag-status-dot');
-        const valLower = String(val).toLowerCase();
-        const isErr = valLower.includes('offline') || valLower.includes('error') || valLower.includes('disconnected') || valLower.includes('fail');
-        const isWarn = valLower.includes('checking') || valLower.includes('warning') || valLower.includes('waiting');
-        el.className = 'diag-status-badge ' + (isErr ? 'badge-error' : (isWarn ? 'badge-warning' : 'badge-operational'));
-        if (dot) {
-          dot.className = 'diag-status-dot ' + (isErr ? 'dot-error' : (isWarn ? 'dot-warning' : 'dot-operational'));
-        }
-      }
-    }
-
     async function loadDashboardData() {
       try {
         const sumResp = await fetch("/api/dashboard/role-summary", {
@@ -1771,34 +1572,22 @@
         const sumData = await sumResp.json();
         if (sumResp.ok && sumData.success) {
           const cards = sumData.data.cards;
-          document.getElementById("cardTotalStudents").innerText = cards.total_students !== undefined ? cards.total_students : '--';
-          document.getElementById("cardStudentsPresent").innerText = cards.students_present !== undefined ? cards.students_present : '--';
-          document.getElementById("cardStudentsAbsent").innerText = cards.students_absent !== undefined ? cards.students_absent : '--';
-          
-          let attPct = '--%';
-          if (cards.total_students && cards.total_students > 0) {
-            const pct = Math.round(((cards.students_present || 0) / cards.total_students) * 100);
-            attPct = `${pct}%`;
-          } else if (cards.total_students === 0) {
-            attPct = '0%';
-          }
-          if (document.getElementById("cardActiveAdvisors")) {
-            document.getElementById("cardActiveAdvisors").innerText = attPct;
-          }
-          
-          document.getElementById("cardActiveCameras").innerText = cards.active_cameras !== undefined ? cards.active_cameras : '1';
-          document.getElementById("cardActiveEsp32").innerText = cards.active_esp32_devices !== undefined ? cards.active_esp32_devices : '0';
-          document.getElementById("cardActiveClassrooms").innerText = cards.unknown_faces !== undefined ? cards.unknown_faces : '0';
-          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts !== undefined ? cards.active_alerts : '0';
+          document.getElementById("cardTotalStudents").innerText = cards.total_students || '--';
+          document.getElementById("cardStudentsPresent").innerText = cards.students_present || '--';
+          document.getElementById("cardStudentsAbsent").innerText = cards.students_absent || '--';
+          document.getElementById("cardActiveAdvisors").innerText = cards.active_advisors || '--';
+          document.getElementById("cardActiveCameras").innerText = cards.active_cameras || '1';
+          document.getElementById("cardActiveEsp32").innerText = cards.active_esp32_devices || '0';
+          document.getElementById("cardActiveAlerts").innerText = cards.active_alerts || '0';
 
           const sys = sumData.data.system_status;
           if (sys) {
-            updateDiagCard("diagFastAPI", sys.fastapi || 'ONLINE');
-            updateDiagCard("diagMongoDB", sys.mongodb || 'ONLINE');
-            updateDiagCard("diagCamera", sys.camera || 'ONLINE');
-            updateDiagCard("diagAI", sys.ai_pipeline || 'ONLINE');
-            updateDiagCard("diagFAISS", sys.faiss || 'READY');
-            updateDiagCard("diagESP32", sys.esp32 || 'READY');
+            document.getElementById("diagFastAPI").innerText = sys.fastapi || 'ONLINE';
+            document.getElementById("diagMongoDB").innerText = sys.mongodb || 'ONLINE';
+            document.getElementById("diagCamera").innerText = sys.camera || 'ONLINE';
+            document.getElementById("diagAI").innerText = sys.ai_pipeline || 'ONLINE';
+            document.getElementById("diagFAISS").innerText = sys.faiss || 'READY';
+            document.getElementById("diagESP32").innerText = sys.esp32 || 'READY';
           }
         }
 
@@ -1824,15 +1613,15 @@
         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
         let events = [
-          { icon: '<i class="ti ti-building" style="color:#2563EB;"></i>', title: 'Classroom Setup Synchronized', desc: 'Classroom AIDS-B mapped with PC Camera & ESP32-AIDS-B', time: timeStr, badge: 'System', color: '#2563EB' },
-          { icon: '<i class="ti ti-users" style="color:#10B981;"></i>', title: 'Advisor Authentication Active', desc: 'Prof. Ramesh Kumar (ADV001) assigned to 3rd Year AI&DS - B', time: timeStr, badge: 'RBAC', color: '#10B981' },
-          { icon: '<i class="ti ti-brain" style="color:#6366F1;"></i>', title: 'Vision AI Pipeline Ready', desc: 'SCRFD & ArcFace/MobileFaceNet loaded with FAISS vector store', time: timeStr, badge: 'AI Core', color: '#6366F1' }
+          { icon: '🏛️', title: 'Classroom Setup Synchronized', desc: 'Classroom AIDS-B mapped with PC Camera & ESP32-AIDS-B', time: timeStr, badge: 'System', color: '#2563EB' },
+          { icon: '👥', title: 'Advisor Authentication Active', desc: 'Prof. Ramesh Kumar (ADV001) assigned to 3rd Year AI&DS - B', time: timeStr, badge: 'RBAC', color: '#10B981' },
+          { icon: '🧠', title: 'Vision AI Pipeline Ready', desc: 'SCRFD & ArcFace/MobileFaceNet loaded with FAISS vector store', time: timeStr, badge: 'AI Core', color: '#6366F1' }
         ];
 
         if (alerts.length > 0) {
           alerts.slice(0, 3).forEach(a => {
             events.unshift({
-              icon: a.severity === 'CRITICAL' ? '<i class="ti ti-alert-triangle" style="color:#EF4444;"></i>' : '<i class="ti ti-bell" style="color:#F59E0B;"></i>',
+              icon: a.severity === 'CRITICAL' ? '⚠️' : '🔔',
               title: a.title,
               desc: `${a.message} (Classroom: ${a.classroom_id})`,
               time: timeStr,
@@ -1845,7 +1634,7 @@
         container.innerHTML = events.map(ev => `
           <div style="background:#FFFFFF; border:1px solid var(--border); border-left:3px solid ${ev.color}; border-radius:var(--radius-sm); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
             <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size:1.15rem; display:inline-flex; align-items:center;">${ev.icon}</span>
+              <span style="font-size:1.15rem;">${ev.icon}</span>
               <div>
                 <strong style="color:var(--text-main); font-size:0.86rem; display:block;">${ev.title}</strong>
                 <span style="color:var(--text-muted); font-size:0.78rem;">${ev.desc}</span>
@@ -2945,7 +2734,7 @@
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
-          saveBtn.innerHTML = '<i class="ti ti-device-floppy"></i> SAVE ENROLLMENT';
+          saveBtn.textContent = '💾 SAVE ENROLLMENT';
         }
       }
     }
@@ -2966,7 +2755,18 @@
       checkAuth();
       initCameraControls();
     });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js").catch((err) => {
+          console.warn("Service worker registration failed:", err);
+        });
+      });
+    }
   </script>
+
+  <!-- PWA Install Controller -->
+  <script src="/static/js/pwa-install.js"></script>
 
 </body>
 </html>

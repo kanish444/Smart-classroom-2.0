@@ -18,8 +18,8 @@
   --ai-accent-border: #C7D2FE;
 
   /* Surfaces & Backgrounds */
-  --bg-primary: #F3F6FA;       /* Soft Institutional Blue-Gray */
-  --bg-secondary: #EBF1F7;
+  --bg-primary: #F8FAFC;       /* Soft Off-White / Very Light Gray */
+  --bg-secondary: #F1F5F9;
   --bg-card: #FFFFFF;          /* Pure White Cards */
   --bg-card-subtle: #F8FAFC;
 
@@ -717,6 +717,7 @@ h1, h2, h3, h4, .brand-title, .panel-title, .dept-header-title h2 {
   cursor: pointer;
   text-align: center;
   transition: all 0.15s ease;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -1014,8 +1015,8 @@ h1, h2, h3, h4, .brand-title, .panel-title, .dept-header-title h2 {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.60);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1156,4 +1157,368 @@ h1, h2, h3, h4, .brand-title, .panel-title, .dept-header-title h2 {
   font-size: 0.74rem;
   color: var(--text-muted);
   margin-top: 4px;
+}
+
+#btnInstallApp,
+#btn-pause-session,
+#btn-resume-session,
+#btn-end-session,
+#btn-start-camera,
+#panel-cam-droidcam,
+#panel-cam-extension,
+#panel-cam-esp32,
+#cam-troubleshoot-box,
+#video-offline-overlay,
+#unknown-alert,
+#end-session-modal,
+#operator-modal,
+#enrollment-modal,
+#enroll-step-source,
+#enroll-step-conn,
+#idx-conn-box-droidcam,
+#idx-conn-box-extension,
+#idx-conn-box-esp32,
+#enroll-step-camera,
+#enroll-current-dept,
+#enroll-capture-flash,
+#duplicate-reg-modal,
+#dup-student-details,
+#role-login-modal,
+#roleLoginAlert {
+  display: none;
+}
+
+.dept-card-val-sm {
+  font-size: 1.15rem;
+  margin-top: 4px;
+}
+
+.cam-source-hint {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.mt-6 {
+  margin-top: 6px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+
+.mt-14 {
+  margin-top: 14px;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
+}
+
+.mb-6 {
+  margin-bottom: 6px;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-14 {
+  margin-bottom: 14px;
+}
+
+.btn-remote-cam {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.min-w-180 {
+  min-width: 180px;
+}
+
+.col-span-3 {
+  grid-column: span 3;
+}
+
+.col-span-2-1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 8px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.w-140 { width: 140px; }
+.w-110 { width: 110px; }
+.w-90  { width: 90px; }
+.w-full { width: 100%; }
+
+.table-cell-empty-lg {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+}
+
+.modal-title-bold {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.modal-subtext-sm {
+  font-size: 0.80rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.modal-card-lg {
+  width: 860px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center-gap-8 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-enrollment-tag {
+  background: var(--secondary);
+  color: #fff;
+}
+
+.wizard-nav-strip {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  background: #F8FAFC;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.wizard-step-active {
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wizard-step-num-active {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+}
+
+.wizard-step-inactive {
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.wizard-step-num-inactive {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+}
+
+.panel-padded-lg {
+  padding: 1.25rem;
+}
+
+.grid-auto-200 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.font-hint-xs {
+  font-size: 0.70rem;
+  color: var(--text-muted);
+}
+
+.flex-justify-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.conn-box-card {
+  background: #F8FAFC;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.enroll-meta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+}
+
+.enroll-live-split {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 12px;
+}
+
+.enroll-feed-wrapper {
+  position: relative;
+  background: #0B132B;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enroll-quality-hud-pill {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.flex-col-gap-10 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.samples-card-box {
+  background: #F8FAFC;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.samples-header-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.80rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.samples-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.progress-card-box {
+  background: #FAFCFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.78rem;
+}
+
+.progress-card-title {
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 4px;
+}
+
+.flex-gap-8-end {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+.font-sm-sub {
+  font-size: 0.82rem;
+}
+
+.modal-logo-sq {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--secondary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.font-title-clean {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.font-caption-muted {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.block-mb-2 {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.alert-box-padded {
+  padding: 8px 12px;
+  font-size: 0.80rem;
+  border-radius: 6px;
+}
+
+.link-portal-bold {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 600;
 }

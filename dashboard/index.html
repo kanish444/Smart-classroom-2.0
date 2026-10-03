@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V.S.B Engineering College • SmartClass Vision AI</title>
-  <link rel="icon" type="image/png" href="/static/images/vsb_logo.png">
+  <title>SmartClass Vision AI - Smart Board Classroom Monitor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="/static/css/dashboard.css">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="apple-touch-icon" href="/static/img/icon-192.png">
 </head>
 <body>
 
@@ -18,13 +18,12 @@
   <!-- ===================================================================== -->
   <header class="top-bar">
     <div class="brand-group">
-      <div class="brand-logo" title="V.S.B Engineering College • SmartClass Institutional AI" style="background:#ffffff; border-radius:10px; padding:3px; border:1.5px solid rgba(253,197,0,0.6); display:flex; align-items:center; justify-content:center; width:44px; height:44px;">
-        <img src="/static/images/vsb_logo.png" alt="V.S.B Engineering College Crest" class="brand-crest-logo" style="width:38px; height:38px; object-fit:contain;">
+      <div class="brand-logo" title="SmartClass Institutional AI">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Vision AI Crest" class="brand-crest-logo">
       </div>
       <div>
-        <div style="font-size:0.65rem; font-weight:700; letter-spacing:0.12em; color:#D82927; text-transform:uppercase;">V.S.B Engineering College</div>
-        <h1 class="brand-title" style="margin:0; font-size:1.15rem; line-height:1.2;">SmartClass Vision AI</h1>
-        <div class="brand-subtitle" style="font-size:0.75rem;">Autonomous Classroom Vision & Edge Attendance System</div>
+        <h1 class="brand-title">SmartClass Vision AI</h1>
+        <div class="brand-subtitle">Smart Board Multi-Student Face Identification & Attendance</div>
       </div>
     </div>
 
@@ -61,21 +60,26 @@
 
       <!-- One-By-One Student Face Enrollment Button -->
       <button type="button" class="btn-action btn-enroll-open" id="btn-open-enrollment" title="New One-By-One Student Face Enrollment">
-        <i class="ti ti-user-plus"></i> NEW REGISTER
+        + NEW REGISTER
+      </button>
+
+      <!-- Install SmartClass PWA Button -->
+      <button type="button" class="btn-action" id="btnInstallApp" title="Install SmartClass Desktop / Mobile App">
+        ⬇️ Install SmartClass
       </button>
 
       <!-- Operator Status -->
       <button type="button" class="btn-operator" id="btn-operator-toggle" title="Operator Authentication Settings">
-        <i class="ti ti-lock"></i> <span id="operator-label">Viewer</span>
+        <span>🔒</span> <span id="operator-label">Viewer</span>
       </button>
 
       <!-- Institutional Role Access: HOD & ADVISOR Logins -->
       <div class="role-auth-actions">
         <button type="button" class="btn-role-nav btn-role-hod" id="btn-top-hod-login" onclick="openRoleLoginModal('HOD')" title="Sign in with Head of Department Administrative Access">
-          <i class="ti ti-building"></i> HOD LOGIN
+          🏛️ HOD LOGIN
         </button>
         <button type="button" class="btn-role-nav btn-role-advisor" id="btn-top-advisor-login" onclick="openRoleLoginModal('ADVISOR')" title="Sign in with Class Advisor Access">
-          <i class="ti ti-users"></i> ADVISOR LOGIN
+          👥 ADVISOR LOGIN
         </button>
       </div>
     </div>
@@ -101,7 +105,7 @@
     <div class="dept-metrics-grid">
       <!-- 1. Classrooms -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-indigo"><i class="ti ti-building-community"></i></div>
+        <div class="dept-card-icon icon-indigo">🏛️</div>
         <div class="dept-card-body">
           <span class="dept-card-label">TOTAL CLASSROOMS</span>
           <div class="dept-card-value"><span id="metric-total-classrooms">1</span></div>
@@ -111,7 +115,7 @@
 
       <!-- 2. Students & Attendance -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-blue"><i class="ti ti-users"></i></div>
+        <div class="dept-card-icon icon-blue">👥</div>
         <div class="dept-card-body">
           <span class="dept-card-label">TOTAL STUDENTS</span>
           <div class="dept-card-value"><span id="metric-total-students">--</span></div>
@@ -121,7 +125,7 @@
 
       <!-- 3. Attendance Rate -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-green"><i class="ti ti-chart-pie"></i></div>
+        <div class="dept-card-icon icon-green">📈</div>
         <div class="dept-card-body">
           <span class="dept-card-label">ATTENDANCE OVERVIEW</span>
           <div class="dept-card-value"><span id="metric-attendance-rate">--%</span></div>
@@ -131,7 +135,7 @@
 
       <!-- 4. Active Cameras -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-amber"><i class="ti ti-camera"></i></div>
+        <div class="dept-card-icon icon-amber">📹</div>
         <div class="dept-card-body">
           <span class="dept-card-label">ACTIVE CAMERAS</span>
           <div class="dept-card-value"><span id="metric-active-cameras">1</span></div>
@@ -141,7 +145,7 @@
 
       <!-- 5. ESP32 Devices -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-slate"><i class="ti ti-antenna"></i></div>
+        <div class="dept-card-icon icon-slate">📡</div>
         <div class="dept-card-body">
           <span class="dept-card-label">ESP32 DEVICES</span>
           <div class="dept-card-value"><span id="metric-esp32-count">0</span></div>
@@ -151,17 +155,17 @@
 
       <!-- 6. Sensor Status -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-teal"><i class="ti ti-temperature"></i></div>
+        <div class="dept-card-icon icon-teal">🌡️</div>
         <div class="dept-card-body">
           <span class="dept-card-label">SENSOR STATUS</span>
-          <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-sensor-summary">Standby</span></div>
+          <div class="dept-card-value dept-card-val-sm"><span id="metric-sensor-summary">Standby</span></div>
           <span class="dept-card-sub empty-state-sub" id="metric-sensor-sub">No sensor data available</span>
         </div>
       </div>
 
       <!-- 7. Active Alerts -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-red"><i class="ti ti-bell-ringing"></i></div>
+        <div class="dept-card-icon icon-red">🔔</div>
         <div class="dept-card-body">
           <span class="dept-card-label">ACTIVE ALERTS</span>
           <div class="dept-card-value"><span id="metric-active-alerts">0</span></div>
@@ -171,10 +175,10 @@
 
       <!-- 8. Classroom Status -->
       <div class="dept-card">
-        <div class="dept-card-icon icon-teal"><i class="ti ti-cpu"></i></div>
+        <div class="dept-card-icon icon-teal">⚡</div>
         <div class="dept-card-body">
           <span class="dept-card-label">CLASSROOM STATUS</span>
-          <div class="dept-card-value" style="font-size: 1.15rem; margin-top: 4px;"><span id="metric-classroom-name">AIDS-B</span></div>
+          <div class="dept-card-value dept-card-val-sm"><span id="metric-classroom-name">AIDS-B</span></div>
           <span class="dept-card-sub" id="metric-classroom-state">3rd Year AI&DS - B · Online</span>
         </div>
       </div>
@@ -214,10 +218,10 @@
 
     <!-- Session Action Buttons -->
     <div class="session-actions" id="session-controls">
-      <button type="button" class="btn-action btn-start" id="btn-start-session"><i class="ti ti-player-play"></i> Start Session</button>
-      <button type="button" class="btn-action btn-pause" id="btn-pause-session" style="display:none;"><i class="ti ti-player-pause"></i> Pause</button>
-      <button type="button" class="btn-action btn-resume" id="btn-resume-session" style="display:none;"><i class="ti ti-player-play"></i> Resume</button>
-      <button type="button" class="btn-action btn-end" id="btn-end-session" style="display:none;"><i class="ti ti-player-stop"></i> End Session</button>
+      <button type="button" class="btn-action btn-start" id="btn-start-session">▶ Start Session</button>
+      <button type="button" class="btn-action btn-pause" id="btn-pause-session">⏸ Pause</button>
+      <button type="button" class="btn-action btn-resume" id="btn-resume-session">▶ Resume</button>
+      <button type="button" class="btn-action btn-end" id="btn-end-session">⏹ End Session</button>
     </div>
   </section>
 
@@ -288,7 +292,7 @@
             <button type="button" class="btn-action btn-end" id="btn-stop-camera" title="Stop camera stream">
               <span>⏹</span> STOP CAMERA
             </button>
-            <button type="button" class="btn-action btn-start" id="btn-start-camera" title="Start camera stream" style="display: none;">
+            <button type="button" class="btn-action btn-start" id="btn-start-camera" title="Start camera stream">
               <span>▶</span> START CAMERA
             </button>
           </div>
@@ -297,26 +301,26 @@
         <!-- 4 Camera Cards -->
         <div class="camera-cards-grid">
           <div class="cam-card active" data-source="pc" id="card-cam-pc" title="Integrated PC / Laptop Webcam">
-            <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
+            <div class="cam-card-icon">📷</div>
             <div class="cam-card-title">PC CAMERA</div>
             <div class="cam-card-sub">Device 0</div>
           </div>
 
           <div class="cam-card" data-source="droidcam" id="card-cam-droidcam" title="Mobile Phone Camera over Wi-Fi">
-            <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
+            <div class="cam-card-icon">📱</div>
             <div class="cam-card-title">DROIDCAM</div>
             <div class="cam-card-sub">Phone Camera</div>
           </div>
 
           <div class="cam-card" data-source="extension" id="card-cam-extension" title="External USB Camera">
-            <div class="cam-card-icon"><i class="ti ti-video"></i></div>
+            <div class="cam-card-icon">🎥</div>
             <div class="cam-card-title">EXTENSION</div>
             <div class="cam-card-sub">USB Camera</div>
           </div>
 
           <div class="cam-card" data-source="esp32" id="card-cam-esp32" title="ESP32 Wi-Fi Camera Stream">
-            <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
-            <div class="cam-card-title">ESP32 CAMERA</div>
+            <div class="cam-card-icon">📡</div>
+            <div class="cam-card-title">ESP32 CAM</div>
             <div class="cam-card-sub">Wi-Fi Stream</div>
           </div>
         </div>
@@ -324,38 +328,38 @@
         <!-- Configuration Panels for Selected Camera -->
         <div class="cam-config-panel" id="panel-cam-pc">
           <div class="config-row">
-            <span style="font-size: 0.82rem; color: var(--text-secondary);">Connected to integrated PC / laptop webcam (Device 0).</span>
+            <span class="cam-source-hint">Connected to integrated PC / laptop webcam (Device 0).</span>
             <button type="button" class="btn-cam-action btn-apply" id="btn-connect-pc">Connect Camera</button>
           </div>
         </div>
 
-        <div class="cam-config-panel" id="panel-cam-droidcam" style="display: none;">
+        <div class="cam-config-panel" id="panel-cam-droidcam">
           <div class="config-row config-inputs-row">
             <div class="input-field-group">
               <label for="input-droidcam-host" class="input-lbl">IP Address</label>
-              <input type="text" id="input-droidcam-host" class="input-cam-text font-mono" value="10.140.159.218">
+              <input type="text" id="input-droidcam-host" class="input-cam-text font-mono" value="10.140.159.218" placeholder="10.140.159.218" title="IP Address">
             </div>
             <div class="input-field-group">
               <label for="input-droidcam-port" class="input-lbl">Port</label>
-              <input type="number" id="input-droidcam-port" class="input-cam-text font-mono" value="4747">
+              <input type="number" id="input-droidcam-port" class="input-cam-text font-mono" value="4747" placeholder="4747" title="Port">
             </div>
             <div class="input-field-group">
               <label for="input-droidcam-videourl" class="input-lbl">Video URL</label>
-              <input type="text" id="input-droidcam-videourl" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" readonly>
+              <input type="text" id="input-droidcam-videourl" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" placeholder="http://10.140.159.218:4747/video" title="Video URL" readonly>
             </div>
           </div>
-          <div class="config-row config-btns-row" style="margin-top: 6px;">
+          <div class="config-row config-btns-row mt-6">
             <button type="button" class="btn-cam-action" id="btn-test-droidcam">Test Connection</button>
             <button type="button" class="btn-cam-action btn-apply" id="btn-connect-droidcam">Connect Camera</button>
-            <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" class="btn-cam-action" style="text-decoration:none; display:inline-flex; align-items:center;">Remote ↗</a>
+            <a id="link-droidcam-remote" href="http://10.140.159.218:4747" target="_blank" rel="noopener noreferrer" class="btn-cam-action btn-remote-cam">Remote ↗</a>
           </div>
         </div>
 
-        <div class="cam-config-panel" id="panel-cam-extension" style="display: none;">
+        <div class="cam-config-panel" id="panel-cam-extension">
           <div class="config-row">
-            <div class="input-field-group" style="min-width: 180px;">
+            <div class="input-field-group min-w-180">
               <label for="select-extension-device" class="input-lbl">Camera Device:</label>
-              <select id="select-extension-device" class="input-cam-text">
+              <select id="select-extension-device" class="input-cam-text" title="Camera Device">
                 <option value="0">Camera 0</option>
                 <option value="1" selected>Camera 1</option>
                 <option value="2">Camera 2</option>
@@ -368,14 +372,14 @@
           </div>
         </div>
 
-        <div class="cam-config-panel" id="panel-cam-esp32" style="display: none;">
+        <div class="cam-config-panel" id="panel-cam-esp32">
           <div class="config-row config-inputs-row">
-            <div class="input-field-group" style="grid-column: span 3;">
+            <div class="input-field-group col-span-3">
               <label for="input-esp32-url" class="input-lbl">Stream URL:</label>
-              <input type="text" id="input-esp32-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream">
+              <input type="text" id="input-esp32-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream" placeholder="http://192.168.1.100:81/stream" title="Stream URL">
             </div>
           </div>
-          <div class="config-row config-btns-row" style="margin-top: 6px;">
+          <div class="config-row config-btns-row mt-6">
             <button type="button" class="btn-cam-action" id="btn-test-esp32">Test Connection</button>
             <button type="button" class="btn-cam-action btn-apply" id="btn-connect-esp32">Connect Camera</button>
           </div>
@@ -391,7 +395,7 @@
             <span class="status-label">Status:</span>
             <span class="status-pill status-pill-connected" id="active-cam-status-pill">● Connected</span>
           </div>
-          <div class="cam-status-info" style="margin-left: auto;">
+          <div class="cam-status-info ml-auto">
             <span class="status-label">Resolution:</span>
             <span class="status-value font-mono" id="active-cam-res">--</span>
           </div>
@@ -402,7 +406,7 @@
         </div>
 
         <!-- Troubleshooting Box -->
-        <div class="camera-troubleshoot-box" id="cam-troubleshoot-box" style="display: none;">
+        <div class="camera-troubleshoot-box" id="cam-troubleshoot-box">
           <div class="troubleshoot-header">
             <span>⚠️</span>
             <strong id="troubleshoot-title">Camera Connection Advisory</strong>
@@ -416,7 +420,7 @@
       <!-- Live Stream Viewport -->
       <div class="video-container" id="video-wrapper">
         <img id="camera-stream" src="/api/video/feed?view_mode=normal" alt="Smart Board Live Camera Feed" class="video-stream">
-        <div class="video-offline-overlay" id="video-offline-overlay" style="display:none;">
+        <div class="video-offline-overlay" id="video-offline-overlay">
           <div class="offline-box">
             <span>⚠️</span>
             <h3>CAMERA OFFLINE</h3>
@@ -426,7 +430,7 @@
       </div>
 
       <!-- Unknown Face Alert Strip -->
-      <div class="unknown-alert-strip" id="unknown-alert" style="display:none;">
+      <div class="unknown-alert-strip" id="unknown-alert">
         <span>⚠️</span>
         <div>
           <strong>UNKNOWN FACE DETECTED:</strong> One or more detected faces do not match any enrolled student in the database.
@@ -444,10 +448,10 @@
 
         <div class="export-actions">
           <button type="button" class="btn-export" id="btn-export-csv" title="Export as CSV">
-            <i class="ti ti-file-spreadsheet"></i> CSV Export
+            📄 CSV Export
           </button>
           <button type="button" class="btn-export" id="btn-export-json" title="Export as JSON">
-            <i class="ti ti-file-code"></i> JSON Export
+            📋 JSON Export
           </button>
         </div>
       </div>
@@ -455,7 +459,7 @@
       <!-- Filter & Search Toolbar -->
       <div class="roster-toolbar">
         <div class="search-box">
-          <input type="text" id="student-search-input" placeholder="Search by student name or register number..." autocomplete="off">
+          <input type="text" id="student-search-input" placeholder="Search by student name or register number..." title="Search by student name or register number" autocomplete="off">
         </div>
         <div class="filter-pills">
           <button type="button" class="filter-btn active" data-filter="ALL">All (<span id="count-all">0</span>)</button>
@@ -470,16 +474,16 @@
         <table class="roster-table">
           <thead>
             <tr>
-              <th style="width: 140px;">Register No</th>
+              <th class="w-140">Register No</th>
               <th>Student Name</th>
-              <th style="width: 110px;">Status</th>
-              <th style="width: 90px;">First Seen</th>
-              <th style="width: 90px;">Last Seen</th>
+              <th class="w-110">Status</th>
+              <th class="w-90">First Seen</th>
+              <th class="w-90">Last Seen</th>
             </tr>
           </thead>
           <tbody id="roster-tbody">
             <tr>
-              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading attendance roster...</td>
+              <td colspan="5" class="table-cell-empty-lg">Loading attendance roster...</td>
             </tr>
           </tbody>
         </table>
@@ -493,14 +497,14 @@
   <!-- ===================================================================== -->
 
   <!-- End Session Confirmation Modal -->
-  <div class="modal-backdrop" id="end-session-modal" style="display: none;">
+  <div class="modal-backdrop" id="end-session-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700;">End Active Session?</h3>
+        <h3 class="modal-title-bold">End Active Session?</h3>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to end the current instructional session?</p>
-        <p style="font-size: 0.80rem; color: var(--text-muted); margin-top: 4px;">Final attendance will be locked and archived into the database.</p>
+        <p class="modal-subtext-sm">Final attendance will be locked and archived into the database.</p>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-modal btn-cancel" id="btn-modal-cancel">Cancel</button>
@@ -510,14 +514,14 @@
   </div>
 
   <!-- Operator Auth Modal -->
-  <div class="modal-backdrop" id="operator-modal" style="display: none;">
+  <div class="modal-backdrop" id="operator-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 700;">Operator Authorization</h3>
+        <h3 class="modal-title-bold">Operator Authorization</h3>
       </div>
       <div class="modal-body">
-        <p style="margin-bottom: 8px;">Enter the Operator Token to unlock session management actions:</p>
-        <input type="password" id="input-operator-token" class="input-cam-text" style="width: 100%;" placeholder="Operator Token...">
+        <p class="mb-8">Enter the Operator Token to unlock session management actions:</p>
+        <input type="password" id="input-operator-token" class="input-cam-text w-full" placeholder="Operator Token..." title="Operator Token">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-modal btn-cancel" id="btn-operator-cancel">Cancel</button>
@@ -527,53 +531,53 @@
   </div>
 
   <!-- Student Face Enrollment Modal -->
-  <div class="modal-backdrop" id="enrollment-modal" style="display: none;">
-    <div class="modal-card" style="width: 860px; max-width: 95vw; max-height: 90vh; overflow-y: auto;">
-      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="status-badge badge-active" style="background: var(--secondary); color: #fff;">ENROLLMENT</span>
-          <h3 style="font-size: 1.1rem; font-weight: 700;">Student Face Registration</h3>
+  <div class="modal-backdrop" id="enrollment-modal">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header modal-header-flex">
+        <div class="flex-center-gap-8">
+          <span class="status-badge badge-active badge-enrollment-tag">ENROLLMENT</span>
+          <h3 class="modal-title-bold">Student Face Registration</h3>
         </div>
         <button type="button" class="btn-icon" id="btn-enroll-close" title="Close Enrollment">✕</button>
       </div>
 
       <!-- 4-Step Wizard Nav -->
-      <div style="display: flex; gap: 8px; justify-content: space-between; background: #F8FAFC; padding: 10px 14px; border-bottom: 1px solid var(--border-subtle);">
-        <div class="wizard-step-item active" id="idx-wiz-step-1" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-          <span style="width: 20px; height: 20px; border-radius: 50%; background: var(--secondary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">1</span>
+      <div class="wizard-nav-strip">
+        <div class="wizard-step-item active wizard-step-active" id="idx-wiz-step-1">
+          <span class="wizard-step-num-active">1</span>
           <span>Student Details</span>
         </div>
-        <div class="wizard-step-item" id="idx-wiz-step-2" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
-          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">2</span>
+        <div class="wizard-step-item wizard-step-inactive" id="idx-wiz-step-2">
+          <span class="wizard-step-num-inactive">2</span>
           <span>Camera Source</span>
         </div>
-        <div class="wizard-step-item" id="idx-wiz-step-3" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
-          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">3</span>
+        <div class="wizard-step-item wizard-step-inactive" id="idx-wiz-step-3">
+          <span class="wizard-step-num-inactive">3</span>
           <span>Connection</span>
         </div>
-        <div class="wizard-step-item" id="idx-wiz-step-4" style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
-          <span style="width: 20px; height: 20px; border-radius: 50%; background: #E2E8F0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;">4</span>
+        <div class="wizard-step-item wizard-step-inactive" id="idx-wiz-step-4">
+          <span class="wizard-step-num-inactive">4</span>
           <span>Live Enrollment</span>
         </div>
       </div>
 
       <!-- Step 1: Form -->
-      <div id="enroll-step-form" style="padding: 1.25rem;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+      <div id="enroll-step-form" class="panel-padded-lg">
+        <div class="grid-auto-200">
           <div class="input-field-group">
             <label for="enroll-input-reg" class="input-lbl">Register Number:</label>
-            <input type="text" id="enroll-input-reg" class="input-cam-text font-mono" placeholder="e.g. 922524243069" required autocomplete="off">
-            <span id="enroll-reg-hint" style="font-size: 0.70rem; color: var(--text-muted);">Unique registration ID</span>
+            <input type="text" id="enroll-input-reg" class="input-cam-text font-mono" placeholder="e.g. 922524243069" title="Register Number" required autocomplete="off">
+            <span id="enroll-reg-hint" class="font-hint-xs">Unique registration ID</span>
           </div>
 
           <div class="input-field-group">
             <label for="enroll-input-name" class="input-lbl">Student Name:</label>
-            <input type="text" id="enroll-input-name" class="input-cam-text" placeholder="e.g. KANISH M" required autocomplete="off">
+            <input type="text" id="enroll-input-name" class="input-cam-text" placeholder="e.g. KANISH M" title="Student Name" required autocomplete="off">
           </div>
 
           <div class="input-field-group">
             <label for="enroll-input-class" class="input-lbl">Class / Year:</label>
-            <select id="enroll-input-class" class="input-cam-text" required>
+            <select id="enroll-input-class" class="input-cam-text" title="Class / Year" required>
               <option value="1st Year">1st Year</option>
               <option value="2nd Year">2nd Year</option>
               <option value="3rd Year" selected>3rd Year</option>
@@ -583,16 +587,16 @@
 
           <div class="input-field-group">
             <label for="enroll-input-dept" class="input-lbl">Department:</label>
-            <input type="text" id="enroll-input-dept" class="input-cam-text" value="AI&DS" required autocomplete="off">
+            <input type="text" id="enroll-input-dept" class="input-cam-text" value="AI&DS" placeholder="Department" title="Department" required autocomplete="off">
           </div>
 
           <div class="input-field-group">
             <label for="enroll-input-sec" class="input-lbl">Section:</label>
-            <input type="text" id="enroll-input-sec" class="input-cam-text" value="B" required autocomplete="off">
+            <input type="text" id="enroll-input-sec" class="input-cam-text" value="B" placeholder="Section" title="Section" required autocomplete="off">
           </div>
         </div>
 
-        <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+        <div class="mt-14 flex-justify-end">
           <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-to-step2">
             Next: Camera Source →
           </button>
@@ -600,112 +604,112 @@
       </div>
 
       <!-- Step 2: Source Selection -->
-      <div id="enroll-step-source" style="display: none; padding: 1.25rem;">
-        <div class="camera-cards-grid" style="margin-bottom: 14px;">
+      <div id="enroll-step-source" class="panel-padded-lg">
+        <div class="camera-cards-grid mb-14">
           <div class="cam-card active" data-source="pc" id="idx-cam-pc">
-            <div class="cam-card-icon"><i class="ti ti-device-desktop"></i></div>
+            <div class="cam-card-icon">📷</div>
             <div class="cam-card-title">PC CAMERA</div>
             <div class="cam-card-sub">Webcam</div>
           </div>
           <div class="cam-card" data-source="droidcam" id="idx-cam-droidcam">
-            <div class="cam-card-icon"><i class="ti ti-device-mobile"></i></div>
+            <div class="cam-card-icon">📱</div>
             <div class="cam-card-title">DROIDCAM</div>
             <div class="cam-card-sub">Phone</div>
           </div>
           <div class="cam-card" data-source="extension" id="idx-cam-extension">
-            <div class="cam-card-icon"><i class="ti ti-video"></i></div>
+            <div class="cam-card-icon">🎥</div>
             <div class="cam-card-title">EXTENSION</div>
             <div class="cam-card-sub">External USB</div>
           </div>
           <div class="cam-card" data-source="esp32" id="idx-cam-esp32">
-            <div class="cam-card-icon"><i class="ti ti-antenna"></i></div>
+            <div class="cam-card-icon">📡</div>
             <div class="cam-card-title">ESP32 CAM</div>
             <div class="cam-card-sub">Stream</div>
           </div>
         </div>
-        <div style="display: flex; justify-content: space-between;">
+        <div class="flex-justify-between">
           <button type="button" class="btn-action btn-cancel" id="btn-idx-back-1">← Back</button>
           <button type="button" class="btn-action btn-confirm-primary" id="btn-idx-to-step3">Next: Connection →</button>
         </div>
       </div>
 
       <!-- Step 3: Hardware Connection -->
-      <div id="enroll-step-conn" style="display: none; padding: 1.25rem;">
-        <div id="idx-conn-box-pc" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">Device Index: <strong>0</strong> (Integrated Laptop / PC Webcam)</p>
+      <div id="enroll-step-conn" class="panel-padded-lg">
+        <div id="idx-conn-box-pc" class="conn-box-card mb-10">
+          <p class="cam-source-hint">Device Index: <strong>0</strong> (Integrated Laptop / PC Webcam)</p>
         </div>
 
-        <div id="idx-conn-box-droidcam" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px;">
-            <input type="text" id="idx-dc-host" class="input-cam-text font-mono" value="10.140.159.218">
-            <input type="number" id="idx-dc-port" class="input-cam-text font-mono" value="4747">
+        <div id="idx-conn-box-droidcam" class="conn-box-card mb-10">
+          <div class="col-span-2-1 mb-8">
+            <input type="text" id="idx-dc-host" class="input-cam-text font-mono" value="10.140.159.218" placeholder="10.140.159.218" title="Host IP">
+            <input type="number" id="idx-dc-port" class="input-cam-text font-mono" value="4747" placeholder="4747" title="Port">
           </div>
-          <input type="text" id="idx-dc-url" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" readonly>
+          <input type="text" id="idx-dc-url" class="input-cam-text font-mono" value="http://10.140.159.218:4747/video" placeholder="http://10.140.159.218:4747/video" title="Video URL" readonly>
         </div>
 
-        <div id="idx-conn-box-extension" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
-          <select id="idx-ext-index" class="input-cam-text font-mono">
+        <div id="idx-conn-box-extension" class="conn-box-card mb-10">
+          <select id="idx-ext-index" class="input-cam-text font-mono" title="Camera Index">
             <option value="0">Camera 0</option>
             <option value="1" selected>Camera 1</option>
             <option value="2">Camera 2</option>
           </select>
         </div>
 
-        <div id="idx-conn-box-esp32" style="background: #F8FAFC; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: none;">
-          <input type="text" id="idx-esp-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream">
+        <div id="idx-conn-box-esp32" class="conn-box-card mb-10">
+          <input type="text" id="idx-esp-url" class="input-cam-text font-mono" value="http://192.168.1.100:81/stream" placeholder="http://192.168.1.100:81/stream" title="ESP32 Stream URL">
         </div>
 
-        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 14px;">
+        <div class="flex-center-gap-8 mb-14">
           <button type="button" class="btn-cam-action" id="btn-idx-test-cam">TEST CONNECTION</button>
           <button type="button" class="btn-cam-action btn-apply" id="btn-idx-connect-cam">CONNECT CAMERA</button>
           <button type="button" class="btn-cam-action" id="btn-idx-stop-cam">STOP CAMERA</button>
-          <span class="status-pill status-pill-connected" id="idx-conn-pill" style="margin-left: auto;">● READY</span>
+          <span class="status-pill status-pill-connected ml-auto" id="idx-conn-pill">● READY</span>
         </div>
 
-        <div style="display: flex; justify-content: space-between;">
+        <div class="flex-justify-between">
           <button type="button" class="btn-action btn-cancel" id="btn-idx-back-2">← Back</button>
           <button type="button" class="btn-action btn-confirm-primary" id="btn-idx-to-step4">Open Live Enrollment →</button>
         </div>
       </div>
 
       <!-- Step 4: Live Capture -->
-      <div id="enroll-step-camera" style="display: none; padding: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; margin-bottom: 10px;">
+      <div id="enroll-step-camera" class="panel-padded-lg">
+        <div class="enroll-meta-header">
           <div>Student: <strong id="enroll-current-name">KANISH M</strong> (<span class="font-mono" id="enroll-current-reg">922524243069</span>)</div>
           <div>Camera: <strong id="enroll-current-source">PC Camera</strong></div>
-          <span id="enroll-current-dept" style="display:none;"></span>
+          <span id="enroll-current-dept"></span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px;">
-          <div style="position: relative; background: #0B132B; border-radius: 8px; overflow: hidden; min-height: 260px; display: flex; align-items: center; justify-content: center;">
+        <div class="enroll-live-split">
+          <div class="enroll-feed-wrapper">
             <img id="enroll-camera-feed" class="video-stream" src="/api/video/feed?view_mode=normal" alt="Enrollment Camera Stream">
-            <div id="enroll-quality-hud" style="position: absolute; top: 8px; left: 8px; padding: 4px 8px; border-radius: 4px; background: rgba(16, 185, 129, 0.9); color: #fff; font-size: 0.72rem; font-weight: 700;">
+            <div id="enroll-quality-hud" class="enroll-quality-hud-pill">
               <span id="enroll-hud-dot">●</span> <span id="enroll-hud-text">Checking camera frame...</span>
             </div>
-            <div id="enroll-capture-flash" style="display:none;"></div>
+            <div id="enroll-capture-flash"></div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px;">
-              <div style="display: flex; justify-content: space-between; font-size: 0.80rem; font-weight: 700; margin-bottom: 6px;">
+          <div class="flex-col-gap-10">
+            <div class="samples-card-box">
+              <div class="samples-header-row">
                 <span>Face Samples</span>
                 <span id="enroll-samples-count">0 of 10 captured</span>
               </div>
-              <div id="idx-samples-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;"></div>
+              <div id="idx-samples-grid" class="samples-grid-5"></div>
             </div>
 
-            <div style="background: #FAFCFF; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; font-size: 0.78rem;">
-              <div style="font-weight: 700; color: var(--secondary); margin-bottom: 4px;">Progress</div>
+            <div class="progress-card-box">
+              <div class="progress-card-title">Progress</div>
               <div id="chk-samples-status">○ Face Samples (min 5 required)</div>
               <div id="chk-save-status">○ Save Enrollment</div>
             </div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end;">
-          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-capture"><i class="ti ti-camera"></i> CAPTURE SAMPLE</button>
-          <button type="button" class="btn-action btn-cancel" id="btn-enroll-retake" disabled><i class="ti ti-rotate-clockwise"></i> RETAKE</button>
-          <button type="button" class="btn-action btn-start" id="btn-enroll-save" disabled><i class="ti ti-device-floppy"></i> SAVE ENROLLMENT</button>
+        <div class="flex-gap-8-end mt-12">
+          <button type="button" class="btn-action btn-confirm-primary" id="btn-enroll-capture">📸 CAPTURE SAMPLE</button>
+          <button type="button" class="btn-action btn-cancel" id="btn-enroll-retake" disabled>↺ RETAKE</button>
+          <button type="button" class="btn-action btn-start" id="btn-enroll-save" disabled>💾 SAVE ENROLLMENT</button>
           <button type="button" class="btn-action btn-cancel" id="btn-enroll-cancel">✕ CLOSE</button>
         </div>
       </div>
@@ -713,14 +717,14 @@
   </div>
 
   <!-- Duplicate Register Modal -->
-  <div class="modal-backdrop" id="duplicate-reg-modal" style="display: none;">
+  <div class="modal-backdrop" id="duplicate-reg-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 style="color: var(--danger);">Register Number already enrolled</h3>
+        <h3 class="text-danger">Register Number already enrolled</h3>
       </div>
       <div class="modal-body" id="duplicate-modal-body">
         <p>The register number <strong id="dup-reg-number" class="font-mono">--</strong> is already registered.</p>
-        <div id="dup-student-details" style="display:none; margin-top: 8px; font-size: 0.82rem;">
+        <div id="dup-student-details" class="mt-8 font-sm-sub">
           <div><strong>Name:</strong> <span id="dup-student-name">--</span></div>
           <div><strong>Class:</strong> <span id="dup-student-class">--</span></div>
           <div><strong>Dept:</strong> <span id="dup-student-dept">--</span></div>
@@ -736,14 +740,14 @@
   </div>
 
   <!-- Institutional Role Authentication Modal (HOD & Advisor) -->
-  <div class="modal-backdrop" id="role-login-modal" style="display: none;">
+  <div class="modal-backdrop" id="role-login-modal">
     <div class="role-modal-card">
       <div class="role-modal-header">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:32px; height:32px; border-radius:6px; background:var(--secondary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800;">SC</div>
+        <div class="flex-center-gap-8">
+          <div class="modal-logo-sq">SC</div>
           <div>
-            <h3 style="font-size:1rem; font-weight:700; margin:0;">Institutional Access</h3>
-            <span style="font-size:0.72rem; color:var(--text-muted);">SmartClass Vision AI Gateway</span>
+            <h3 class="font-title-clean">Institutional Access</h3>
+            <span class="font-caption-muted">SmartClass Vision AI Gateway</span>
           </div>
         </div>
         <button type="button" class="btn-close-modal" onclick="closeRoleLoginModal()">✕</button>
@@ -751,40 +755,40 @@
 
       <div class="role-tab-bar">
         <button type="button" class="role-tab-btn active" id="tab-btn-hod" onclick="switchRoleLoginTab('HOD')">
-          <i class="ti ti-building-bank"></i> HOD Access
+          🏛️ HOD Access
         </button>
         <button type="button" class="role-tab-btn" id="tab-btn-adv" onclick="switchRoleLoginTab('ADVISOR')">
-          <i class="ti ti-users"></i> Advisor Access
+          👥 Advisor Access
         </button>
       </div>
 
       <div class="role-modal-body">
         <div class="role-desc-box">
-          <strong id="modal-role-title" style="display:flex; align-items:center; gap:6px; margin-bottom:2px;"><i class="ti ti-building-bank"></i> Head of Department (HOD) Portal</strong>
+          <strong id="modal-role-title" class="block-mb-2">🏛️ Head of Department (HOD) Portal</strong>
           <span id="modal-role-desc">Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.</span>
         </div>
 
-        <div id="roleLoginAlert" class="alert-box alert-error" style="display:none; padding:8px 12px; font-size:0.80rem; border-radius:6px;"></div>
+        <div id="roleLoginAlert" class="alert-box alert-error alert-box-padded"></div>
 
         <form id="roleLoginForm" onsubmit="handleRoleModalLogin(event)">
           <div class="role-form-group">
             <label for="modal-user-id">Institutional User ID</label>
-            <input type="text" id="modal-user-id" class="form-control" value="HOD001" required autocomplete="username">
+            <input type="text" id="modal-user-id" class="form-control" value="HOD001" placeholder="e.g. HOD001" title="Institutional User ID" required autocomplete="username">
           </div>
 
-          <div class="role-form-group" style="margin-top: 8px;">
+          <div class="role-form-group mt-8">
             <label for="modal-password">Password</label>
-            <input type="password" id="modal-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <input type="password" id="modal-password" class="form-control" placeholder="••••••••" title="Password" required autocomplete="current-password">
           </div>
 
-          <button type="submit" id="modal-submit-login" class="role-btn-submit" style="margin-top: 12px;">
+          <button type="submit" id="modal-submit-login" class="role-btn-submit mt-12">
             Sign In to HOD Dashboard
           </button>
         </form>
 
         <div class="role-quick-hints">
           <span id="role-default-hint">Default HOD: <code>HOD001</code> / <code>admin123</code></span>
-          <a href="/login" style="color:var(--secondary); text-decoration:none; font-weight:600;">Full Portal Login ↗</a>
+          <a href="/login" class="link-portal-bold">Full Portal Login ↗</a>
         </div>
       </div>
     </div>
@@ -820,7 +824,7 @@
       if (role === 'HOD') {
         tabHod.classList.add('active');
         tabAdv.classList.remove('active');
-        roleTitle.innerHTML = '<i class="ti ti-building-bank"></i> Head of Department (HOD) Portal';
+        roleTitle.innerText = '🏛️ Head of Department (HOD) Portal';
         roleDesc.innerText = 'Full institutional access to all classrooms, camera configs, faculty, advisors, and reports.';
         userIdInput.value = 'HOD001';
         submitBtn.innerText = 'Sign In to HOD Dashboard';
@@ -828,7 +832,7 @@
       } else {
         tabAdv.classList.add('active');
         tabHod.classList.remove('active');
-        roleTitle.innerHTML = '<i class="ti ti-users"></i> Class Advisor Portal';
+        roleTitle.innerText = '👥 Class Advisor Portal';
         roleDesc.innerText = 'Dedicated live camera monitoring and attendance verification for your assigned class & section.';
         userIdInput.value = 'ADV001';
         submitBtn.innerText = 'Sign In to Advisor Dashboard';
@@ -897,9 +901,19 @@
         closeRoleLoginModal();
       }
     });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
+      });
+    }
   </script>
 
   <!-- Application Logic -->
   <script src="/static/js/dashboard.js"></script>
+  <!-- PWA Install Controller -->
+  <script src="/static/js/pwa-install.js"></script>
 </body>
 </html>

@@ -1,0 +1,23 @@
+{
+  "name": "SmartClass Vision AI",
+  "short_name": "SmartClass",
+  "description": "Smart Classroom attendance and classroom monitoring system",
+  "start_url": "/login",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0F172A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

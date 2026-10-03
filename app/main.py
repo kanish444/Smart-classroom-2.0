@@ -40,9 +40,15 @@ def create_app() -> FastAPI:
     )
 
     # 1. CORS Middleware
-    origins = [o.strip() for o in settings.dashboard.cors_origins.split(",") if o.strip()]
+    origins = [o.strip().rstrip("/") for o in settings.dashboard.cors_origins.split(",") if o.strip()]
     if not origins:
         origins = ["*"]
+
+    if settings.environment in ("production", "prod") and origins == ["*"]:
+        logger.warning(
+            "CORS is configured with wildcard '*' and allow_credentials=True in production. "
+            "For production HTTPS, specify explicit origins via DASHBOARD_CORS_ORIGINS."
+        )
 
     app.add_middleware(
         CORSMiddleware,
@@ -89,6 +95,18 @@ def create_app() -> FastAPI:
     os.makedirs(static_dir, exist_ok=True)
 
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+    @app.get("/service-worker.js", include_in_schema=False)
+    async def serve_service_worker():
+        """Serves root PWA service worker with root scope permissions."""
+        sw_file = os.path.join(dashboard_dir, "service-worker.js")
+        if os.path.exists(sw_file):
+            return FileResponse(
+                sw_file,
+                media_type="application/javascript",
+                headers={"Service-Worker-Allowed": "/"}
+            )
+        raise HTTPException(status_code=404, detail="Service worker not found")
 
     @app.get("/", include_in_schema=False)
     @app.get("/login", include_in_schema=False)

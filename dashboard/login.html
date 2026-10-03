@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>V.S.B. Engineering College - SmartClass Vision AI Institutional Portal</title>
-  <link rel="icon" type="image/png" href="/static/img/vsb_logo.png">
+  <title>SmartClass Vision AI - Secure Institutional Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/role_dashboard.css">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="apple-touch-icon" href="/static/img/icon-192.png">
   <style>
     :root {
-      --vsb-primary: #002147;
-      --vsb-primary-dark: #05182D;
-      --vsb-primary-azure: #006DB4;
-      --vsb-accent-gold: #FDC500;
-      --vsb-accent-red: #D82927;
-      --primary: #004488;
-      --primary-hover: #006DB4;
-      --bg-midnight: #0B1220;
-      --bg-midnight-surface: #111C2E;
-      --border-midnight: #1E293B;
-      --text-muted: #64748B;
-      --border: #E2E8F0;
+      --primary: #0F172A;
+      --secondary: #2563EB;
+      --secondary-hover: #1D4ED8;
+      --secondary-subtle: #EFF6FF;
+      --bg-app: #F8FAFC;
+      --border-color: #E2E8F0;
+      --font-heading: 'Plus Jakarta Sans', var(--font-body);
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * {
@@ -34,259 +31,130 @@
 
     body {
       font-family: var(--font-body);
-      background-color: #070D19;
+      background-color: var(--bg-app);
       background-image: 
-        radial-gradient(circle at 10% 20%, rgba(0, 33, 71, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(0, 109, 180, 0.25) 0%, transparent 60%);
-      color: #0B1220;
-      min-height: 100vh;
+        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.05) 0%, transparent 45%),
+        linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+      color: #0F172A;
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
       padding: 1.5rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position: relative;
     }
 
-    .login-wrapper {
+    .login-container {
       width: 100%;
-      max-width: 1100px;
-      min-height: 660px;
+      max-width: 440px;
       background: #FFFFFF;
-      border-radius: 20px;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      box-shadow: 
+        0 1px 3px rgba(15, 23, 42, 0.05),
+        0 20px 40px -12px rgba(15, 23, 42, 0.10);
       overflow: hidden;
-    }
-
-    /* Left VSB Institutional Hero Panel */
-    .login-hero {
-      background: linear-gradient(145deg, #002147 0%, #05182D 55%, #0B1220 100%);
-      padding: 3.5rem 3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       position: relative;
-      border-right: 1px solid var(--border-midnight);
-      overflow: hidden;
+      z-index: 1;
     }
 
-    .login-hero::before {
-      content: "";
-      position: absolute;
-      top: -120px;
-      left: -120px;
-      width: 360px;
-      height: 360px;
-      background: radial-gradient(circle, rgba(0, 109, 180, 0.25) 0%, transparent 70%);
-      pointer-events: none;
+    .login-header {
+      padding: 2.25rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%);
     }
 
-    .login-hero::after {
-      content: "";
-      position: absolute;
-      bottom: -100px;
-      right: -100px;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(253, 197, 0, 0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .brand-mark-group {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-logo-box {
-      width: 64px;
-      height: 64px;
-      background: #FFFFFF;
-      border: 2px solid rgba(253, 197, 0, 0.7);
-      border-radius: 14px;
-      display: flex;
+    .logo-container {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
-      box-shadow: 0 0 20px rgba(253, 197, 0, 0.25);
-      flex-shrink: 0;
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      background: #FFFFFF;
+      padding: 6px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
     }
 
-    .hero-logo-box img {
+    .institutional-logo-img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
 
-    .hero-brand-name {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .hero-inst-title {
-      font-size: 0.72rem;
+    .login-header h1 {
+      font-family: var(--font-heading);
+      font-size: 1.38rem;
       font-weight: 800;
-      color: #FDC500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      line-height: 1.2;
-      margin-bottom: 2px;
-    }
-
-    .hero-brand-name h2 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      color: #F8FAFC;
-      line-height: 1.1;
-      text-transform: uppercase;
-    }
-
-    .hero-brand-name span {
-      font-size: 0.72rem;
-      color: #38BDF8;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .hero-message {
-      margin: 2.25rem 0;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: #FDC500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.6rem;
-    }
-
-    .hero-message h1 {
-      font-size: 1.85rem;
-      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.025em;
       line-height: 1.25;
-      color: #FFFFFF;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.85rem;
-    }
-
-    .hero-message h1 span {
-      background: linear-gradient(135deg, #38BDF8 0%, #FDC500 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-message p {
-      font-size: 0.90rem;
-      color: #CBD5E1;
-      line-height: 1.6;
-    }
-
-    .hero-features {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .feature-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .badge-vision {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--secondary);
+      color: #FFFFFF;
+    }
+
+    .login-header p {
       font-size: 0.82rem;
-      color: #E2E8F0;
+      color: #64748B;
+      margin-top: 0.4rem;
       font-weight: 500;
     }
 
-    .feature-icon-circle {
-      width: 28px;
-      height: 28px;
+    .login-body {
+      padding: 2rem;
+    }
+
+    .alert-box {
+      padding: 0.75rem 1rem;
       border-radius: 8px;
-      background: rgba(0, 33, 71, 0.8);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #38BDF8;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-    }
-
-    .hero-footer {
-      position: relative;
-      z-index: 2;
-      padding-top: 1.25rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.75rem;
-      color: #94A3B8;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Right Form Panel */
-    .login-form-panel {
-      padding: 3.5rem 3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: #FFFFFF;
-    }
-
-    .form-header {
-      margin-bottom: 2rem;
-    }
-
-    .form-header .inst-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.70rem;
-      font-weight: 800;
-      color: var(--vsb-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-header h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #002147;
-      letter-spacing: -0.02em;
-    }
-
-    .form-header p {
       font-size: 0.84rem;
-      color: var(--text-muted);
-      margin-top: 4px;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+
+    .alert-error {
+      background: #FEF2F2;
+      color: #B91C1C;
+      border: 1px solid #FECACA;
+    }
+
+    .alert-success {
+      background: #ECFDF5;
+      color: #047857;
+      border: 1px solid #A7F3D0;
     }
 
     .form-group {
-      margin-bottom: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
+      margin-bottom: 1.2rem;
     }
 
     .form-group label {
-      font-size: 0.78rem;
+      display: block;
+      font-size: 0.80rem;
       font-weight: 600;
       color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
     }
 
     .input-wrapper {
@@ -297,242 +165,187 @@
 
     .input-icon {
       position: absolute;
-      left: 14px;
+      left: 12px;
       color: #94A3B8;
+      pointer-events: none;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
-      font-size: 1.1rem;
     }
 
-    .input-wrapper input {
+    .form-control {
       width: 100%;
-      height: 48px;
-      padding: 0 1rem 0 2.75rem;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 10px;
+      padding: 0.70rem 0.85rem 0.70rem 2.4rem;
       font-size: 0.90rem;
-      color: #0B1220;
-      background: #F8FAFC;
-      transition: all 0.2s ease;
+      color: #0F172A;
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      transition: all 0.18s ease;
       outline: none;
     }
 
-    .input-wrapper input:focus {
-      background: #FFFFFF;
-      border-color: #006DB4;
-      box-shadow: 0 0 0 3px rgba(0, 109, 180, 0.15);
+    .form-control:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    /* Role Quick Preset Selector */
-    .preset-section {
-      margin: 1.25rem 0 1.5rem;
-    }
-
-    .preset-label {
+    .preset-selector-label {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       color: #64748B;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
     .preset-btn-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.35rem;
     }
 
     .preset-role-btn {
-      display: flex;
+      flex: 1;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 0.65rem 0.85rem;
-      background: #F8FAFC;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 8px;
+      gap: 6px;
+      padding: 0.55rem 0.75rem;
       font-size: 0.80rem;
       font-weight: 600;
-      color: #334155;
+      color: #475569;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .preset-role-btn i {
-      color: #006DB4;
-      font-size: 1rem;
+      transition: all 0.15s ease;
     }
 
     .preset-role-btn:hover {
-      background: #F0F7FC;
-      border-color: #BAE6FD;
-      color: #002147;
+      background: #FFFFFF;
+      color: var(--secondary);
+      border-color: #CBD5E1;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
     }
 
     .login-btn {
       width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, #002147 0%, #004488 50%, #006DB4 100%);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
       font-size: 0.92rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
+      color: #FFFFFF;
+      background: var(--secondary);
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+      transition: all 0.18s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 14px rgba(0, 33, 71, 0.35);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .login-btn:hover {
-      background: linear-gradient(135deg, #05182D 0%, #003366 50%, #005A9C 100%);
-      box-shadow: 0 6px 20px rgba(0, 33, 71, 0.45);
+      background: var(--secondary-hover);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
       transform: translateY(-1px);
     }
 
-    .login-btn:active {
-      transform: translateY(0);
-    }
-
     .login-btn:disabled {
-      background: #94A3B8;
+      opacity: 0.75;
       cursor: not-allowed;
-      box-shadow: none;
       transform: none;
     }
 
-    .security-badge {
-      margin-top: 1.75rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid #F1F5F9;
-      display: flex;
+    .pwa-install-btn {
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.72rem 1.25rem;
+      font-size: 0.90rem;
+      font-weight: 600;
+      color: #0F172A;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      transition: all 0.18s ease;
+    }
+
+    .pwa-install-btn:hover {
+      background: #E2E8F0;
+      border-color: #94A3B8;
+      color: #0F172A;
+    }
+
+    .login-footer-info {
+      margin-top: 1.5rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .security-notice {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 0.74rem;
-      color: #64748B;
-      font-weight: 500;
-    }
-
-    .security-badge i {
-      color: #10B981;
-      font-size: 1rem;
-    }
-
-    /* Alert Box */
-    .alert-box {
-      display: none;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      font-size: 0.82rem;
       font-weight: 600;
-      margin-bottom: 1.25rem;
-    }
-
-    .alert-error {
-      background: #FEF2F2;
-      color: #DC2626;
-      border: 1px solid #FECACA;
-    }
-
-    .alert-success {
-      background: #ECFDF5;
       color: #059669;
-      border: 1px solid #A7F3D0;
+      margin-bottom: 0.3rem;
     }
 
-    @media (max-width: 900px) {
-      .login-wrapper {
-        grid-template-columns: 1fr;
-        max-width: 480px;
-      }
-      .login-hero {
-        display: none;
-      }
-      .login-form-panel {
-        padding: 2.5rem 2rem;
-      }
+    .role-policy-text {
+      font-size: 0.72rem;
+      color: #64748B;
+      line-height: 1.4;
+    }
+
+    .role-policy-text strong {
+      color: #334155;
     }
   </style>
 </head>
 <body>
 
-  <div class="login-wrapper">
-    
-    <!-- Left VSB Institutional Hero Panel -->
-    <div class="login-hero">
-      <div class="brand-mark-group">
-        <div class="hero-logo-box" title="V.S.B. Engineering College Emblem">
-          <img src="/static/img/vsb_logo.png" alt="V.S.B. Engineering College Crest">
-        </div>
-        <div class="hero-brand-name">
-          <span class="hero-inst-title">V.S.B Engineering College</span>
-          <h2>SmartClass</h2>
-          <span>Vision AI Control</span>
-        </div>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="logo-container">
+        <img src="/static/img/smartclass_logo.png" alt="SmartClass Vision AI Crest" class="institutional-logo-img">
       </div>
-
-      <div class="hero-message">
-        <div class="hero-eyebrow"><i class="ti ti-school"></i> Institutional Technology Platform</div>
-        <h1>Smart Classroom <span>Computer Vision AI</span></h1>
-        <p>Real-time automated classroom attendance, spatial tracking, and multi-student identification built for next-generation higher education infrastructure at V.S.B. Engineering College.</p>
-      </div>
-
-      <div class="hero-features">
-        <div class="feature-item">
-          <div class="feature-icon-circle"><i class="ti ti-scan"></i></div>
-          <span>SCRFD Multi-Face Detection with Landmark Pose Gating</span>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon-circle"><i class="ti ti-brain"></i></div>
-          <span>ArcFace 512D Embeddings & FAISS Vector Search (< 1ms)</span>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon-circle"><i class="ti ti-activity"></i></div>
-          <span>ByteTrack Spatial-Temporal Stabilizer & Multi-Target Tracking</span>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon-circle"><i class="ti ti-shield-check"></i></div>
-          <span>Role-Based Access Control for HODs and Class Advisors</span>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon-circle"><i class="ti ti-cpu"></i></div>
-          <span>ESP32 Smart Classroom IoT & Environmental Telemetry Ingestion</span>
-        </div>
-      </div>
-
-      <div class="hero-footer">
-        <span>V.S.B. Engineering College • Karur</span>
-        <span>SmartClass Vision AI v2.0</span>
-      </div>
+      <h1>
+        SmartClass
+        <span class="badge-vision">Vision AI</span>
+      </h1>
+      <p>Institutional Face Recognition & Smart Attendance Portal</p>
     </div>
 
-    <!-- Right Login Card Panel -->
-    <div class="login-form-panel">
-      <div class="form-header">
-        <div class="inst-tag"><i class="ti ti-lock-access"></i> V.S.B. Engineering College</div>
-        <h3>Portal Authentication</h3>
-        <p>Sign in with your authorized institutional credentials</p>
-      </div>
-
+    <div class="login-body">
       <div id="alertBox" class="alert-box alert-error"></div>
 
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label for="userId">User ID / Faculty Email</label>
+          <label for="userId">User ID / Email</label>
           <div class="input-wrapper">
-            <span class="input-icon"><i class="ti ti-user"></i></span>
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
             <input 
               type="text" 
               id="userId" 
+              class="form-control" 
               placeholder="e.g. HOD001, ADV001" 
+              title="User ID or Email"
               required 
               autocomplete="username"
               autofocus
@@ -543,56 +356,74 @@
         <div class="form-group">
           <label for="password">Password</label>
           <div class="input-wrapper">
-            <span class="input-icon"><i class="ti ti-lock"></i></span>
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
             <input 
               type="password" 
               id="password" 
+              class="form-control" 
               placeholder="••••••••" 
+              title="Password"
               required 
               autocomplete="current-password"
             >
           </div>
         </div>
 
-        <div class="preset-section">
-          <div class="preset-label">Quick Role Credentials</div>
+        <div>
+          <div class="preset-selector-label">Quick Role Credentials</div>
           <div class="preset-btn-row">
             <button type="button" class="preset-role-btn" onclick="selectRolePreset('HOD001')">
-              <i class="ti ti-building-bank"></i>
-              <span>HOD (HOD001)</span>
+              🏛️ <span>HOD (HOD001)</span>
             </button>
             <button type="button" class="preset-role-btn" onclick="selectRolePreset('ADV001')">
-              <i class="ti ti-user-check"></i>
-              <span>Advisor (ADV001)</span>
+              👥 <span>Advisor (ADV001)</span>
             </button>
           </div>
         </div>
 
         <button type="submit" id="submitBtn" class="login-btn">
-          <span>Sign In to Institutional Portal</span>
-          <i class="ti ti-arrow-right"></i>
+          <span>Sign In to Portal</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+
+        <button type="button" id="btnInstallApp" class="pwa-install-btn" title="Install SmartClass Desktop / Mobile App">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Install SmartClass</span>
         </button>
       </form>
 
-      <div class="security-badge">
-        <i class="ti ti-shield-lock"></i>
-        <span>Encrypted JWT Authentication • V.S.B Campus Node</span>
+      <div class="login-footer-info">
+        <div class="security-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          Enterprise Role-Based Access Control
+        </div>
+        <div class="role-policy-text">
+          <strong>HOD:</strong> Full System Administration & Monitoring<br>
+          <strong>Class Advisor:</strong> Assigned Classroom & Student Verification
+        </div>
       </div>
     </div>
-
   </div>
 
   <script>
     function selectRolePreset(userId) {
       const input = document.getElementById("userId");
-      const pass = document.getElementById("password");
       input.value = userId;
-      if (userId === "HOD001") {
-        pass.value = "admin123";
-      } else if (userId === "ADV001") {
-        pass.value = "password123";
-      }
-      pass.focus();
+      document.getElementById("password").focus();
     }
 
     async function handleLogin(e) {
@@ -629,7 +460,7 @@
           localStorage.setItem("smartclass_user", JSON.stringify(authData.user));
 
           alertBox.className = "alert-box alert-success";
-          alertBox.innerText = `Welcome, ${authData.user.name}! Redirecting to control center...`;
+          alertBox.innerText = `Welcome, ${authData.user.name}! Redirecting...`;
           alertBox.style.display = "block";
 
           setTimeout(() => {
@@ -639,17 +470,28 @@
           alertBox.innerText = data.error?.message || data.detail || "Authentication failed. Please check your credentials.";
           alertBox.style.display = "block";
           submitBtn.disabled = false;
-          submitBtn.innerHTML = `<span>Sign In to Institutional Portal</span> <i class="ti ti-arrow-right"></i>`;
+          submitBtn.innerHTML = `<span>Sign In to Portal</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
         }
       } catch (err) {
         console.error("Login request error:", err);
         alertBox.innerText = "Unable to connect to server. Please ensure backend is running.";
         alertBox.style.display = "block";
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span>Sign In to Institutional Portal</span> <i class="ti ti-arrow-right"></i>`;
+        submitBtn.innerHTML = `<span>Sign In to Portal</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
       }
     }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js").catch((err) => {
+          console.warn("Service worker registration failed:", err);
+        });
+      });
+    }
   </script>
+
+  <!-- PWA Install Controller -->
+  <script src="/static/js/pwa-install.js"></script>
 
 </body>
 </html>
